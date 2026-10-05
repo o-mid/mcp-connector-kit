@@ -1,6 +1,6 @@
-#!/usr/bin/env node
 import { mkdir, writeFile } from "node:fs/promises";
 import path from "node:path";
+import { checkFixtureContracts } from "@mck/testing";
 
 const [, , cmd, ...rest] = process.argv;
 
@@ -11,15 +11,28 @@ async function main(): Promise<void> {
     await scaffoldSource(name);
     return;
   }
-  if (cmd === "record") {
-    console.error("record requires a running upstream capture pipeline; use fixture JSON in tests for now.");
-    return;
-  }
   if (cmd === "check") {
-    console.log("fixture check: run pnpm test in each source package");
+    const root = rest[0] ? path.resolve(rest[0]) : process.cwd();
+    const results = await checkFixtureContracts(root);
+    const failed = results.filter((r) => !r.ok);
+    for (const r of results) {
+      const rel = path.relative(root, r.file);
+      if (r.ok) console.log(`ok ${rel}`);
+      else console.error(`fail ${rel}: ${r.error}`);
+    }
+    if (failed.length) {
+      process.exitCode = 1;
+      console.error(`${failed.length} fixture contract(s) failed`);
+    } else {
+      console.log(`${results.length} fixture contract(s) valid`);
+    }
     return;
   }
-  console.log("usage: mck new source <name> | mck record <source> <tool> | mck check");
+  if (cmd === "record") {
+    console.error("record: point MCK_LIVE=1 and use saveFixture() from @mck/testing in a script.");
+    return;
+  }
+  console.log("usage: mck new source <name> | mck check [repo-root] | mck record");
 }
 
 async function scaffoldSource(name: string): Promise<void> {
@@ -41,6 +54,10 @@ async function scaffoldSource(name: string): Promise<void> {
     devDependencies: { tsup: "^8.4.0" },
   };
   await writeFile(path.join(root, "package.json"), `${JSON.stringify(pkg, null, 2)}\n`);
+  await writeFile(
+    path.join(root, "fixtures", "sample.contract.json"),
+    `${JSON.stringify({ source: name, tool: "example", upstream: {} }, null, 2)}\n`,
+  );
   console.log(`scaffolded sources/${name}`);
 }
 

@@ -18,6 +18,7 @@ export type {
   ToolContext,
   RegisteredTool,
   SourceHealthStatus,
+  MetricsRecorder,
 } from "./contract/types.js";
 export {
   faToEn,

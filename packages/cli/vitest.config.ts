@@ -4,9 +4,5 @@ export default defineConfig({
   test: {
     environment: "node",
     setupFiles: ["../../scripts/vitest-network-guard.ts"],
-    coverage: {
-      provider: "v8",
-      include: ["src/**/*.ts"],
-    },
   },
 });

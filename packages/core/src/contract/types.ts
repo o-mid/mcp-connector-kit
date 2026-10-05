@@ -61,7 +61,14 @@ export type SourceDefinition = {
 
 export type ToolCallResult =
   | { ok: true; data: unknown; legacyPretty: boolean }
-  | { ok: false; error: ConnectorErrorPayload; legacyErrorShape?: boolean };
+  | {
+      ok: false;
+      error: ConnectorErrorPayload;
+      /** Khanoumi / cosmetic style `{ error: string }` JSON. */
+      legacyErrorShape?: boolean;
+      /** Torob style plain-text error message. */
+      legacyTorobPlain?: boolean;
+    };
 
 export type RegisteredTool = DefinedTool<unknown, unknown, unknown> & {
   qualifiedName: string;

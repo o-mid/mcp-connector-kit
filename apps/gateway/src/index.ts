@@ -1,4 +1,5 @@
 import { createDefaultCache, createSourceRegistry, RedisCache, type SourceRegistry } from "@mck/core";
+import { createPrometheusRecorder, metricsRegistry } from "@mck/server";
 import { loadConfig, type GatewayConfig } from "./config.js";
 import { resolveSources } from "./sources.js";
 
@@ -14,6 +15,7 @@ export function createGatewayRegistry(config: GatewayConfig): SourceRegistry {
     cache,
     legacyToolNames: config.MCK_LEGACY_TOOL_NAMES === true,
     legacyErrors: config.MCK_LEGACY_ERRORS === true,
+    metrics: createPrometheusRecorder(metricsRegistry),
   });
 }
 

@@ -7,14 +7,13 @@ COPY sources ./sources
 COPY apps ./apps
 RUN pnpm install --frozen-lockfile
 RUN pnpm build --filter @mck/gateway...
+RUN pnpm deploy --filter=@mck/gateway --prod /out
 
 FROM node:22-slim
 WORKDIR /app
 ENV NODE_ENV=production
 RUN adduser --system --uid 10001 mck
-COPY --from=build /app/apps/gateway/dist ./dist
-COPY --from=build /app/apps/gateway/package.json ./
-COPY --from=build /app/node_modules ./node_modules
+COPY --from=build /out /app
 USER mck
 EXPOSE 8080
 HEALTHCHECK --interval=30s --timeout=3s CMD node -e "fetch('http://127.0.0.1:8080/healthz').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"

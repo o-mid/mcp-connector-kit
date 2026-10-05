@@ -1,8 +1,8 @@
 import { createServer, type IncomingMessage, type ServerResponse } from "node:http";
 import type { SourceRegistry } from "@mck/core";
-import { Registry } from "prom-client";
 import type { Transport } from "@modelcontextprotocol/sdk/shared/transport.js";
 import { createMcpServer, createStreamableTransport } from "./mcp-server.js";
+import { metricsRegistry } from "./metrics.js";
 
 export type HttpAppOptions = {
   registry: SourceRegistry;
@@ -10,15 +10,15 @@ export type HttpAppOptions = {
   apiKeys?: string[];
   bodyLimitBytes?: number;
   corsOrigins?: string[];
+  legacyErrors?: boolean;
 };
-
-const promRegistry = new Registry();
 
 /**
  * Serves MCP streamable HTTP plus health, readiness, and Prometheus metrics.
  */
 export function startHttpApp(opts: HttpAppOptions): { close: () => Promise<void> } {
-  const mcp = createMcpServer(opts.registry);
+  const mcpOpts = opts.legacyErrors === true ? { legacyErrors: true } : {};
+  const mcp = createMcpServer(opts.registry, mcpOpts);
   const transport = createStreamableTransport();
   void mcp.connect(transport as Transport);
 
@@ -40,8 +40,8 @@ export function startHttpApp(opts: HttpAppOptions): { close: () => Promise<void>
         return;
       }
       if (path === "/metrics") {
-        const body = await promRegistry.metrics();
-        res.writeHead(200, { "content-type": promRegistry.contentType });
+        const body = await metricsRegistry.metrics();
+        res.writeHead(200, { "content-type": metricsRegistry.contentType });
         res.end(body);
         return;
       }
@@ -107,4 +107,4 @@ async function readBody(req: IncomingMessage, limit: number): Promise<unknown> {
   return JSON.parse(raw) as unknown;
 }
 
-export { promRegistry };
+export { metricsRegistry } from "./metrics.js";

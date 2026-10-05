@@ -9,6 +9,8 @@ import type {
   ToolCallResult,
   ToolContext,
 } from "./types.js";
+import { defineTool } from "./define.js";
+import { z } from "zod";
 import { validateInput, validateOutput, validateUpstream } from "./validate.js";
 import type { CacheStore } from "../cache/types.js";
 import type { MetricsRecorder } from "./types.js";
@@ -67,6 +69,36 @@ export function createSourceRegistry(
       if (opts.legacyToolNames) {
         if (!byName.has(tool.name)) byName.set(tool.name, reg);
       }
+    }
+    if (!source.tools.some((t) => t.name === "health")) {
+      const healthTool = defineTool({
+        name: "health",
+        description: `Health status for ${source.title}.`,
+        input: z.object({}),
+        upstream: z.object({ status: z.string() }),
+        output: z.object({
+          source: z.string(),
+          status: z.enum(["healthy", "degraded", "failing"]),
+        }),
+        async run({ ctx }) {
+          if (source.health) {
+            try {
+              await source.health(ctx);
+            } catch {
+              return { source: source.id, status: health[source.id] ?? "failing" };
+            }
+          }
+          return { source: source.id, status: health[source.id] ?? "healthy" };
+        },
+      });
+      const reg: RegisteredTool = {
+        ...healthTool,
+        qualifiedName: `${source.id}.health`,
+        legacyName: "health",
+        sourceId: source.id,
+      };
+      tools.push(reg);
+      byName.set(reg.qualifiedName, reg);
     }
   }
 
@@ -164,7 +196,10 @@ export function createSourceRegistry(
             source: tool.sourceId,
           }).toPayload();
       const failure: ToolCallResult = { ok: false, error: payload };
-      if (opts.legacyErrors) failure.legacyErrorShape = true;
+      if (opts.legacyErrors) {
+        if (tool.sourceId === "torob") failure.legacyTorobPlain = true;
+        else failure.legacyErrorShape = true;
+      }
       return failure;
     }
   }

@@ -12,6 +12,7 @@ async function main(): Promise<void> {
       port: config.PORT,
       apiKeys: config.apiKeys,
       corsOrigins: config.corsOrigins,
+      legacyErrors: config.MCK_LEGACY_ERRORS === true,
     });
     const shutdown = async () => {
       await app.close();
@@ -22,7 +23,11 @@ async function main(): Promise<void> {
     console.error(`mck gateway listening on :${config.PORT}`);
     return;
   }
-  const server = createMcpServer(registry, { name: "mck-gateway", version: "1.0.0" });
+  const server = createMcpServer(registry, {
+    name: "mck-gateway",
+    version: "1.0.0",
+    legacyErrors: config.MCK_LEGACY_ERRORS === true,
+  });
   await connectStdio(server);
 }
 

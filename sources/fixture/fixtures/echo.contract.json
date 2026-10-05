@@ -1,0 +1,6 @@
+{
+  "source": "fixture",
+  "tool": "echo",
+  "upstream": { "value": "offline" },
+  "output": { "echoed": "offline" }
+}

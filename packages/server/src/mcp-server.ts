@@ -9,7 +9,10 @@ const READONLY = { readOnlyHint: true, openWorldHint: true } as const;
 /**
  * Binds a source registry to the official MCP server with legacy naming options.
  */
-export function createMcpServer(registry: SourceRegistry, opts?: { name?: string; version?: string }): McpServer {
+export function createMcpServer(
+  registry: SourceRegistry,
+  opts?: { name?: string; version?: string; legacyErrors?: boolean },
+): McpServer {
   const server = new McpServer({
     name: opts?.name ?? "mck-gateway",
     version: opts?.version ?? "1.0.0",
@@ -30,9 +33,14 @@ export function createMcpServer(registry: SourceRegistry, opts?: { name?: string
       async (args, extra) => {
         const result = await registry.callTool(publicName, args, extra.signal);
         if (!result.ok) {
-          const text = result.legacyErrorShape
-            ? JSON.stringify({ error: result.error.message })
-            : JSON.stringify(result.error);
+          let text: string;
+          if (result.legacyTorobPlain) {
+            text = result.error.message;
+          } else if (result.legacyErrorShape) {
+            text = JSON.stringify({ error: result.error.message }, null, 2);
+          } else {
+            text = JSON.stringify(result.error);
+          }
           return { content: [{ type: "text", text }], isError: true };
         }
         const space = result.legacyPretty ? 2 : 0;
