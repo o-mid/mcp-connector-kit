@@ -1,0 +1,32 @@
+#!/usr/bin/env node
+import { connectStdio, createMcpServer, startHttpApp } from "@mck/server";
+import { createGatewayFromEnv, createGatewayRegistry } from "./index.js";
+import { loadConfig } from "./config.js";
+
+async function main(): Promise<void> {
+  const config = loadConfig();
+  const registry = createGatewayRegistry(config);
+  if (config.MCK_TRANSPORT === "http") {
+    const app = startHttpApp({
+      registry,
+      port: config.PORT,
+      apiKeys: config.apiKeys,
+      corsOrigins: config.corsOrigins,
+    });
+    const shutdown = async () => {
+      await app.close();
+      process.exit(0);
+    };
+    process.on("SIGTERM", () => void shutdown());
+    process.on("SIGINT", () => void shutdown());
+    console.error(`mck gateway listening on :${config.PORT}`);
+    return;
+  }
+  const server = createMcpServer(registry, { name: "mck-gateway", version: "1.0.0" });
+  await connectStdio(server);
+}
+
+main().catch((err) => {
+  console.error(err);
+  process.exit(1);
+});

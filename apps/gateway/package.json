@@ -1,0 +1,33 @@
+{
+  "name": "@mck/gateway",
+  "version": "1.0.0",
+  "type": "module",
+  "bin": {
+    "mck-gateway": "./dist/cli.js"
+  },
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "scripts": {
+    "build": "tsup",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "lint": "eslint src",
+    "test": "vitest run",
+    "start": "node dist/cli.js"
+  },
+  "dependencies": {
+    "@mck/core": "workspace:*",
+    "@mck/server": "workspace:*",
+    "@mck/source-fixture": "workspace:*",
+    "@mck/source-khanoumi": "workspace:*",
+    "@mck/source-torob": "workspace:*",
+    "@mck/source-woocommerce": "workspace:*",
+    "zod": "^3.24.3"
+  },
+  "devDependencies": {
+    "tsup": "^8.4.0"
+  }
+}
