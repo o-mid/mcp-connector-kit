@@ -1,0 +1,23 @@
+FROM node:22-slim AS build
+WORKDIR /app
+RUN corepack enable
+COPY package.json pnpm-lock.yaml pnpm-workspace.yaml turbo.json tsconfig.base.json ./
+COPY packages ./packages
+COPY sources ./sources
+COPY apps ./apps
+RUN pnpm install --frozen-lockfile
+RUN pnpm build --filter @mck/gateway...
+
+FROM node:22-slim
+WORKDIR /app
+ENV NODE_ENV=production
+RUN adduser --system --uid 10001 mck
+COPY --from=build /app/apps/gateway/dist ./dist
+COPY --from=build /app/apps/gateway/package.json ./
+COPY --from=build /app/node_modules ./node_modules
+USER mck
+EXPOSE 8080
+HEALTHCHECK --interval=30s --timeout=3s CMD node -e "fetch('http://127.0.0.1:8080/healthz').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"
+ENV MCK_TRANSPORT=http
+ENV MCK_SOURCES=cosmetic
+CMD ["node", "dist/cli.js"]

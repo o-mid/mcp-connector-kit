@@ -1,0 +1,17 @@
+services:
+  gateway:
+    build: .
+    ports:
+      - "8080:8080"
+    environment:
+      MCK_TRANSPORT: http
+      MCK_SOURCES: cosmetic
+      MCK_CACHE: redis
+      REDIS_URL: redis://redis:6379
+      MCK_LEGACY_TOOL_NAMES: "true"
+    depends_on:
+      - redis
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"

@@ -1,0 +1,27 @@
+name: live-contracts
+
+on:
+  schedule:
+    - cron: "0 3 * * *"
+  workflow_dispatch:
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10.6.5
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm build
+      - name: Live smoke (non-blocking)
+        run: |
+          MCK_SOURCES=torob,khanoumi MCK_TRANSPORT=http PORT=8090 node apps/gateway/dist/cli.js &
+          sleep 2
+          curl -sf http://127.0.0.1:8090/healthz
+        continue-on-error: true
