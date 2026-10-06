@@ -1,0 +1,32 @@
+# Prometheus alert rules for MCP gateway — import into Prometheus or Mimir.
+groups:
+  - name: mck-gateway
+    rules:
+      - alert: MckHighErrorRate
+        expr: |
+          sum(rate(mck_tool_calls_total{outcome="error"}[5m]))
+          / clamp_min(sum(rate(mck_tool_calls_total[5m])), 1e-9) > 0.05
+        for: 10m
+        labels:
+          severity: page
+        annotations:
+          summary: MCP gateway tool error rate above 5%
+
+      - alert: MckSchemaDrift
+        expr: increase(mck_schema_drift_total[15m]) > 0
+        for: 0m
+        labels:
+          severity: ticket
+        annotations:
+          summary: Upstream schema drift — refresh source contracts
+
+      - alert: MckLatencyP95High
+        expr: |
+          histogram_quantile(0.95,
+            sum(rate(mck_tool_duration_seconds_bucket[5m])) by (le)
+          ) > 5
+        for: 15m
+        labels:
+          severity: warning
+        annotations:
+          summary: Tool p95 latency above 5s

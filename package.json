@@ -11,6 +11,8 @@
     "lint": "turbo run lint",
     "typecheck": "turbo run typecheck",
     "check": "pnpm build && pnpm test",
+    "validate:registry": "node scripts/validate-registry.mjs",
+    "mck": "node packages/cli/dist/cli.js",
     "hooks:install": "git config core.hooksPath .githooks && chmod +x .githooks/* scripts/strip-ai-git-footers.py",
     "changeset": "changeset",
     "version-packages": "changeset version",

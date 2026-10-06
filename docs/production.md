@@ -26,14 +26,14 @@ Use this checklist before calling a deployment “production.” Status reflects
 | SSRF allowlist | Done | `baseUrls` per source |
 | Schema drift metrics | Done | `mck_schema_drift_total` |
 | Source health in readyz | Done | `degraded` / `failing` |
-| SLO dashboards | Planned | Grafana templates |
+| SLO dashboards | Done | [slo.md](./slo.md), [ops/grafana/](../ops/grafana/) |
 
 ## Testing
 
 | Item | Status | Notes |
 |------|--------|--------|
 | Unit tests | Partial | Core + sources |
-| Contract replay | Done | Trust tier: 8+ fixtures; CI `mck check` |
+| Contract replay | Done | Trust tier: 9+ fixtures; CI `mck check` + registry validate |
 | MCP SDK e2e (server) | Done | stdio + HTTP + auth metadata |
 | Gateway MCP e2e | Done | default + **trust tier** (paid/free SKU) |
 | Live upstream smoke | Optional | `MCK_LIVE=1`, nightly workflow |
@@ -46,7 +46,8 @@ Use this checklist before calling a deployment “production.” Status reflects
 | Image healthcheck | Done | `GET /healthz` |
 | MCP Registry metadata | Done | `registry/server.json` + `registry/sources/*` |
 | SLO / Grafana | Done | [slo.md](./slo.md), `ops/grafana/` |
-| SBOM / cosign | Planned | GitHub Actions |
+| SBOM | Done | [sbom.yml](../.github/workflows/sbom.yml) artifact; [supply-chain.md](./supply-chain.md) |
+| Container cosign | Planned | Documented in supply-chain.md |
 | semver npm publish | Ready | `publishConfig` on packages; Changesets + `NPM_TOKEN` |
 
 ## Operations

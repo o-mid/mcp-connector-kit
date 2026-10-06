@@ -21,5 +21,6 @@ jobs:
       - run: pnpm check
         env:
           MCK_LIVE: "0"
+      - run: node scripts/validate-registry.mjs
       - name: Verified connector contracts (mck check)
         run: node packages/cli/dist/cli.js check .

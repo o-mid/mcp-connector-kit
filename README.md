@@ -47,6 +47,8 @@ See [`.env.example`](.env.example). Key variables: `MCK_SOURCES`, `MCK_SOURCE_PR
 - [OAuth](docs/oauth.md)
 - [MCP Registry / npm](docs/registry.md)
 - [npm publish](docs/npm-publish.md)
+- [Railway deploy](docs/railway.md)
+- [Supply chain / SBOM](docs/supply-chain.md)
 - [SLOs and Grafana](docs/slo.md)
 - [Private sources](docs/private-sources.md)
 - [Architecture](docs/architecture.md)

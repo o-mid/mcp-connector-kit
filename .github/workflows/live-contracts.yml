@@ -1,6 +1,38 @@
-      - name: Live smoke (non-blocking)
+name: live-contracts
+
+on:
+  schedule:
+    - cron: "0 3 * * *"
+  workflow_dispatch:
+
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10.6.5
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm build
+      - name: Gateway health smoke
         run: |
-          MCK_SOURCE_PROFILE=default MCK_TRANSPORT=http PORT=8090 node apps/gateway/dist/cli.js &
+          MCK_SOURCE_PROFILE=default MCK_SKU=free MCK_TRANSPORT=http PORT=8090 node apps/gateway/dist/cli.js &
           sleep 2
-          curl -sf http://127.0.0.1:8090/healthz
+          curl -sf http://127.0.0.1:8090/healthz | tee /tmp/health.json
+          grep -q '"sku":"free"' /tmp/health.json
+          curl -sf http://127.0.0.1:8090/readyz
+        continue-on-error: true
+
+  live-upstream:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'workflow_dispatch'
+    steps:
+      - name: Wikipedia API reachable
+        run: |
+          curl -sf 'https://en.wikipedia.org/w/api.php?action=opensearch&search=MCP&limit=1&format=json' | head -c 200
         continue-on-error: true

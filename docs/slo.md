@@ -51,6 +51,6 @@ groups:
 
 ## Grafana
 
-Import [`ops/grafana/mck-gateway-dashboard.json`](../ops/grafana/mck-gateway-dashboard.json). Set datasource to your Prometheus scrape of `GET /metrics`.
+Import [`ops/grafana/mck-gateway-dashboard.json`](../ops/grafana/mck-gateway-dashboard.json). Prometheus rules file: [`ops/prometheus/mck-alerts.yml`](../ops/prometheus/mck-alerts.yml).
 
 Panels cover: request rate by outcome, p95 latency by source, cache hit ratio, schema drift, and breaker state.
