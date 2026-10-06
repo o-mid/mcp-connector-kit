@@ -1,0 +1,32 @@
+{
+  "source": "worldbank",
+  "tool": "country_profile",
+  "input": { "code": "JP" },
+  "mock": {
+    "origin": "https://api.worldbank.org",
+    "pathPrefix": "/v2/country/JP",
+    "body": [
+      { "page": 1, "pages": 1, "total": 1 },
+      [
+        {
+          "iso2Code": "JP",
+          "name": "Japan",
+          "capitalCity": "Tokyo",
+          "longitude": "139.77",
+          "latitude": "35.67",
+          "region": { "value": "East Asia & Pacific" },
+          "incomeLevel": { "value": "High income" }
+        }
+      ]
+    ]
+  },
+  "output": {
+    "code": "JP",
+    "name": "Japan",
+    "capital": "Tokyo",
+    "region": "East Asia & Pacific",
+    "income": "High income",
+    "latitude": 35.67,
+    "longitude": 139.77
+  }
+}

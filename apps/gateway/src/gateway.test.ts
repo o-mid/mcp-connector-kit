@@ -21,5 +21,9 @@ describe("gateway", () => {
     );
     expect(registry.listToolNames()).toContain("fixture.echo");
     expect(registry.listToolNames()).toContain("wikipedia.wiki_search");
+    expect(registry.listToolNames()).toContain("openlibrary.book_search");
+    expect(registry.listToolNames()).toContain("hn.hn_search");
+    expect(registry.listToolNames()).toContain("usgs.recent_quakes");
+    expect(registry.listToolNames()).toContain("worldbank.country_profile");
   });
 });

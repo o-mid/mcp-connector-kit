@@ -3,12 +3,21 @@ import { filterSourcesForSku } from "./tier.js";
 
 describe("gateway SKU", () => {
   it("free tier keeps keyless sources and drops paid connectors", () => {
-    expect(filterSourcesForSku(["fixture", "wikipedia", "open-meteo", "frankfurter", "openalex", "github"], "free")).toEqual([
+    expect(
+      filterSourcesForSku(
+        ["fixture", "wikipedia", "open-meteo", "frankfurter", "openalex", "openlibrary", "hn", "usgs", "worldbank", "github"],
+        "free",
+      ),
+    ).toEqual([
       "fixture",
       "wikipedia",
       "open-meteo",
       "frankfurter",
       "openalex",
+      "openlibrary",
+      "hn",
+      "usgs",
+      "worldbank",
     ]);
   });
 

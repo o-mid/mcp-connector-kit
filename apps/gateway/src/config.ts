@@ -1,10 +1,10 @@
 import { z } from "zod";
 import { parseAllowlist } from "@mck/source-web-reader";
 import { resolveSourceIds } from "./profiles.js";
-import { filterSourcesForSku, parseSku, type GatewaySku } from "./tier.js";
+import { filterSourcesForSku, FREE_TIER_SOURCES, parseSku, type GatewaySku } from "./tier.js";
 
 const envSchema = z.object({
-  MCK_SOURCES: z.string().default("fixture,wikipedia,open-meteo,frankfurter,openalex"),
+  MCK_SOURCES: z.string().default(FREE_TIER_SOURCES.join(",")),
   MCK_TRANSPORT: z.enum(["stdio", "http"]).default("stdio"),
   MCK_LEGACY_TOOL_NAMES: z
     .string()

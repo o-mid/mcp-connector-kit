@@ -5,12 +5,12 @@ import { GITHUB_REPO } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: "Pricing",
-  description: "Free Wikipedia gateway versus the paid trust-tier SKU. No checkout on this site.",
+  description: "Free keyless sources versus the paid trust-tier SKU. No checkout on this site.",
 };
 
 const FREE = [
-  "fixture, Wikipedia, Open-Meteo, Frankfurter, OpenAlex",
-  "wiki_search, weather_forecast, fx_latest, paper_search",
+  "Wikipedia, weather, rates, papers, books, Hacker News, earthquakes, country profiles, fixture",
+  "wiki_search, weather_forecast, fx_latest, paper_search, book_search, hn_search, recent_quakes, country_profile",
   "Public demo at /demo/mcp when MCK_PUBLIC_DEMO=true",
   "Best-effort hosted uptime",
   "Contract fixtures in CI",
@@ -31,13 +31,13 @@ export default function PricingPage() {
       <PageIntro
         kicker="Pricing"
         title="Two SKUs. No card form."
-        lede="Free is Wikipedia and the fixture source. Paid is the rest of the trust tier, with keys, audit, and higher limits. Hosted paid is an operator setting (MCK_SKU=paid), not a signup."
+        lede="Free is the keyless catalog. Paid adds GitHub, search, and allowlisted fetch, with keys, audit, and higher limits. Hosted paid is an operator setting (MCK_SKU=paid), not a signup."
       />
       <section className="px-4 pb-24 sm:px-6">
         <div className="mx-auto grid max-w-6xl gap-4 lg:grid-cols-2">
           <article className="rounded-3xl border border-white/[0.08] bg-zinc-950/50 p-8">
             <p className="text-xs font-medium uppercase tracking-[0.18em] text-emerald-400">Free</p>
-            <h2 className="mt-3 text-2xl font-semibold text-white">Wikipedia</h2>
+            <h2 className="mt-3 text-2xl font-semibold text-white">Keyless</h2>
             <p className="mt-2 text-sm text-zinc-500">MCK_SKU=free · no upstream API key</p>
             <ul className="mt-6 space-y-2 text-sm text-zinc-300">
               {FREE.map((item) => (

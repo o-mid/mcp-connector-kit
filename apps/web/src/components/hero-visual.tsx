@@ -3,12 +3,12 @@
 import { motion, useReducedMotion } from "framer-motion";
 
 const satellites = [
-  { label: "Wikipedia", angle: 0 },
-  { label: "GitHub", angle: 60 },
-  { label: "Search", angle: 120 },
-  { label: "Reader", angle: 180 },
-  { label: "Fixture", angle: 240 },
-  { label: "Metrics", angle: 300 },
+  { label: "Wiki", angle: 0 },
+  { label: "Weather", angle: 60 },
+  { label: "Rates", angle: 120 },
+  { label: "Papers", angle: 180 },
+  { label: "Books", angle: 240 },
+  { label: "Quakes", angle: 300 },
 ];
 
 export function HeroVisual() {
@@ -73,9 +73,9 @@ export function HeroVisual() {
                   transition={{ delay: 0.5 + i * 0.06 }}
                 >
                   <rect
-                    x={cx - 36}
+                    x={cx - 40}
                     y={cy - 14}
-                    width="72"
+                    width="80"
                     height="28"
                     rx="8"
                     fill="rgba(24,24,27,0.9)"
@@ -124,7 +124,7 @@ export function HeroVisual() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.6 }}
         >
-          <span className="text-emerald-400/90">●</span> POST /mcp · sku=paid · 7 sources ready
+          <span className="text-emerald-400/90">●</span> POST /demo/mcp · keyless tools
         </motion.div>
       </div>
     </div>

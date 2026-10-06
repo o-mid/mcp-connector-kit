@@ -8,6 +8,10 @@ export const FREE_TIER_SOURCES = [
   "open-meteo",
   "frankfurter",
   "openalex",
+  "openlibrary",
+  "hn",
+  "usgs",
+  "worldbank",
 ] as const;
 
 export const SKU_SOURCE_ALLOWLIST: Record<GatewaySku, readonly string[]> = {

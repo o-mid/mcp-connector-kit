@@ -1,0 +1,8 @@
+{
+  "id": "hn",
+  "package": "@mck/source-hn",
+  "verified": true,
+  "tools": ["hn_search"],
+  "contracts": ["hn_search"],
+  "documentation": "https://github.com/o-mid/mcp-connector-kit/blob/main/docs/trust-tier.md"
+}

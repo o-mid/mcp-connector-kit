@@ -1,0 +1,8 @@
+{
+  "id": "worldbank",
+  "package": "@mck/source-worldbank",
+  "verified": true,
+  "tools": ["country_profile"],
+  "contracts": ["country_profile"],
+  "documentation": "https://github.com/o-mid/mcp-connector-kit/blob/main/docs/trust-tier.md"
+}

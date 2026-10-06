@@ -8,6 +8,10 @@ import { wikipediaSource } from "@mck/source-wikipedia";
 import { openMeteoSource } from "@mck/source-open-meteo";
 import { frankfurterSource } from "@mck/source-frankfurter";
 import { openAlexSource } from "@mck/source-openalex";
+import { openLibrarySource } from "@mck/source-openlibrary";
+import { hnSource } from "@mck/source-hn";
+import { usgsSource } from "@mck/source-usgs";
+import { worldBankSource } from "@mck/source-worldbank";
 import { createWebReaderSource } from "@mck/source-web-reader";
 
 /** Static import map: only ids listed here can be enabled via env. */
@@ -17,6 +21,10 @@ const catalog: Record<string, (opts: { webReaderAllowlist?: string[] }) => Sourc
   "open-meteo": () => openMeteoSource,
   frankfurter: () => frankfurterSource,
   openalex: () => openAlexSource,
+  openlibrary: () => openLibrarySource,
+  hn: () => hnSource,
+  usgs: () => usgsSource,
+  worldbank: () => worldBankSource,
   github: () => githubSource,
   brave: () => braveSource,
   exa: () => exaSource,

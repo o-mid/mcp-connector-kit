@@ -1,0 +1,30 @@
+{
+  "source": "openlibrary",
+  "tool": "book_search",
+  "input": { "query": "designing data-intensive applications", "limit": 1 },
+  "mock": {
+    "origin": "https://openlibrary.org",
+    "pathPrefix": "/search.json",
+    "body": {
+      "docs": [
+        {
+          "title": "Designing Data-Intensive Applications",
+          "author_name": ["Martin Kleppmann"],
+          "first_publish_year": 2017,
+          "key": "/works/OL19293745W"
+        }
+      ]
+    }
+  },
+  "output": {
+    "query": "designing data-intensive applications",
+    "results": [
+      {
+        "title": "Designing Data-Intensive Applications",
+        "authors": ["Martin Kleppmann"],
+        "year": 2017,
+        "url": "https://openlibrary.org/works/OL19293745W"
+      }
+    ]
+  }
+}

@@ -2,14 +2,22 @@ import { GATEWAY_ORIGIN } from "@/lib/site";
 
 export const dynamic = "force-dynamic";
 
-type WikiResult = {
-  query: string;
-  results: { title: string; description: string | null; url: string | null }[];
-};
-
 const hits = new Map<string, number[]>();
 const WINDOW_MS = 60_000;
 const LIMIT = 12;
+
+const TOOLS = [
+  "wiki_search",
+  "weather_forecast",
+  "fx_latest",
+  "paper_search",
+  "book_search",
+  "hn_search",
+  "recent_quakes",
+  "country_profile",
+] as const;
+
+type DemoTool = (typeof TOOLS)[number];
 
 function allow(ip: string): boolean {
   const now = Date.now();
@@ -26,6 +34,58 @@ function allow(ip: string): boolean {
 function clientIp(request: Request): string {
   const forwarded = request.headers.get("x-forwarded-for");
   return forwarded?.split(",")[0]?.trim() || "local";
+}
+
+function asTool(value: unknown): DemoTool | undefined {
+  return TOOLS.find((tool) => tool === value);
+}
+
+function textField(input: Record<string, unknown>, key: string, max: number): string | undefined {
+  const value = input[key];
+  if (typeof value !== "string") return undefined;
+  const trimmed = value.trim();
+  if (trimmed.length < 1 || trimmed.length > max) return undefined;
+  return trimmed;
+}
+
+function limitField(input: Record<string, unknown>, fallback: number): number {
+  const value = input.limit;
+  const n = typeof value === "number" ? value : Number(value);
+  if (!Number.isInteger(n) || n < 1 || n > 5) return fallback;
+  return n;
+}
+
+function argumentsFor(tool: DemoTool, input: Record<string, unknown>): Record<string, unknown> | undefined {
+  if (tool === "wiki_search" || tool === "paper_search" || tool === "book_search" || tool === "hn_search") {
+    const query = textField(input, "query", 120);
+    if (!query) return undefined;
+    return { query, limit: limitField(input, 3) };
+  }
+  if (tool === "weather_forecast") {
+    const place = textField(input, "place", 80);
+    if (!place) return undefined;
+    const days = input.days;
+    const n = typeof days === "number" ? days : Number(days);
+    return { place, days: Number.isInteger(n) && n >= 1 && n <= 3 ? n : 2 };
+  }
+  if (tool === "fx_latest") {
+    const base = (textField(input, "base", 3) ?? "USD").toUpperCase();
+    if (!/^[A-Z]{3}$/.test(base)) return undefined;
+    const raw = input.symbols;
+    const parts = Array.isArray(raw) ? raw : typeof raw === "string" ? raw.split(",") : [];
+    const symbols = parts
+      .filter((item): item is string => typeof item === "string")
+      .map((item) => item.trim().toUpperCase())
+      .filter(Boolean);
+    if (symbols.length < 1 || symbols.length > 8 || symbols.some((code) => !/^[A-Z]{3}$/.test(code))) return undefined;
+    return { base, symbols };
+  }
+  if (tool === "recent_quakes") {
+    return { limit: limitField(input, 3) };
+  }
+  const code = (textField(input, "code", 2) ?? "").toUpperCase();
+  if (!/^[A-Z]{2}$/.test(code)) return undefined;
+  return { code };
 }
 
 async function readMcp(res: Response): Promise<unknown> {
@@ -45,14 +105,16 @@ async function readMcp(res: Response): Promise<unknown> {
   return JSON.parse(text) as unknown;
 }
 
-function toolText(message: unknown): string | undefined {
-  if (!message || typeof message !== "object") return undefined;
-  const result = (message as { result?: { content?: { type?: string; text?: string }[] } }).result;
+function toolText(message: unknown): { text?: string; error?: string } {
+  if (!message || typeof message !== "object") return {};
+  const result = (message as { result?: { isError?: boolean; content?: { type?: string; text?: string }[] } }).result;
   const block = result?.content?.find((c) => c.type === "text" && typeof c.text === "string");
-  return block?.text;
+  if (!block?.text) return {};
+  if (result?.isError) return { error: block.text };
+  return { text: block.text };
 }
 
-async function gatewayWikiSearch(query: string, limit: number): Promise<WikiResult> {
+async function gatewayCall(tool: DemoTool, args: Record<string, unknown>): Promise<unknown> {
   const url = `${GATEWAY_ORIGIN}/demo/mcp`;
   const headers: Record<string, string> = {
     "content-type": "application/json",
@@ -94,18 +156,18 @@ async function gatewayWikiSearch(query: string, limit: number): Promise<WikiResu
       jsonrpc: "2.0",
       id: 2,
       method: "tools/call",
-      params: { name: "wiki_search", arguments: { query, limit } },
+      params: { name: tool, arguments: args },
     }),
-    signal: AbortSignal.timeout(12000),
+    signal: AbortSignal.timeout(20000),
   });
   if (!callRes.ok) throw new Error(`call_${callRes.status}`);
-  const message = await readMcp(callRes);
-  const text = toolText(message);
-  if (!text) throw new Error("empty_tool_result");
-  return JSON.parse(text) as WikiResult;
+  const parsed = toolText(await readMcp(callRes));
+  if (parsed.error) throw new Error(parsed.error);
+  if (!parsed.text) throw new Error("empty_tool_result");
+  return JSON.parse(parsed.text) as unknown;
 }
 
-async function wikipediaDirect(query: string, limit: number): Promise<WikiResult> {
+async function wikipediaDirect(query: string, limit: number) {
   const endpoint = new URL("https://en.wikipedia.org/w/api.php");
   endpoint.searchParams.set("action", "opensearch");
   endpoint.searchParams.set("search", query);
@@ -121,22 +183,22 @@ async function wikipediaDirect(query: string, limit: number): Promise<WikiResult
   });
   if (!res.ok) throw new Error(`wikipedia_${res.status}`);
   const data = (await res.json()) as [string, string[], string[], string[]];
-  const titles = data[1] ?? [];
-  const descriptions = data[2] ?? [];
-  const urls = data[3] ?? [];
+  const titles = data[1];
+  const descriptions = data[2];
+  const urls = data[3];
   return {
-    query: data[0] ?? query,
+    query: data[0],
     results: titles.map((title, i) => ({
       title,
-      description: descriptions[i] ?? null,
-      url: urls[i] ?? null,
+      description: descriptions[i] || null,
+      url: urls[i] || null,
     })),
   };
 }
 
 export async function POST(request: Request) {
   if (!allow(clientIp(request))) {
-    return Response.json({ error: "Too many searches from this network. Wait a minute." }, { status: 429 });
+    return Response.json({ error: "Too many calls from this network. Wait a minute." }, { status: 429 });
   }
   let body: unknown;
   try {
@@ -144,22 +206,33 @@ export async function POST(request: Request) {
   } catch {
     return Response.json({ error: "Expected JSON" }, { status: 400 });
   }
-  const query = body && typeof body === "object" && "query" in body ? String((body as { query: unknown }).query) : "";
-  const trimmed = query.trim();
-  if (trimmed.length < 1 || trimmed.length > 120) {
-    return Response.json({ error: "Query must be 1–120 characters." }, { status: 400 });
-  }
+  const record = body && typeof body === "object" ? (body as Record<string, unknown>) : {};
+  const legacyQuery = typeof record.query === "string" ? record.query : undefined;
+  const tool = asTool(record.tool) ?? (legacyQuery ? "wiki_search" : undefined);
+  if (!tool) return Response.json({ error: "Unknown tool." }, { status: 400 });
+  const input =
+    record.input && typeof record.input === "object"
+      ? (record.input as Record<string, unknown>)
+      : legacyQuery
+        ? { query: legacyQuery, limit: 3 }
+        : {};
+  const args = argumentsFor(tool, input);
+  if (!args) return Response.json({ error: "Check the fields for this tool." }, { status: 400 });
 
   try {
-    const data = await gatewayWikiSearch(trimmed, 5);
-    return Response.json({ via: "gateway", tool: "wiki_search", data });
-  } catch {
+    const data = await gatewayCall(tool, args);
+    return Response.json({ via: "gateway", tool, data });
+  } catch (err) {
+    if (tool !== "wiki_search") {
+      const message = err instanceof Error ? err.message : "call_failed";
+      return Response.json({ error: message }, { status: 502 });
+    }
     try {
-      const data = await wikipediaDirect(trimmed, 5);
-      return Response.json({ via: "wikipedia", tool: "wiki_search", data });
-    } catch (err) {
+      const data = await wikipediaDirect(String(args.query), Number(args.limit));
+      return Response.json({ via: "wikipedia", tool, data });
+    } catch (fallbackErr) {
       return Response.json(
-        { error: err instanceof Error ? err.message : "search_failed" },
+        { error: fallbackErr instanceof Error ? fallbackErr.message : "search_failed" },
         { status: 502 },
       );
     }

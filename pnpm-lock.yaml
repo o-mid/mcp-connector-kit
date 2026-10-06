@@ -62,21 +62,33 @@ importers:
       '@mck/source-github':
         specifier: workspace:*
         version: link:../../sources/github
+      '@mck/source-hn':
+        specifier: workspace:*
+        version: link:../../sources/hn
       '@mck/source-open-meteo':
         specifier: workspace:*
         version: link:../../sources/open-meteo
       '@mck/source-openalex':
         specifier: workspace:*
         version: link:../../sources/openalex
+      '@mck/source-openlibrary':
+        specifier: workspace:*
+        version: link:../../sources/openlibrary
       '@mck/source-tavily':
         specifier: workspace:*
         version: link:../../sources/tavily
+      '@mck/source-usgs':
+        specifier: workspace:*
+        version: link:../../sources/usgs
       '@mck/source-web-reader':
         specifier: workspace:*
         version: link:../../sources/web-reader
       '@mck/source-wikipedia':
         specifier: workspace:*
         version: link:../../sources/wikipedia
+      '@mck/source-worldbank':
+        specifier: workspace:*
+        version: link:../../sources/worldbank
       '@opentelemetry/exporter-trace-otlp-http':
         specifier: ^0.57.0
         version: 0.57.2(@opentelemetry/api@1.9.1)
@@ -326,6 +338,25 @@ importers:
         specifier: ^3.2.4
         version: 3.2.7(@types/node@22.20.5)(jiti@1.21.7)
 
+  sources/hn:
+    dependencies:
+      '@mck/core':
+        specifier: workspace:*
+        version: link:../../packages/core
+      zod:
+        specifier: ^3.24.3
+        version: 3.25.76
+    devDependencies:
+      '@mck/testing':
+        specifier: workspace:*
+        version: link:../../packages/testing
+      tsup:
+        specifier: ^8.4.0
+        version: 8.5.1(jiti@1.21.7)(postcss@8.5.29)(typescript@5.9.3)
+      vitest:
+        specifier: ^3.2.4
+        version: 3.2.7(@types/node@22.20.5)(jiti@1.21.7)
+
   sources/open-meteo:
     dependencies:
       '@mck/core':
@@ -364,7 +395,45 @@ importers:
         specifier: ^3.2.4
         version: 3.2.7(@types/node@22.20.5)(jiti@1.21.7)
 
+  sources/openlibrary:
+    dependencies:
+      '@mck/core':
+        specifier: workspace:*
+        version: link:../../packages/core
+      zod:
+        specifier: ^3.24.3
+        version: 3.25.76
+    devDependencies:
+      '@mck/testing':
+        specifier: workspace:*
+        version: link:../../packages/testing
+      tsup:
+        specifier: ^8.4.0
+        version: 8.5.1(jiti@1.21.7)(postcss@8.5.29)(typescript@5.9.3)
+      vitest:
+        specifier: ^3.2.4
+        version: 3.2.7(@types/node@22.20.5)(jiti@1.21.7)
+
   sources/tavily:
+    dependencies:
+      '@mck/core':
+        specifier: workspace:*
+        version: link:../../packages/core
+      zod:
+        specifier: ^3.24.3
+        version: 3.25.76
+    devDependencies:
+      '@mck/testing':
+        specifier: workspace:*
+        version: link:../../packages/testing
+      tsup:
+        specifier: ^8.4.0
+        version: 8.5.1(jiti@1.21.7)(postcss@8.5.29)(typescript@5.9.3)
+      vitest:
+        specifier: ^3.2.4
+        version: 3.2.7(@types/node@22.20.5)(jiti@1.21.7)
+
+  sources/usgs:
     dependencies:
       '@mck/core':
         specifier: workspace:*
@@ -403,6 +472,25 @@ importers:
         version: 3.2.7(@types/node@22.20.5)(jiti@1.21.7)
 
   sources/wikipedia:
+    dependencies:
+      '@mck/core':
+        specifier: workspace:*
+        version: link:../../packages/core
+      zod:
+        specifier: ^3.24.3
+        version: 3.25.76
+    devDependencies:
+      '@mck/testing':
+        specifier: workspace:*
+        version: link:../../packages/testing
+      tsup:
+        specifier: ^8.4.0
+        version: 8.5.1(jiti@1.21.7)(postcss@8.5.29)(typescript@5.9.3)
+      vitest:
+        specifier: ^3.2.4
+        version: 3.2.7(@types/node@22.20.5)(jiti@1.21.7)
+
+  sources/worldbank:
     dependencies:
       '@mck/core':
         specifier: workspace:*

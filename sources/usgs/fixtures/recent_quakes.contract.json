@@ -1,0 +1,35 @@
+{
+  "source": "usgs",
+  "tool": "recent_quakes",
+  "input": { "limit": 1 },
+  "mock": {
+    "origin": "https://earthquake.usgs.gov",
+    "pathPrefix": "/earthquakes/feed/v1.0/summary/significant_week.geojson",
+    "body": {
+      "features": [
+        {
+          "properties": {
+            "mag": 4.7,
+            "place": "5 km NNE of Korumburra, Australia",
+            "time": 1759730400000,
+            "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us6000tz1y"
+          },
+          "geometry": { "coordinates": [145.8401, -38.3802, 10] }
+        }
+      ]
+    }
+  },
+  "output": {
+    "window": "significant_week",
+    "quakes": [
+      {
+        "magnitude": 4.7,
+        "place": "5 km NNE of Korumburra, Australia",
+        "time": "2025-10-06T06:00:00.000Z",
+        "latitude": -38.3802,
+        "longitude": 145.8401,
+        "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us6000tz1y"
+      }
+    ]
+  }
+}

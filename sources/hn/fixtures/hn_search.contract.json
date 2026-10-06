@@ -1,0 +1,33 @@
+{
+  "source": "hn",
+  "tool": "hn_search",
+  "input": { "query": "model context protocol", "limit": 1 },
+  "mock": {
+    "origin": "https://hn.algolia.com",
+    "pathPrefix": "/api/v1/search",
+    "body": {
+      "hits": [
+        {
+          "title": "Model Context Protocol",
+          "url": "https://www.anthropic.com/news/model-context-protocol",
+          "author": "benocodes",
+          "points": 872,
+          "num_comments": 258,
+          "objectID": "42237424"
+        }
+      ]
+    }
+  },
+  "output": {
+    "query": "model context protocol",
+    "results": [
+      {
+        "title": "Model Context Protocol",
+        "url": "https://www.anthropic.com/news/model-context-protocol",
+        "author": "benocodes",
+        "points": 872,
+        "comments": 258
+      }
+    ]
+  }
+}

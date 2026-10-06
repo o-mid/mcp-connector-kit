@@ -6,7 +6,7 @@ If you landed here without context: this repo is a **TypeScript monorepo** for b
 
 <p align="center">
   <a href="https://mck-web-production.up.railway.app/">
-    <img src="docs/assets/readme-hero.svg" alt="MCP Connector Kit: one gateway hub connected to Wikipedia, GitHub, search, web reader, fixture, and metrics" width="720" />
+    <img src="docs/assets/readme-hero.png" alt="Gateway hub linked to Wikipedia, weather, rates, papers, books, and earthquakes" width="720" />
   </a>
 </p>
 
@@ -62,6 +62,10 @@ The same path runs in **production** and in **CI contract replay** (undici mocks
 | Open-Meteo | `weather_forecast` | free |
 | Frankfurter | `fx_latest` | free |
 | OpenAlex | `paper_search` | free |
+| Open Library | `book_search` | free |
+| Hacker News | `hn_search` | free |
+| USGS | `recent_quakes` | free |
+| World Bank | `country_profile` | free |
 | GitHub | repo / issue search | paid |
 | Brave / Exa / Tavily | web search variants | paid |
 | Web reader | `fetch_page` (host allowlist) | paid |

@@ -100,7 +100,7 @@ Misconfiguration throws here instead of halfway through a tool call.
 
 Named bundles:
 
-- `default` → `fixture`, `wikipedia`
+- `default` → the free list in `FREE_TIER_SOURCES` (fixture, Wikipedia, Open-Meteo, Frankfurter, OpenAlex, Open Library, Hacker News, USGS, World Bank)
 - `trust` → full bundle in `SOURCE_PROFILES` (free SKU plus GitHub, web reader, Brave, Exa, Tavily)
 
 If `MCK_SOURCE_PROFILE` is set, it wins over `MCK_SOURCES`.
@@ -109,7 +109,7 @@ If `MCK_SOURCE_PROFILE` is set, it wins over `MCK_SOURCES`.
 
 Hosted product logic:
 
-- `free` SKU only keeps `fixture` + `wikipedia`.
+- `free` SKU keeps `FREE_TIER_SOURCES` and drops keyed connectors.
 - `paid` SKU allows the full trust list.
 - `limitMultiplierForSku` doubles limits on paid.
 
@@ -311,6 +311,13 @@ sources/<id>/
 |----|-----------------------------------|----------|
 | `fixture` | `echo` | No network; sanity check |
 | `wikipedia` | `wiki_search`, `wiki_summary` | MediaWiki API |
+| `open-meteo` | `weather_forecast` | Open-Meteo forecast + geocoding |
+| `frankfurter` | `fx_latest` | Frankfurter `/v1/latest` |
+| `openalex` | `paper_search` | OpenAlex works search |
+| `openlibrary` | `book_search` | Open Library search |
+| `hn` | `hn_search` | HN Algolia story search |
+| `usgs` | `recent_quakes` | USGS significant-week GeoJSON |
+| `worldbank` | `country_profile` | World Bank country API |
 | `github` | `search_repositories`, `search_issues` | GitHub REST (token via env) |
 | `web-reader` | `fetch_page` | Allowlisted HTTPS fetch + HTML text |
 | `brave` | `web_search` | Brave Search API |

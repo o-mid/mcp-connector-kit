@@ -21,7 +21,7 @@ export default function HomePage() {
               Clone, build, run the gateway
             </h2>
             <p className="mt-4 text-lg text-zinc-400">
-              Node 22 and pnpm 9. The commands start fixture and Wikipedia on port 8080. Health is{" "}
+              Node 22 and pnpm 9. The commands start the free source list on port 8080. Health is{" "}
               <span className="font-mono text-sm text-zinc-200">GET /healthz</span>.
             </p>
             <p className="mt-4 text-sm leading-relaxed text-zinc-500">
@@ -52,12 +52,12 @@ export default function HomePage() {
         <div className="mx-auto max-w-6xl">
           <p className="text-sm font-medium uppercase tracking-[0.2em] text-zinc-500">Demo</p>
           <h2 className="mt-3 max-w-2xl text-3xl font-semibold tracking-[-0.02em] text-white sm:text-4xl">
-            wiki_search, live
+            Try a keyless tool
           </h2>
           <p className="mt-4 max-w-2xl text-lg text-zinc-400">
-            The box calls the gateway&apos;s public demo when <span className="font-mono text-sm text-zinc-200">MCK_PUBLIC_DEMO=true</span>.
-            Otherwise it asks English Wikipedia and returns the same{" "}
-            <span className="font-mono text-sm text-zinc-200">{"{ query, results }"}</span> shape. Watch{" "}
+            Each button calls the gateway&apos;s public demo when{" "}
+            <span className="font-mono text-sm text-zinc-200">MCK_PUBLIC_DEMO=true</span>. Wikipedia falls back to
+            opensearch if that route is down. The other tools need the gateway. Watch{" "}
             <Link href="/status" className="text-zinc-200 underline-offset-4 hover:underline">
               status
             </Link>{" "}
@@ -86,8 +86,8 @@ export default function HomePage() {
             <article className="rounded-3xl border border-white/[0.08] bg-zinc-950/40 p-8">
               <h2 className="text-xl font-semibold text-white">Agent builder</h2>
               <p className="mt-3 text-zinc-400">
-                You want one MCP URL. Free is Wikipedia. Paid adds Brave, Exa, or Tavily, plus fetch against an
-                allowlist, with a rate limit and a contract behind each tool.
+                You want one MCP URL. Free is the keyless catalog. Paid adds Brave, Exa, or Tavily, plus fetch
+                against an allowlist, with a rate limit and a contract behind each tool.
               </p>
               <Link href="/pricing" className="mt-6 inline-flex text-sm text-zinc-200 underline-offset-4 hover:underline">
                 See the SKUs

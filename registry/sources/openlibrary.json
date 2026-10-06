@@ -1,0 +1,8 @@
+{
+  "id": "openlibrary",
+  "package": "@mck/source-openlibrary",
+  "verified": true,
+  "tools": ["book_search"],
+  "contracts": ["book_search"],
+  "documentation": "https://github.com/o-mid/mcp-connector-kit/blob/main/docs/trust-tier.md"
+}

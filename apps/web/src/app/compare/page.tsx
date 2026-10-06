@@ -86,9 +86,9 @@ export default function ComparePage() {
           </div>
 
           <p className="max-w-2xl pb-16 text-sm leading-relaxed text-zinc-500">
-            Seven contracted sources is the catalog on purpose. A directory of unmaintained scrapers is a different
-            product. <Link href="/pricing" className="text-zinc-300 underline-offset-4 hover:underline">Pricing</Link>{" "}
-            is the free Wikipedia SKU and the paid trust tier, both already in the gateway.
+            Each source ships a contract fixture. A directory of unmaintained scrapers is a different product.{" "}
+            <Link href="/pricing" className="text-zinc-300 underline-offset-4 hover:underline">Pricing</Link> is the
+            free keyless SKU and the paid trust tier, both already in the gateway.
           </p>
         </div>
       </section>
