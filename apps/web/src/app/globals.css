@@ -3,35 +3,36 @@
 @import "tailwindcss/utilities";
 
 :root {
-  --bg: #070b14;
-  --bg-elevated: #0d1424;
-  --border: rgba(148, 163, 184, 0.12);
-  --text: #e2e8f0;
-  --muted: #94a3b8;
-  --accent: #22d3ee;
-  --accent-2: #34d399;
+  --bg: #09090b;
+  --text: #fafafa;
+  --muted: #a1a1aa;
 }
 
 html {
   scroll-behavior: smooth;
 }
 
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
+
 body {
   background: var(--bg);
   color: var(--text);
-  font-feature-settings: "ss01", "cv01";
+  -webkit-font-smoothing: antialiased;
 }
 
 .grid-bg {
   background-image:
-    linear-gradient(rgba(34, 211, 238, 0.04) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(34, 211, 238, 0.04) 1px, transparent 1px);
-  background-size: 48px 48px;
-  mask-image: radial-gradient(ellipse 80% 60% at 50% 0%, black, transparent);
+    linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+  background-size: 64px 64px;
+  mask-image: radial-gradient(ellipse 90% 70% at 50% -20%, black 20%, transparent 70%);
 }
 
-.glow-ring {
-  box-shadow:
-    0 0 0 1px rgba(34, 211, 238, 0.2),
-    0 0 80px rgba(34, 211, 238, 0.12);
+::selection {
+  background: rgba(167, 139, 250, 0.35);
+  color: #fff;
 }

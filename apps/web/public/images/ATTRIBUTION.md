@@ -1,1 +1,1 @@
-Attribution: hero and architecture illustrations generated with Kling AI (kling-image-v3_0) for this repository.
+Marketing visuals are vector-only (inline SVG + CSS). Open Graph images are generated at request time via `src/app/opengraph-image.tsx`.

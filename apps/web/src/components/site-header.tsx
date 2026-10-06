@@ -8,31 +8,37 @@ const links = [
 
 export function SiteHeader() {
   return (
-    <header className="sticky top-0 z-50 border-b border-white/5 bg-[#070b14]/80 backdrop-blur-md">
+    <header className="sticky top-0 z-50 border-b border-white/[0.06] bg-zinc-950/70 backdrop-blur-xl">
       <div className="mx-auto flex h-14 max-w-6xl items-center justify-between px-4 sm:px-6">
-        <Link href="/" className="flex items-center gap-2 font-mono text-sm font-medium tracking-tight">
-          <span className="inline-flex h-7 w-7 items-center justify-center rounded-md bg-cyan-500/15 text-cyan-300 ring-1 ring-cyan-400/30">
+        <Link href="/" className="flex items-center gap-2.5 text-sm font-medium tracking-tight text-zinc-100">
+          <span className="inline-flex h-7 w-7 items-center justify-center rounded-lg bg-white text-xs font-bold text-zinc-950">
             M
           </span>
           mcp-connector-kit
         </Link>
-        <nav className="flex items-center gap-6 text-sm text-slate-400">
+        <nav className="flex items-center gap-5 text-sm text-zinc-400 sm:gap-6">
           {links.map((l) =>
             l.external ? (
-              <a key={l.href} href={l.href} className="hover:text-cyan-300 transition-colors" target="_blank" rel="noreferrer">
+              <a
+                key={l.href}
+                href={l.href}
+                className="transition hover:text-white"
+                target="_blank"
+                rel="noreferrer"
+              >
                 {l.label}
               </a>
             ) : (
-              <Link key={l.href} href={l.href} className="hover:text-cyan-300 transition-colors">
+              <Link key={l.href} href={l.href} className="transition hover:text-white">
                 {l.label}
               </Link>
             ),
           )}
           <a
             href="https://mcp-connector-kit-production.up.railway.app/mcp"
-            className="hidden sm:inline-flex rounded-full bg-cyan-400/10 px-3 py-1.5 text-cyan-200 ring-1 ring-cyan-400/25 hover:bg-cyan-400/20 transition"
+            className="hidden rounded-full border border-white/15 px-3.5 py-1.5 text-zinc-200 transition hover:border-white/30 hover:bg-white/[0.04] sm:inline-flex"
           >
-            Live gateway
+            Live MCP
           </a>
         </nav>
       </div>
