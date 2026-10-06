@@ -13,7 +13,7 @@ Same Docker image as self-host; tier is controlled by environment.
 
 ## Public demo
 
-`MCK_PUBLIC_DEMO=true` adds `POST /demo/mcp` and `GET /demo/healthz`. That process loads the free SKU, skips API keys, and rate-limits posts (30/minute per client IP). `/mcp` stays on the configured SKU and still requires `MCK_API_KEYS` when they are set.
+`MCK_PUBLIC_DEMO=true` adds `POST /demo/mcp` and `GET /demo/healthz`. That process loads the free SKU, skips API keys, and rate-limits `tools/call` (30/minute per client IP). Each client gets its own MCP session. `/mcp` stays on the configured SKU and still requires `MCK_API_KEYS` when they are set.
 
 The marketing site calls `/demo/mcp` for the live tool buttons (search, weather, rates, papers, books, Hacker News, earthquakes, country profile). If that route is down, only `wiki_search` falls back to the English Wikipedia opensearch API, and the page labels that result as Wikipedia.
 

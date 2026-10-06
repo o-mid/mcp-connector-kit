@@ -128,6 +128,12 @@ describe("gateway HTTP MCP e2e", () => {
     const echo = await client.callTool({ name: "echo", arguments: { message: "public-demo" } });
     expect(parseToolJson(echo)).toEqual({ echoed: "public-demo" });
 
+    const second = new Client({ name: "mck-demo-e2e-2", version: "1.0.0" });
+    await second.connect(new StreamableHTTPClientTransport(url) as Transport);
+    const echo2 = await second.callTool({ name: "echo", arguments: { message: "second-client" } });
+    expect(parseToolJson(echo2)).toEqual({ echoed: "second-client" });
+
+    await second.close();
     await client.close();
     await app.close();
   });

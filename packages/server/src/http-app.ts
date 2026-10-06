@@ -27,18 +27,8 @@ export async function startHttpApp(opts: HttpAppOptions): Promise<{
   port: number;
 }> {
   const mcpOpts = opts.legacyErrors === true ? { legacyErrors: true } : {};
-  const mcp = createMcpServer(opts.registry, mcpOpts);
-  const transport = createStreamableTransport();
-  await mcp.connect(transport as Transport);
-
-  let demoClose: (() => Promise<void>) | undefined;
-  let demoTransport: ReturnType<typeof createStreamableTransport> | undefined;
-  if (opts.demoRegistry) {
-    const demoMcp = createMcpServer(opts.demoRegistry, { ...mcpOpts, name: "mck-demo" });
-    demoTransport = createStreamableTransport();
-    await demoMcp.connect(demoTransport as Transport);
-    demoClose = () => demoMcp.close();
-  }
+  const mcpSessions = new Map<string, McpSession>();
+  const demoSessions = new Map<string, McpSession>();
   const demoHits = new Map<string, number[]>();
 
   const baseUrl = opts.publicBaseUrl ?? `http://127.0.0.1:${opts.port}`;
@@ -79,16 +69,19 @@ export async function startHttpApp(opts: HttpAppOptions): Promise<{
         return;
       }
       if (path === "/demo/mcp" && req.method && ["POST", "GET", "DELETE"].includes(req.method)) {
-        if (!demoTransport) {
+        if (!opts.demoRegistry) {
           json(res, 404, { error: "demo_disabled" });
           return;
         }
-        if (req.method === "POST" && !allowDemoPost(demoHits, clientIp(req))) {
+        const body = req.method === "POST" ? await readBody(req, opts.bodyLimitBytes ?? 1_000_000) : undefined;
+        if (req.method === "POST" && isToolCall(body) && !allowDemoPost(demoHits, clientIp(req))) {
           json(res, 429, { error: "rate_limited" });
           return;
         }
-        const body = req.method === "POST" ? await readBody(req, opts.bodyLimitBytes ?? 1_000_000) : undefined;
-        await demoTransport.handleRequest(req, res, body);
+        await handleMcpSession(req, res, body, demoSessions, opts.demoRegistry, {
+          ...mcpOpts,
+          name: "mck-demo",
+        });
         return;
       }
       if (path === "/.well-known/oauth-protected-resource" && opts.oauth?.jwksUrl) {
@@ -105,7 +98,10 @@ export async function startHttpApp(opts: HttpAppOptions): Promise<{
         const auditCtx =
           auth.tenantId !== undefined ? { tenantId: auth.tenantId } : {};
         await runWithAuditContextAsync(auditCtx, async () => {
-          await transport.handleRequest(req, res, body);
+          await handleMcpSession(req, res, body, mcpSessions, opts.registry, {
+            ...mcpOpts,
+            name: "mck-gateway",
+          });
         });
         return;
       }
@@ -125,8 +121,8 @@ export async function startHttpApp(opts: HttpAppOptions): Promise<{
   return {
     port,
     close: async () => {
-      if (demoClose) await demoClose();
-      await mcp.close();
+      await closeSessions(mcpSessions);
+      await closeSessions(demoSessions);
       await new Promise<void>((resolve, reject) => {
         server.close((err) => {
           if (err) reject(err);
@@ -135,6 +131,90 @@ export async function startHttpApp(opts: HttpAppOptions): Promise<{
       });
     },
   };
+}
+
+type McpSession = {
+  transport: ReturnType<typeof createStreamableTransport>;
+  close: () => Promise<void>;
+  touched: number;
+};
+
+const SESSION_TTL_MS = 120_000;
+
+function sessionHeader(req: IncomingMessage): string | undefined {
+  const raw = req.headers["mcp-session-id"];
+  const value = Array.isArray(raw) ? raw[0] : raw;
+  const trimmed = value?.trim();
+  return trimmed ? trimmed : undefined;
+}
+
+function isInitialize(body: unknown): boolean {
+  if (Array.isArray(body)) return body.some((item) => isInitialize(item));
+  if (!body || typeof body !== "object") return false;
+  return (body as { method?: unknown }).method === "initialize";
+}
+
+function isToolCall(body: unknown): boolean {
+  if (Array.isArray(body)) return body.some((item) => isToolCall(item));
+  if (!body || typeof body !== "object") return false;
+  return (body as { method?: unknown }).method === "tools/call";
+}
+
+function sweepSessions(sessions: Map<string, McpSession>): void {
+  const now = Date.now();
+  for (const [id, session] of sessions) {
+    if (now - session.touched < SESSION_TTL_MS) continue;
+    sessions.delete(id);
+    void session.close().catch(() => undefined);
+  }
+}
+
+async function closeSessions(sessions: Map<string, McpSession>): Promise<void> {
+  const open = [...sessions.values()];
+  sessions.clear();
+  await Promise.all(open.map((session) => session.close().catch(() => undefined)));
+}
+
+/** One Streamable HTTP transport per client. A shared transport rejects the second initialize. */
+async function handleMcpSession(
+  req: IncomingMessage,
+  res: ServerResponse,
+  body: unknown,
+  sessions: Map<string, McpSession>,
+  registry: SourceRegistry,
+  serverOpts: { name: string; legacyErrors?: boolean },
+): Promise<void> {
+  sweepSessions(sessions);
+  const existingId = sessionHeader(req);
+  const existing = existingId ? sessions.get(existingId) : undefined;
+  if (existing) {
+    existing.touched = Date.now();
+    await existing.transport.handleRequest(req, res, body);
+    if (req.method === "DELETE" && existingId) {
+      sessions.delete(existingId);
+      await existing.close();
+    }
+    return;
+  }
+  if (req.method !== "POST" || !isInitialize(body)) {
+    json(res, 400, { error: "missing_session" });
+    return;
+  }
+  const server = createMcpServer(registry, serverOpts);
+  const transport = createStreamableTransport();
+  await server.connect(transport as Transport);
+  try {
+    await transport.handleRequest(req, res, body);
+  } catch (err) {
+    await server.close().catch(() => undefined);
+    throw err;
+  }
+  const id = transport.sessionId;
+  if (id) {
+    sessions.set(id, { transport, close: () => server.close(), touched: Date.now() });
+    return;
+  }
+  await server.close().catch(() => undefined);
 }
 
 const DEMO_WINDOW_MS = 60_000;
