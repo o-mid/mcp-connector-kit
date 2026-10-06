@@ -1,0 +1,26 @@
+{
+  "source": "wikipedia",
+  "tool": "wiki_summary",
+  "input": { "title": "Model Context Protocol" },
+  "mock": {
+    "origin": "https://en.wikipedia.org",
+    "pathPrefix": "/w/api.php",
+    "body": {
+      "query": {
+        "pages": {
+          "123": {
+            "pageid": 123,
+            "title": "Model Context Protocol",
+            "extract": "The Model Context Protocol (MCP) is an open protocol for connecting AI assistants to data and tools.",
+            "fullurl": "https://en.wikipedia.org/wiki/Model_Context_Protocol"
+          }
+        }
+      }
+    }
+  },
+  "output": {
+    "title": "Model Context Protocol",
+    "url": "https://en.wikipedia.org/wiki/Model_Context_Protocol",
+    "extract": "The Model Context Protocol (MCP) is an open protocol for connecting AI assistants to data and tools."
+  }
+}

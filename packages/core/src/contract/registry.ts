@@ -12,6 +12,7 @@ import type {
 import { defineTool } from "./define.js";
 import { z } from "zod";
 import { validateInput, validateOutput, validateUpstream } from "./validate.js";
+import { withToolSpan } from "../telemetry/spans.js";
 import type { CacheStore } from "../cache/types.js";
 import type { MetricsRecorder } from "./types.js";
 
@@ -128,80 +129,104 @@ export function createSourceRegistry(
         error: new ConnectorError("invalid_input", `Unknown tool: ${name}`).toPayload(),
       };
     }
-    const ctxBase = contexts.get(tool.sourceId);
-    if (!ctxBase) {
-      return {
-        ok: false,
-        error: new ConnectorError("internal", "Missing source context").toPayload(),
-      };
-    }
-    const ctx: ToolContext = signal ? { ...ctxBase, signal } : ctxBase;
-    const started = Date.now();
-    try {
-      const input = validateInput(tool.inputSchema, args ?? {}, tool.sourceId);
-      const cacheKey = `${tool.sourceId}:${tool.name}:${stableHashInput(input)}`;
-      const ttl = tool.cacheTtlMs ?? sources.find((s) => s.id === tool.sourceId)?.cache.defaultTtlMs ?? 0;
-
-      const run = async () => {
-        const raw = await tool.run({ input, ctx, signal: signal ?? AbortSignal.timeout(60_000) });
-        const out = validateOutput(tool.output, raw, tool.sourceId);
-        return out;
-      };
-
-      let data: unknown;
-      if (ttl > 0) {
-        const cached = await ctx.cache.get<unknown>(cacheKey);
-        if (cached != null) {
-          metrics.increment("mck_cache_hits_total", { source: tool.sourceId, tool: tool.name });
-          data = cached;
-        } else {
-          data = await singleFlight(cacheKey, run);
-          await ctx.cache.set(cacheKey, data, ttl);
+    return withToolSpan(
+      "mck.tool.call",
+      { "mck.tool": name, "mck.source": tool.sourceId },
+      async () => {
+        const ctxBase = contexts.get(tool.sourceId);
+        if (!ctxBase) {
+          return {
+            ok: false,
+            error: new ConnectorError("internal", "Missing source context").toPayload(),
+          };
         }
-      } else {
-        data = await run();
-      }
+        const ctx: ToolContext = signal ? { ...ctxBase, signal } : ctxBase;
+        const started = Date.now();
+        log.info({ tool: name, source: tool.sourceId }, "tool_call_start");
+        try {
+          const input = validateInput(tool.inputSchema, args ?? {}, tool.sourceId);
+          const cacheKey = `${tool.sourceId}:${tool.name}:${stableHashInput(input)}`;
+          const ttl =
+            tool.cacheTtlMs ?? sources.find((s) => s.id === tool.sourceId)?.cache.defaultTtlMs ?? 0;
 
-      metrics.increment("mck_tool_calls_total", {
-        source: tool.sourceId,
-        tool: tool.name,
-        outcome: "ok",
-      });
-      metrics.observe("mck_tool_duration_seconds", (Date.now() - started) / 1000, {
-        source: tool.sourceId,
-        tool: tool.name,
-      });
-      health[tool.sourceId] = "healthy";
-      return {
-        ok: true,
-        data,
-        legacyPretty: tool.legacyJsonPretty === true,
-      };
-    } catch (err) {
-      metrics.increment("mck_tool_calls_total", {
-        source: tool.sourceId,
-        tool: tool.name,
-        outcome: "error",
-      });
-      if (err instanceof ConnectorError && err.code === "upstream_schema_changed") {
-        health[tool.sourceId] = "degraded";
-      } else if (isConnectorError(err)) {
-        health[tool.sourceId] = "degraded";
-      } else {
-        health[tool.sourceId] = "failing";
-      }
-      const payload = isConnectorError(err)
-        ? err.toPayload()
-        : new ConnectorError("internal", err instanceof Error ? err.message : "Unknown error", {
+          const run = async () => {
+            const raw = await tool.run({ input, ctx, signal: signal ?? AbortSignal.timeout(60_000) });
+            const out = validateOutput(tool.output, raw, tool.sourceId);
+            return out;
+          };
+
+          let data: unknown;
+          if (ttl > 0) {
+            const cached = await ctx.cache.get<unknown>(cacheKey);
+            if (cached != null) {
+              metrics.increment("mck_cache_hits_total", { source: tool.sourceId, tool: tool.name });
+              data = cached;
+            } else {
+              data = await singleFlight(cacheKey, run);
+              await ctx.cache.set(cacheKey, data, ttl);
+            }
+          } else {
+            data = await run();
+          }
+
+          const durationMs = Date.now() - started;
+          metrics.increment("mck_tool_calls_total", {
             source: tool.sourceId,
-          }).toPayload();
-      const failure: ToolCallResult = { ok: false, error: payload };
-      if (opts.legacyErrors) {
-        if (tool.sourceId === "torob") failure.legacyTorobPlain = true;
-        else failure.legacyErrorShape = true;
-      }
-      return failure;
-    }
+            tool: tool.name,
+            outcome: "ok",
+          });
+          metrics.observe("mck_tool_duration_seconds", durationMs / 1000, {
+            source: tool.sourceId,
+            tool: tool.name,
+          });
+          log.info(
+            { tool: name, source: tool.sourceId, duration_ms: durationMs, outcome: "ok" },
+            "tool_call_end",
+          );
+          health[tool.sourceId] = "healthy";
+          return {
+            ok: true,
+            data,
+            legacyPretty: tool.legacyJsonPretty === true,
+          };
+        } catch (err) {
+          const durationMs = Date.now() - started;
+          metrics.increment("mck_tool_calls_total", {
+            source: tool.sourceId,
+            tool: tool.name,
+            outcome: "error",
+          });
+          log.warn(
+            {
+              tool: name,
+              source: tool.sourceId,
+              duration_ms: durationMs,
+              outcome: "error",
+              error: err instanceof Error ? err.message : String(err),
+            },
+            "tool_call_end",
+          );
+          if (err instanceof ConnectorError && err.code === "upstream_schema_changed") {
+            health[tool.sourceId] = "degraded";
+          } else if (isConnectorError(err)) {
+            health[tool.sourceId] = "degraded";
+          } else {
+            health[tool.sourceId] = "failing";
+          }
+          const payload = isConnectorError(err)
+            ? err.toPayload()
+            : new ConnectorError("internal", err instanceof Error ? err.message : "Unknown error", {
+                source: tool.sourceId,
+              }).toPayload();
+          const failure: ToolCallResult = { ok: false, error: payload };
+          if (opts.legacyErrors) {
+            if (tool.sourceId === "torob") failure.legacyTorobPlain = true;
+            else failure.legacyErrorShape = true;
+          }
+          return failure;
+        }
+      },
+    );
   }
 
   return {

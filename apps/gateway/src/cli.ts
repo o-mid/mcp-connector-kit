@@ -2,8 +2,10 @@
 import { connectStdio, createMcpServer, startHttpApp } from "@mck/server";
 import { createGatewayFromEnv, createGatewayRegistry } from "./index.js";
 import { loadConfig } from "./config.js";
+import { initOtelIfConfigured } from "./otel.js";
 
 async function main(): Promise<void> {
+  await initOtelIfConfigured();
   const config = loadConfig();
   const registry = createGatewayRegistry(config);
   if (config.MCK_TRANSPORT === "http") {

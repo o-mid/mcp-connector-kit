@@ -3,10 +3,12 @@ import { fixtureSource } from "@mck/source-fixture";
 import { khanoumiSource } from "@mck/source-khanoumi";
 import { torobSource } from "@mck/source-torob";
 import { createWooCommerceSource, DEFAULT_WOO_SHOPS, type WooShop } from "@mck/source-woocommerce";
+import { wikipediaSource } from "@mck/source-wikipedia";
 import { createCosmeticCompositeSource } from "./cosmetic.js";
 
 const catalog: Record<string, (opts: { wooShops?: WooShop[] }) => SourceDefinition> = {
   fixture: () => fixtureSource,
+  wikipedia: () => wikipediaSource,
   torob: () => torobSource,
   khanoumi: () => khanoumiSource,
   woocommerce: (opts) => createWooCommerceSource(opts.wooShops ?? DEFAULT_WOO_SHOPS),

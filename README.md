@@ -27,15 +27,17 @@ Health: `GET /healthz`, readiness: `GET /readyz`, metrics: `GET /metrics`.
 | `@mck/core` | HTTP client, cache, errors, `defineSource` / `defineTool` |
 | `@mck/server` | MCP SDK server, stdio + Streamable HTTP |
 | `@mck/gateway` | Deployable multi-source server |
-| `@mck/source-*` | Torob, Khanoumi, WooCommerce, fixture |
+| `@mck/source-*` | Torob, Khanoumi, WooCommerce, Wikipedia, fixture |
 
 ## Environment
 
-See [`.env.example`](.env.example). Key variables: `MCK_SOURCES`, `MCK_TRANSPORT`, `MCK_LEGACY_TOOL_NAMES`, `MCK_WOO_SHOPS`.
+See [`.env.example`](.env.example). Key variables: `MCK_SOURCES`, `MCK_SOURCE_PROFILE`, `MCK_TRANSPORT`, `MCK_LEGACY_TOOL_NAMES`, `MCK_WOO_SHOPS`.
 
 ## Docs
 
 - [Architecture](docs/architecture.md)
+- [Production checklist](docs/production.md)
+- [Competitive analysis](docs/competitive-analysis.md)
 - [Adding a source](docs/adding-a-source.md)
 - [Errors](docs/errors.md)
 - [Operations](docs/operations.md)

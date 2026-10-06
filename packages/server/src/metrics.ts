@@ -7,7 +7,11 @@ import type { MetricsRecorder } from "@mck/core";
 /**
  * Binds core metric events to Prometheus series exposed at /metrics.
  */
+let cachedRecorder: MetricsRecorder | undefined;
+
 export function createPrometheusRecorder(registry: Registry): MetricsRecorder {
+  if (cachedRecorder) return cachedRecorder;
+
   const toolCalls = new Counter({
     name: "mck_tool_calls_total",
     help: "Tool invocations by outcome",
@@ -46,7 +50,7 @@ export function createPrometheusRecorder(registry: Registry): MetricsRecorder {
     registers: [registry],
   });
 
-  return {
+  cachedRecorder = {
     increment(name, labels = {}, value = 1) {
       const L = labels as Record<string, string>;
       switch (name) {
@@ -76,4 +80,5 @@ export function createPrometheusRecorder(registry: Registry): MetricsRecorder {
       }
     },
   };
+  return cachedRecorder;
 }

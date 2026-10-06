@@ -1,5 +1,6 @@
 import { z } from "zod";
 import type { WooShop } from "@mck/source-woocommerce";
+import { resolveSourceIds } from "./profiles.js";
 
 const envSchema = z.object({
   MCK_SOURCES: z.string().default("fixture"),
@@ -19,6 +20,7 @@ const envSchema = z.object({
   MCK_API_KEYS: z.string().optional(),
   MCK_WOO_SHOPS: z.string().optional(),
   MCK_CORS_ORIGINS: z.string().optional(),
+  MCK_SOURCE_PROFILE: z.enum(["global-demo", "commerce-ir", "cosmetic"]).optional(),
 });
 
 export type GatewayConfig = z.infer<typeof envSchema> & {
@@ -31,7 +33,7 @@ export type GatewayConfig = z.infer<typeof envSchema> & {
 /** Validates process env once at boot so misconfig fails fast. */
 export function loadConfig(env: NodeJS.ProcessEnv = process.env): GatewayConfig {
   const parsed = envSchema.parse(env);
-  const sourceIds = parsed.MCK_SOURCES.split(",").map((s) => s.trim()).filter(Boolean);
+  const sourceIds = resolveSourceIds(parsed.MCK_SOURCE_PROFILE, parsed.MCK_SOURCES);
   const apiKeys = parsed.MCK_API_KEYS?.split(",").map((s) => s.trim()).filter(Boolean) ?? [];
   const corsOrigins = parsed.MCK_CORS_ORIGINS?.split(",").map((s) => s.trim()).filter(Boolean) ?? [];
   let wooShops: WooShop[] | undefined;

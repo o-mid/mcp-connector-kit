@@ -20,6 +20,8 @@ export type {
   SourceHealthStatus,
   MetricsRecorder,
 } from "./contract/types.js";
+export { createMckLogger, toolLogFromPino } from "./log/pino.js";
+export { withToolSpan } from "./telemetry/spans.js";
 export {
   faToEn,
   foldText,

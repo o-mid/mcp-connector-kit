@@ -1,0 +1,33 @@
+{
+  "source": "wikipedia",
+  "tool": "wiki_search",
+  "input": { "query": "Model Context Protocol", "limit": 2 },
+  "mock": {
+    "origin": "https://en.wikipedia.org",
+    "pathPrefix": "/w/api.php",
+    "body": [
+      "Model Context Protocol",
+      ["Model Context Protocol", "Model Context Protocol (computing)"],
+      ["Open protocol for AI tools", "Computing topic"],
+      [
+        "https://en.wikipedia.org/wiki/Model_Context_Protocol",
+        "https://en.wikipedia.org/wiki/Model_Context_Protocol_(computing)"
+      ]
+    ]
+  },
+  "output": {
+    "query": "Model Context Protocol",
+    "results": [
+      {
+        "title": "Model Context Protocol",
+        "description": "Open protocol for AI tools",
+        "url": "https://en.wikipedia.org/wiki/Model_Context_Protocol"
+      },
+      {
+        "title": "Model Context Protocol (computing)",
+        "description": "Computing topic",
+        "url": "https://en.wikipedia.org/wiki/Model_Context_Protocol_(computing)"
+      }
+    ]
+  }
+}

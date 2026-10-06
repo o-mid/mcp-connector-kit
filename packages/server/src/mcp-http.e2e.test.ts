@@ -2,12 +2,12 @@ import { createDefaultCache, createSourceRegistry } from "@mck/core";
 import { fixtureSource } from "@mck/source-fixture";
 import { Client } from "@modelcontextprotocol/sdk/client/index.js";
 import { StreamableHTTPClientTransport } from "@modelcontextprotocol/sdk/client/streamableHttp.js";
-import { Agent, setGlobalDispatcher } from "undici";
+import { prepareMcpHttpE2eNetwork } from "@mck/testing";
 import { beforeAll, describe, expect, it } from "vitest";
 import { startHttpApp } from "./http-app.js";
 
 beforeAll(() => {
-  setGlobalDispatcher(new Agent());
+  prepareMcpHttpE2eNetwork();
 });
 
 describe("MCP streamable HTTP e2e", () => {

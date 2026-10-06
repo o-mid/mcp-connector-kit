@@ -1,20 +1,20 @@
 import { describe, expect, it } from "vitest";
 import { createGatewayRegistry } from "./index.js";
+import { loadConfig } from "./config.js";
 
 describe("gateway", () => {
   it("loads fixture source", () => {
-    const registry = createGatewayRegistry({
-      MCK_SOURCES: "fixture",
-      MCK_TRANSPORT: "stdio",
-      MCK_LEGACY_TOOL_NAMES: false,
-      MCK_LEGACY_ERRORS: false,
-      MCK_CACHE: "memory",
-      PORT: 8080,
-      LOG_LEVEL: "info",
-      sourceIds: ["fixture"],
-      apiKeys: [],
-      corsOrigins: [],
-    });
+    const registry = createGatewayRegistry(
+      loadConfig({ MCK_SOURCES: "fixture", LOG_LEVEL: "silent" }),
+    );
     expect(registry.listToolNames()).toContain("fixture.echo");
+  });
+
+  it("expands global-demo profile", () => {
+    const registry = createGatewayRegistry(
+      loadConfig({ MCK_SOURCE_PROFILE: "global-demo", LOG_LEVEL: "silent" }),
+    );
+    expect(registry.listToolNames()).toContain("fixture.echo");
+    expect(registry.listToolNames()).toContain("wikipedia.wiki_search");
   });
 });

@@ -1,14 +1,8 @@
 {
-  "name": "@mck/server",
+  "name": "@mck/source-wikipedia",
   "version": "1.0.0",
   "type": "module",
-  "exports": {
-    ".": {
-      "types": "./dist/index.d.ts",
-      "import": "./dist/index.js"
-    }
-  },
-  "files": ["dist"],
+  "exports": { ".": { "types": "./dist/index.d.ts", "import": "./dist/index.js" } },
   "scripts": {
     "build": "tsup",
     "typecheck": "tsc -p tsconfig.json --noEmit",
@@ -17,13 +11,10 @@
   },
   "dependencies": {
     "@mck/core": "workspace:*",
-    "@modelcontextprotocol/sdk": "^1.32.1",
-    "prom-client": "^15.1.3",
     "zod": "^3.24.3"
   },
   "devDependencies": {
     "@mck/testing": "workspace:*",
-    "@mck/source-fixture": "workspace:*",
     "tsup": "^8.4.0",
     "vitest": "^3.2.4"
   }

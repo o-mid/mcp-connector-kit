@@ -1,6 +1,7 @@
 import { mkdir, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { checkFixtureContracts } from "@mck/testing";
+import { recordContract } from "./record.js";
 
 const [, , cmd, ...rest] = process.argv;
 
@@ -29,10 +30,37 @@ async function main(): Promise<void> {
     return;
   }
   if (cmd === "record") {
-    console.error("record: point MCK_LIVE=1 and use saveFixture() from @mck/testing in a script.");
+    const source = rest[0];
+    const tool = rest[1];
+    const inputFlag = rest.indexOf("--input");
+    const outFlag = rest.indexOf("--out");
+    if (!source || !tool || inputFlag === -1) {
+      console.error(
+        "usage: mck record <source> <tool> --input '{\"query\":\"...\"}' [--out path] (requires MCK_LIVE=1)",
+      );
+      process.exitCode = 1;
+      return;
+    }
+    const inputJson = rest[inputFlag + 1];
+    if (!inputJson) {
+      console.error("missing --input JSON");
+      process.exitCode = 1;
+      return;
+    }
+    const out = outFlag === -1 ? undefined : rest[outFlag + 1];
+    const root = process.cwd();
+    const file = await recordContract({
+      root,
+      source,
+      tool,
+      inputJson,
+      ...(out ? { out } : {}),
+    });
+    console.log(`recorded ${file}`);
+    console.error("Add mock block for offline CI replay, then run: pnpm mck check");
     return;
   }
-  console.log("usage: mck new source <name> | mck check [repo-root] | mck record");
+  console.log("usage: mck new source <name> | mck check [repo-root] | mck record <source> <tool> --input '{}'");
 }
 
 async function scaffoldSource(name: string): Promise<void> {

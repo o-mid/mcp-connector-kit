@@ -1,0 +1,21 @@
+{
+  "source": "torob",
+  "tool": "product_url",
+  "input": {
+    "id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890"
+  },
+  "mock": {
+    "origin": "https://api.torob.com",
+    "pathPrefix": "/v4/base-product/details/",
+    "body": {
+      "random_key": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+      "name1": "محصول تست",
+      "web_client_absolute_url": "/p/sample/"
+    }
+  },
+  "output": {
+    "id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+    "title": "محصول تست",
+    "url": "https://torob.com/p/sample/"
+  }
+}
