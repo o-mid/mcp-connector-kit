@@ -3,6 +3,7 @@ import { fixtureSource } from "@mck/source-fixture";
 import { githubSource } from "@mck/source-github";
 import { braveSource } from "@mck/source-brave";
 import { exaSource } from "@mck/source-exa";
+import { tavilySource } from "@mck/source-tavily";
 import { wikipediaSource } from "@mck/source-wikipedia";
 import { createWebReaderSource } from "@mck/source-web-reader";
 
@@ -12,6 +13,7 @@ const catalog: Record<string, (opts: { webReaderAllowlist?: string[] }) => Sourc
   github: () => githubSource,
   brave: () => braveSource,
   exa: () => exaSource,
+  tavily: () => tavilySource,
   "web-reader": (opts) =>
     createWebReaderSource(
       opts.webReaderAllowlist ??

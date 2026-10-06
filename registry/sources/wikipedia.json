@@ -1,0 +1,8 @@
+{
+  "id": "wikipedia",
+  "package": "@mck/source-wikipedia",
+  "verified": true,
+  "tools": ["wiki_search", "wiki_summary"],
+  "contracts": ["wiki_search", "wiki_summary"],
+  "documentation": "https://github.com/o-mid/mcp-connector-kit/blob/main/docs/trust-tier.md"
+}

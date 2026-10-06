@@ -16,5 +16,18 @@
     "@mck/testing": "workspace:*",
     "zod": "^3.24.3"
   },
-  "devDependencies": { "tsup": "^8.4.0", "vitest": "^3.2.4" }
+  "devDependencies": {
+    "tsup": "^8.4.0",
+    "vitest": "^3.2.4"
+  },
+  "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/o-mid/mcp-connector-kit.git",
+    "directory": "packages/cli"
+  },
+  "description": "@mck/cli — MCP connector kit"
 }

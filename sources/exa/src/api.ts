@@ -32,7 +32,7 @@ export async function exaSearch(ctx: ToolContext, query: string, limit: number, 
   );
   const data = validateUpstream(ExaSearchSchema, raw, {
     sourceId: ctx.sourceId,
-    tool: "search",
+    tool: "exa_search",
     metrics: ctx.metrics,
   }).data;
   return {

@@ -1,0 +1,9 @@
+{
+  "id": "brave",
+  "package": "@mck/source-brave",
+  "verified": true,
+  "tools": ["web_search"],
+  "contracts": ["web_search"],
+  "env": ["BRAVE_API_KEY"],
+  "documentation": "https://github.com/o-mid/mcp-connector-kit/blob/main/docs/trust-tier.md"
+}

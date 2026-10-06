@@ -26,5 +26,15 @@
   "devDependencies": {
     "tsup": "^8.4.0",
     "vitest": "^3.2.4"
-  }
+  },
+  "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/o-mid/mcp-connector-kit.git",
+    "directory": "packages/testing"
+  },
+  "description": "@mck/testing — MCP connector kit"
 }

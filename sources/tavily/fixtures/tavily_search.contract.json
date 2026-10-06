@@ -1,9 +1,9 @@
 {
-  "source": "exa",
-  "tool": "exa_search",
+  "source": "tavily",
+  "tool": "tavily_search",
   "input": { "query": "Model Context Protocol", "limit": 2 },
   "mock": {
-    "origin": "https://api.exa.ai",
+    "origin": "https://api.tavily.com",
     "pathPrefix": "/search",
     "method": "POST",
     "body": {
@@ -11,12 +11,12 @@
         {
           "title": "Model Context Protocol",
           "url": "https://modelcontextprotocol.io/",
-          "text": "Open protocol connecting AI assistants to data."
+          "content": "Open protocol for AI assistants."
         },
         {
-          "title": "MCP GitHub",
-          "url": "https://github.com/modelcontextprotocol",
-          "text": "Reference servers and SDKs."
+          "title": "MCP Specification",
+          "url": "https://github.com/modelcontextprotocol/specification",
+          "content": "Specification repository."
         }
       ]
     }
@@ -27,12 +27,12 @@
       {
         "title": "Model Context Protocol",
         "url": "https://modelcontextprotocol.io/",
-        "snippet": "Open protocol connecting AI assistants to data."
+        "snippet": "Open protocol for AI assistants."
       },
       {
-        "title": "MCP GitHub",
-        "url": "https://github.com/modelcontextprotocol",
-        "snippet": "Reference servers and SDKs."
+        "title": "MCP Specification",
+        "url": "https://github.com/modelcontextprotocol/specification",
+        "snippet": "Specification repository."
       }
     ]
   }

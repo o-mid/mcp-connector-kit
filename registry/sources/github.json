@@ -1,0 +1,9 @@
+{
+  "id": "github",
+  "package": "@mck/source-github",
+  "verified": true,
+  "tools": ["search_repositories", "search_issues"],
+  "contracts": ["search_repositories", "search_issues"],
+  "env": ["GITHUB_TOKEN"],
+  "documentation": "https://github.com/o-mid/mcp-connector-kit/blob/main/docs/trust-tier.md"
+}

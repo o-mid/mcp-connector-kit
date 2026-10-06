@@ -2,13 +2,38 @@
   "name": "@mck/source-brave",
   "version": "1.0.0",
   "type": "module",
-  "exports": { ".": { "types": "./dist/index.d.ts", "import": "./dist/index.js" } },
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
   "scripts": {
     "build": "tsup",
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "lint": "eslint src",
     "test": "vitest run"
   },
-  "dependencies": { "@mck/core": "workspace:*", "zod": "^3.24.3" },
-  "devDependencies": { "@mck/testing": "workspace:*", "tsup": "^8.4.0", "vitest": "^3.2.4" }
+  "dependencies": {
+    "@mck/core": "workspace:*",
+    "zod": "^3.24.3"
+  },
+  "devDependencies": {
+    "@mck/testing": "workspace:*",
+    "tsup": "^8.4.0",
+    "vitest": "^3.2.4"
+  },
+  "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/o-mid/mcp-connector-kit.git",
+    "directory": "sources/brave"
+  },
+  "description": "@mck/source-brave — MCP connector kit",
+  "files": [
+    "dist"
+  ]
 }

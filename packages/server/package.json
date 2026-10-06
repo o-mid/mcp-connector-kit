@@ -8,7 +8,9 @@
       "import": "./dist/index.js"
     }
   },
-  "files": ["dist"],
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "build": "tsup",
     "typecheck": "tsc -p tsconfig.json --noEmit",
@@ -27,5 +29,15 @@
     "@mck/source-fixture": "workspace:*",
     "tsup": "^8.4.0",
     "vitest": "^3.2.4"
-  }
+  },
+  "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/o-mid/mcp-connector-kit.git",
+    "directory": "packages/server"
+  },
+  "description": "@mck/server — MCP connector kit"
 }

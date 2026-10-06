@@ -8,23 +8,20 @@ A source is **verified** when:
 2. Every `*.contract.json` passes `pnpm mck check` in CI
 3. Package name follows `@mck/source-<id>`
 
-CI runs `pnpm check` on every push; failing contracts block merge.
+Per-source Registry JSON: [`registry/sources/`](../registry/sources/). See [`registry/README.md`](../registry/README.md).
 
 ## npm publish
 
-Packages intended for publish (set `"publishConfig": { "access": "public" }` when ready):
-
-- `@mck/core`
-- `@mck/server`
-- `@mck/gateway`
-- `@mck/cli`
-- `@mck/testing`
-- `@mck/source-*`
-
-Release flow: add a Changeset → merge version PR → set `NPM_TOKEN` in GitHub → `release` workflow runs `pnpm release`.
+All publishable packages include `"publishConfig": { "access": "public" }`. See [npm-publish.md](./npm-publish.md) for the Changesets workflow.
 
 ## MCP Registry metadata
 
-Submit `registry/server.json` (and per-source entries as you add them) via [MCP Registry](https://github.com/modelcontextprotocol/registry) tooling (`mcp-publisher`).
+- Gateway: [`registry/server.json`](../registry/server.json)
+- Sources: [`registry/sources/*.json`](../registry/sources/)
 
-Hosted demo URL (after deploy): configure `MCP_SERVER_URL` in registry entry to your Railway `/mcp` endpoint.
+Submit via [MCP Registry](https://github.com/modelcontextprotocol/registry) (`mcp-publisher`).
+
+## Observability
+
+- SLOs and alert rules: [slo.md](./slo.md)
+- Grafana dashboard: [`ops/grafana/mck-gateway-dashboard.json`](../ops/grafana/mck-gateway-dashboard.json)

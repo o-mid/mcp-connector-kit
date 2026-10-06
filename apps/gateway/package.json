@@ -25,6 +25,7 @@
     "@mck/source-exa": "workspace:*",
     "@mck/source-fixture": "workspace:*",
     "@mck/source-github": "workspace:*",
+    "@mck/source-tavily": "workspace:*",
     "@mck/source-web-reader": "workspace:*",
     "@mck/source-wikipedia": "workspace:*",
     "@opentelemetry/exporter-trace-otlp-http": "^0.57.0",
@@ -37,5 +38,15 @@
     "tsup": "^8.4.0",
     "undici": "^7.10.0",
     "vitest": "^3.2.4"
-  }
+  },
+  "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/o-mid/mcp-connector-kit.git",
+    "directory": "apps/gateway"
+  },
+  "description": "@mck/gateway — MCP connector kit"
 }

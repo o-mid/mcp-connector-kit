@@ -1,0 +1,9 @@
+{
+  "id": "tavily",
+  "package": "@mck/source-tavily",
+  "verified": true,
+  "tools": ["tavily_search"],
+  "contracts": ["tavily_search"],
+  "env": ["TAVILY_API_KEY"],
+  "documentation": "https://github.com/o-mid/mcp-connector-kit/blob/main/docs/trust-tier.md"
+}

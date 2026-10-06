@@ -10,6 +10,7 @@ beforeAll(() => {
   prepareMcpHttpE2eNetwork();
   process.env.BRAVE_API_KEY = process.env.BRAVE_API_KEY ?? "e2e-test-key";
   process.env.EXA_API_KEY = process.env.EXA_API_KEY ?? "e2e-test-key";
+  process.env.TAVILY_API_KEY = process.env.TAVILY_API_KEY ?? "e2e-test-key";
 });
 
 describe("trust tier HTTP MCP e2e", () => {
@@ -56,6 +57,14 @@ describe("trust tier HTTP MCP e2e", () => {
         results: [{ title: "MCP", url: "https://modelcontextprotocol.io/", text: "Protocol" }],
       },
     });
+    mockHttpJson({
+      origin: "https://api.tavily.com",
+      pathPrefix: "/search",
+      method: "POST",
+      body: {
+        results: [{ title: "Tavily MCP", url: "https://modelcontextprotocol.io/", content: "Docs" }],
+      },
+    });
 
     const registry = createGatewayRegistry(
       loadConfig({
@@ -76,7 +85,8 @@ describe("trust tier HTTP MCP e2e", () => {
     expect(names).toContain("search_repositories");
     expect(names).toContain("web_search");
     expect(names).toContain("fetch_page");
-    expect(names).toContain("search");
+    expect(names).toContain("exa_search");
+    expect(names).toContain("tavily_search");
 
     const repos = await client.callTool({
       name: "search_repositories",
@@ -110,12 +120,22 @@ describe("trust tier HTTP MCP e2e", () => {
     }
 
     const exa = await client.callTool({
-      name: "search",
+      name: "exa_search",
       arguments: { query: "MCP", limit: 1 },
     });
     const exaBlock = exa.content?.[0];
     if (exaBlock?.type === "text") {
       const data = JSON.parse(exaBlock.text) as { results: unknown[] };
+      expect(data.results.length).toBe(1);
+    }
+
+    const tavily = await client.callTool({
+      name: "tavily_search",
+      arguments: { query: "MCP", limit: 1 },
+    });
+    const tavilyBlock = tavily.content?.[0];
+    if (tavilyBlock?.type === "text") {
+      const data = JSON.parse(tavilyBlock.text) as { results: unknown[] };
       expect(data.results.length).toBe(1);
     }
 

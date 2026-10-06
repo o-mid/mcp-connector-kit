@@ -46,6 +46,8 @@ See [`.env.example`](.env.example). Key variables: `MCK_SOURCES`, `MCK_SOURCE_PR
 - [Hosted gateway SKU](docs/hosted-gateway.md)
 - [OAuth](docs/oauth.md)
 - [MCP Registry / npm](docs/registry.md)
+- [npm publish](docs/npm-publish.md)
+- [SLOs and Grafana](docs/slo.md)
 - [Private sources](docs/private-sources.md)
 - [Architecture](docs/architecture.md)
 - [Production checklist](docs/production.md)

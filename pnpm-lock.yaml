@@ -59,6 +59,9 @@ importers:
       '@mck/source-github':
         specifier: workspace:*
         version: link:../../sources/github
+      '@mck/source-tavily':
+        specifier: workspace:*
+        version: link:../../sources/tavily
       '@mck/source-web-reader':
         specifier: workspace:*
         version: link:../../sources/web-reader
@@ -240,6 +243,25 @@ importers:
         version: 8.5.1(postcss@8.5.29)(typescript@5.9.3)
 
   sources/github:
+    dependencies:
+      '@mck/core':
+        specifier: workspace:*
+        version: link:../../packages/core
+      zod:
+        specifier: ^3.24.3
+        version: 3.25.76
+    devDependencies:
+      '@mck/testing':
+        specifier: workspace:*
+        version: link:../../packages/testing
+      tsup:
+        specifier: ^8.4.0
+        version: 8.5.1(postcss@8.5.29)(typescript@5.9.3)
+      vitest:
+        specifier: ^3.2.4
+        version: 3.2.7(@types/node@22.20.5)
+
+  sources/tavily:
     dependencies:
       '@mck/core':
         specifier: workspace:*

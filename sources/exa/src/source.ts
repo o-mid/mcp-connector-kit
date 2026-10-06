@@ -3,7 +3,7 @@ import { z } from "zod";
 import { exaSearch } from "./api.js";
 
 const searchTool = defineTool({
-  name: "search",
+  name: "exa_search",
   description: "Exa neural web search for agent grounding (requires EXA_API_KEY).",
   input: z.object({
     query: z.string().min(1),

@@ -1,0 +1,8 @@
+{
+  "id": "fixture",
+  "package": "@mck/source-fixture",
+  "verified": true,
+  "tools": ["echo"],
+  "contracts": ["echo"],
+  "documentation": "https://github.com/o-mid/mcp-connector-kit/blob/main/docs/adding-a-source.md"
+}

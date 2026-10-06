@@ -44,9 +44,10 @@ Use this checklist before calling a deployment “production.” Status reflects
 |------|--------|--------|
 | Dockerfile | Done | `pnpm deploy --legacy` |
 | Image healthcheck | Done | `GET /healthz` |
-| MCP Registry metadata | Partial | `registry/server.json` |
+| MCP Registry metadata | Done | `registry/server.json` + `registry/sources/*` |
+| SLO / Grafana | Done | [slo.md](./slo.md), `ops/grafana/` |
 | SBOM / cosign | Planned | GitHub Actions |
-| semver npm publish | Planned | Changesets + `NPM_TOKEN` |
+| semver npm publish | Ready | `publishConfig` on packages; Changesets + `NPM_TOKEN` |
 
 ## Operations
 
@@ -85,6 +86,6 @@ PORT=8080
 | Profile | Sources | Use case |
 |---------|---------|----------|
 | `default` | fixture, wikipedia | Docs, free tier demo |
-| `trust` | full trust tier (6 sources) | Paid SKU / self-host bundle |
+| `trust` | full trust tier (7 sources) | Paid SKU / self-host bundle |
 
 Set `MCK_SOURCE_PROFILE=trust` with `MCK_SKU=paid` for the full connector set.

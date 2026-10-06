@@ -1,0 +1,9 @@
+{
+  "id": "exa",
+  "package": "@mck/source-exa",
+  "verified": true,
+  "tools": ["exa_search"],
+  "contracts": ["exa_search"],
+  "env": ["EXA_API_KEY"],
+  "documentation": "https://github.com/o-mid/mcp-connector-kit/blob/main/docs/trust-tier.md"
+}

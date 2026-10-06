@@ -2,7 +2,12 @@
   "name": "@mck/source-wikipedia",
   "version": "1.0.0",
   "type": "module",
-  "exports": { ".": { "types": "./dist/index.d.ts", "import": "./dist/index.js" } },
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
   "scripts": {
     "build": "tsup",
     "typecheck": "tsc -p tsconfig.json --noEmit",
@@ -17,5 +22,18 @@
     "@mck/testing": "workspace:*",
     "tsup": "^8.4.0",
     "vitest": "^3.2.4"
-  }
+  },
+  "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/o-mid/mcp-connector-kit.git",
+    "directory": "sources/wikipedia"
+  },
+  "description": "@mck/source-wikipedia — MCP connector kit",
+  "files": [
+    "dist"
+  ]
 }

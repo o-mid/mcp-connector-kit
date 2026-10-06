@@ -1,7 +1,7 @@
 /** Named source bundles for demos and deployments. */
 export const SOURCE_PROFILES: Record<string, string[]> = {
   default: ["fixture", "wikipedia"],
-  trust: ["fixture", "wikipedia", "github", "web-reader", "brave", "exa"],
+  trust: ["fixture", "wikipedia", "github", "web-reader", "brave", "exa", "tavily"],
 };
 
 export function resolveSourceIds(profile: string | undefined, explicit: string): string[] {

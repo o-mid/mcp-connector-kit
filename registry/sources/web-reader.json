@@ -1,0 +1,9 @@
+{
+  "id": "web-reader",
+  "package": "@mck/source-web-reader",
+  "verified": true,
+  "tools": ["fetch_page"],
+  "contracts": ["fetch_page"],
+  "env": ["MCK_WEB_READER_ALLOWLIST"],
+  "documentation": "https://github.com/o-mid/mcp-connector-kit/blob/main/docs/trust-tier.md"
+}
