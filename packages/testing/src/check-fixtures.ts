@@ -1,13 +1,6 @@
 import { readdir, readFile } from "node:fs/promises";
 import path from "node:path";
-import { z } from "zod";
-
-const ContractFile = z.object({
-  source: z.string(),
-  tool: z.string(),
-  upstream: z.unknown(),
-  output: z.unknown().optional(),
-});
+import { ToolContract } from "./replay-contract.js";
 
 export type FixtureCheckResult = {
   file: string;
@@ -37,7 +30,7 @@ export async function checkFixtureContracts(repoRoot: string): Promise<FixtureCh
       const full = path.join(fixturesDir, file);
       try {
         const raw = JSON.parse(await readFile(full, "utf8")) as unknown;
-        const doc = ContractFile.parse(raw);
+        const doc = ToolContract.parse(raw);
         if (doc.source !== sourceId) {
           results.push({
             file: full,

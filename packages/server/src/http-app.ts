@@ -16,11 +16,14 @@ export type HttpAppOptions = {
 /**
  * Serves MCP streamable HTTP plus health, readiness, and Prometheus metrics.
  */
-export function startHttpApp(opts: HttpAppOptions): { close: () => Promise<void> } {
+export async function startHttpApp(opts: HttpAppOptions): Promise<{
+  close: () => Promise<void>;
+  port: number;
+}> {
   const mcpOpts = opts.legacyErrors === true ? { legacyErrors: true } : {};
   const mcp = createMcpServer(opts.registry, mcpOpts);
   const transport = createStreamableTransport();
-  void mcp.connect(transport as Transport);
+  await mcp.connect(transport as Transport);
 
   const server = createServer(async (req, res) => {
     try {
@@ -60,9 +63,15 @@ export function startHttpApp(opts: HttpAppOptions): { close: () => Promise<void>
     }
   });
 
-  server.listen(opts.port);
+  await new Promise<void>((resolve) => {
+    server.listen(opts.port, () => resolve());
+  });
+  const addr = server.address();
+  const port =
+    typeof addr === "object" && addr && "port" in addr ? addr.port : opts.port;
 
   return {
+    port,
     close: async () => {
       await mcp.close();
       await new Promise<void>((resolve, reject) => {

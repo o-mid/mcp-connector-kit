@@ -46,6 +46,7 @@ const ProductsEnvelope = z.object({
         .optional(),
       facets: z.record(z.unknown()).optional(),
     })
+    .passthrough()
     .optional(),
   isSuccess: z.boolean().optional(),
 });

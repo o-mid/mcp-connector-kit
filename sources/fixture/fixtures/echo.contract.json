@@ -1,6 +1,7 @@
 {
   "source": "fixture",
   "tool": "echo",
+  "input": { "message": "offline" },
   "upstream": { "value": "offline" },
   "output": { "echoed": "offline" }
 }

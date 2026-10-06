@@ -1,0 +1,37 @@
+{
+  "source": "khanoumi",
+  "tool": "search_filters",
+  "input": { "query": "کرم" },
+  "mock": {
+    "origin": "https://www.khanoumi.com",
+    "pathPrefix": "/api/ntl/v1/products",
+    "body": {
+      "data": {
+        "products": { "totalCount": 40 },
+        "facets": {
+          "priceFacet": { "fromPrice": "50000", "toPrice": "900000" },
+          "brandFacets": [
+            { "displayNameFa": "برند الف", "key": "brand-a", "count": 5 }
+          ],
+          "categories": [
+            {
+              "displayNameFa": "مراقبت پوست",
+              "key": "skin-care",
+              "count": 10,
+              "children": []
+            }
+          ]
+        }
+      }
+    }
+  },
+  "output": {
+    "query": "کرم",
+    "total_count": 40,
+    "price_toman": { "min": 50000, "max": 900000 },
+    "categories": [
+      { "name": "مراقبت پوست", "key": "skin-care", "count": 10 }
+    ],
+    "brands": [{ "name": "برند الف", "slug": "brand-a", "count": 5 }]
+  }
+}

@@ -1,0 +1,68 @@
+{
+  "source": "torob",
+  "tool": "search_torob",
+  "input": {
+    "query": "phone",
+    "limit": 2,
+    "only_marketable": true
+  },
+  "mock": {
+    "origin": "https://api.torob.com",
+    "pathPrefix": "/v4/base-product/search/",
+    "body": {
+      "count": 5,
+      "results": [
+        {
+          "random_key": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+          "name1": "گوشی تست",
+          "name2": "Test Phone",
+          "price": 5000000,
+          "price_text": "۵ میلیون",
+          "price_text_mode": "active",
+          "shop_text": "در ۳ فروشگاه",
+          "web_client_absolute_url": "/p/test-phone/",
+          "image_url": "https://img.torob.com/x.jpg",
+          "is_adv": false
+        },
+        {
+          "random_key": "00000000-0000-0000-0000-000000000099",
+          "name1": "ناموجود",
+          "price_text_mode": "disabled",
+          "price": 0
+        }
+      ],
+      "min_price": 5000000,
+      "max_price": 6000000,
+      "categories": [{ "cat_id": 1, "title": "موبایل" }],
+      "parent_categories": []
+    }
+  },
+  "output": {
+    "items": [
+      {
+        "id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+        "title": "گوشی تست",
+        "title_en": "Test Phone",
+        "price_toman": 5000000,
+        "price_label": "۵ میلیون",
+        "in_stock": true,
+        "shop_count": 3,
+        "shop_text": "در ۳ فروشگاه",
+        "url": "https://torob.com/p/test-phone/",
+        "image_url": "https://img.torob.com/x.jpg",
+        "is_ad": false
+      }
+    ],
+    "page": 1,
+    "total_items_estimate": 5,
+    "estimate_capped": false,
+    "price_min_toman": 5000000,
+    "price_max_toman": 6000000,
+    "price_filter_sent_upstream": false,
+    "categories": [{ "id": 1, "title": "موبایل" }],
+    "parent_categories": [],
+    "spellcheck": null,
+    "low_confidence": false,
+    "unmatched_terms": []
+  }
+}

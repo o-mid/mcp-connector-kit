@@ -1,0 +1,60 @@
+{
+  "source": "khanoumi",
+  "tool": "search_khanoumi",
+  "input": {
+    "query": "کرم",
+    "limit": 2,
+    "in_stock": true
+  },
+  "mock": {
+    "origin": "https://www.khanoumi.com",
+    "pathPrefix": "/api/ntl/v1/products",
+    "body": {
+      "isSuccess": true,
+      "data": {
+        "products": {
+          "totalCount": 12,
+          "pageNumber": 1,
+          "items": [
+            {
+              "slug": "test-cream",
+              "nameFa": "کرم تست",
+              "nameEn": "Test Cream",
+              "effectivePrice": "150000",
+              "basePrice": "180000",
+              "discountPercent": 10,
+              "hasStock": true,
+              "imageUrl": "https://cdn.khanoumi.com/cream.jpg",
+              "brand": { "slug": "brand-x", "nameFa": "برند" }
+            },
+            {
+              "slug": "out-of-stock",
+              "nameFa": "ناموجود",
+              "effectivePrice": "1000",
+              "hasStock": false
+            }
+          ]
+        }
+      }
+    }
+  },
+  "output": {
+    "total_count": 12,
+    "page": 1,
+    "products": [
+      {
+        "id": "test-cream",
+        "title": "کرم تست",
+        "title_en": "Test Cream",
+        "brand": "برند",
+        "brand_slug": "brand-x",
+        "price_toman": 150000,
+        "regular_price_toman": 180000,
+        "on_sale": true,
+        "in_stock": true,
+        "url": "https://www.khanoumi.com/products/test-cream",
+        "image_url": "https://cdn.khanoumi.com/cream.jpg"
+      }
+    ]
+  }
+}

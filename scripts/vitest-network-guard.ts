@@ -9,4 +9,5 @@ beforeAll(() => {
   const agent = new MockAgent();
   agent.disableNetConnect();
   setGlobalDispatcher(agent);
+  globalThis.__MCK_MOCK_AGENT__ = agent;
 });

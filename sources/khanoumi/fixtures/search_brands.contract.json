@@ -1,0 +1,30 @@
+{
+  "source": "khanoumi",
+  "tool": "search_brands",
+  "input": { "query": "lar", "limit": 2 },
+  "mock": {
+    "origin": "https://www.khanoumi.com",
+    "pathPrefix": "/api/ntl/v1/catalog/brands",
+    "body": {
+      "data": {
+        "items": [
+          {
+            "slug": "laroche",
+            "nameFa": "لاروش",
+            "nameEn": "La Roche"
+          }
+        ]
+      }
+    }
+  },
+  "output": {
+    "brands": [
+      {
+        "name": "لاروش",
+        "name_en": "La Roche",
+        "slug": "laroche",
+        "url": "https://www.khanoumi.com/brands/laroche"
+      }
+    ]
+  }
+}

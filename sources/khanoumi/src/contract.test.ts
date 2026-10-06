@@ -1,8 +1,8 @@
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { describeSourceContractReplay } from "@mck/testing/describe-contract-replay";
-import { fixtureSource } from "./source.js";
+import { khanoumiSource } from "./source.js";
 
 const dir = path.dirname(fileURLToPath(import.meta.url));
 
-describeSourceContractReplay("fixture", fixtureSource, path.join(dir, "../fixtures"));
+describeSourceContractReplay("khanoumi", khanoumiSource, path.join(dir, "../fixtures"));

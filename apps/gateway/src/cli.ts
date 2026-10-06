@@ -7,7 +7,7 @@ async function main(): Promise<void> {
   const config = loadConfig();
   const registry = createGatewayRegistry(config);
   if (config.MCK_TRANSPORT === "http") {
-    const app = startHttpApp({
+    const app = await startHttpApp({
       registry,
       port: config.PORT,
       apiKeys: config.apiKeys,

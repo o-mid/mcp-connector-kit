@@ -1,0 +1,17 @@
+{
+  "source": "torob",
+  "tool": "torob_suggest",
+  "input": { "query": "گو", "limit": 5 },
+  "mock": {
+    "origin": "https://api.torob.com",
+    "pathPrefix": "/suggestion2/",
+    "body": [
+      { "text": "گوشی", "is_history": false },
+      { "text": "قدیمی", "is_history": true },
+      { "text": "گوشی سامسونگ", "is_history": false }
+    ]
+  },
+  "output": {
+    "keywords": ["گوشی", "گوشی سامسونگ"]
+  }
+}

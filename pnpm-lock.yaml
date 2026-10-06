@@ -117,15 +117,24 @@ importers:
         specifier: ^3.24.3
         version: 3.25.76
     devDependencies:
+      '@mck/source-fixture':
+        specifier: workspace:*
+        version: link:../../sources/fixture
       tsup:
         specifier: ^8.4.0
         version: 8.5.1(postcss@8.5.29)(typescript@5.9.3)
+      vitest:
+        specifier: ^3.2.4
+        version: 3.2.7(@types/node@22.20.5)
 
   packages/testing:
     dependencies:
       '@mck/core':
         specifier: workspace:*
         version: link:../core
+      undici:
+        specifier: ^7.10.0
+        version: 7.30.0
       zod:
         specifier: ^3.24.3
         version: 3.25.76
@@ -133,6 +142,9 @@ importers:
       tsup:
         specifier: ^8.4.0
         version: 8.5.1(postcss@8.5.29)(typescript@5.9.3)
+      vitest:
+        specifier: ^3.2.4
+        version: 3.2.7(@types/node@22.20.5)
 
   sources/fixture:
     dependencies:
@@ -159,9 +171,15 @@ importers:
         specifier: ^3.24.3
         version: 3.25.76
     devDependencies:
+      '@mck/testing':
+        specifier: workspace:*
+        version: link:../../packages/testing
       tsup:
         specifier: ^8.4.0
         version: 8.5.1(postcss@8.5.29)(typescript@5.9.3)
+      vitest:
+        specifier: ^3.2.4
+        version: 3.2.7(@types/node@22.20.5)
 
   sources/torob:
     dependencies:
@@ -172,9 +190,15 @@ importers:
         specifier: ^3.24.3
         version: 3.25.76
     devDependencies:
+      '@mck/testing':
+        specifier: workspace:*
+        version: link:../../packages/testing
       tsup:
         specifier: ^8.4.0
         version: 8.5.1(postcss@8.5.29)(typescript@5.9.3)
+      vitest:
+        specifier: ^3.2.4
+        version: 3.2.7(@types/node@22.20.5)
 
   sources/woocommerce:
     dependencies:
@@ -185,9 +209,15 @@ importers:
         specifier: ^3.24.3
         version: 3.25.76
     devDependencies:
+      '@mck/testing':
+        specifier: workspace:*
+        version: link:../../packages/testing
       tsup:
         specifier: ^8.4.0
         version: 8.5.1(postcss@8.5.29)(typescript@5.9.3)
+      vitest:
+        specifier: ^3.2.4
+        version: 3.2.7(@types/node@22.20.5)
 
 packages:
 
