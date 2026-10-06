@@ -1,4 +1,8 @@
 #!/usr/bin/env node
+/**
+ * Gateway binary: env → SourceRegistry → MCP over stdio or Streamable HTTP.
+ * Docker/Railway invoke `node dist/cli.js` with MCK_TRANSPORT=http by default.
+ */
 import { connectStdio, createMcpServer, startHttpApp } from "@mck/server";
 import { createGatewayFromEnv, createGatewayRegistry } from "./index.js";
 import { loadConfig } from "./config.js";
@@ -9,6 +13,7 @@ async function main(): Promise<void> {
   const config = loadConfig();
   const registry = createGatewayRegistry(config);
   if (config.MCK_TRANSPORT === "http") {
+    // Hosted path: /mcp, /healthz, /readyz, /metrics (+ optional OAuth metadata).
     const app = await startHttpApp({
       registry,
       port: config.PORT,
@@ -34,6 +39,7 @@ async function main(): Promise<void> {
     console.error(`mck gateway listening on :${config.PORT} (sku=${config.sku})`);
     return;
   }
+  // Local IDE path: one process, stdin/stdout MCP framing.
   const server = createMcpServer(registry, {
     name: "mck-gateway",
     version: "1.0.0",

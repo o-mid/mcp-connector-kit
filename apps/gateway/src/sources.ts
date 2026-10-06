@@ -7,6 +7,7 @@ import { tavilySource } from "@mck/source-tavily";
 import { wikipediaSource } from "@mck/source-wikipedia";
 import { createWebReaderSource } from "@mck/source-web-reader";
 
+/** Static import map: only ids listed here can be enabled via env. */
 const catalog: Record<string, (opts: { webReaderAllowlist?: string[] }) => SourceDefinition> = {
   fixture: () => fixtureSource,
   wikipedia: () => wikipediaSource,

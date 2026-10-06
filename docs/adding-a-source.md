@@ -6,4 +6,4 @@
 4. Register the id in `apps/gateway/src/sources.ts` and optionally add to `trust` profile in `profiles.ts`.
 5. Enable with `MCK_SOURCES=myapi` or `MCK_SOURCE_PROFILE=trust` (paid SKU if trust-listed).
 
-See [trust-tier.md](./trust-tier.md) for the verified connector checklist.
+See [trust-tier.md](./trust-tier.md) for the verified connector checklist and [codebase-walkthrough.md](./codebase-walkthrough.md) for where each file fits.

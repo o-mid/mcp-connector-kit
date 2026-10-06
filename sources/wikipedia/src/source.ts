@@ -2,6 +2,7 @@ import { defineSource, defineTool } from "@mck/core";
 import { z } from "zod";
 import { wikiSearch, wikiSummary } from "./api.js";
 
+// Each defineTool block is one MCP tool: schemas + run() that calls api.ts.
 const wikiSearchTool = defineTool({
   name: "wiki_search",
   description: "Search English Wikipedia titles and short descriptions (read-only).",
@@ -42,6 +43,7 @@ const wikiSummaryTool = defineTool({
   },
 });
 
+// defineSource sets upstream policy (baseUrls, limits) shared by all tools in this package.
 export const wikipediaSource = defineSource({
   id: "wikipedia",
   title: "English Wikipedia (read-only)",

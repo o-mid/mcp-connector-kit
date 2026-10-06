@@ -59,6 +59,7 @@ export async function startHttpApp(opts: HttpAppOptions): Promise<{
         return;
       }
       if (path === "/mcp" && req.method === "POST") {
+        // API keys and/or JWT (OAuth JWKS) gate the Streamable MCP endpoint only.
         const ok = await authorizeMcpRequest(req, { apiKeys: opts.apiKeys, oauth: opts.oauth });
         if (!ok) {
           json(res, 401, { error: "unauthorized" });

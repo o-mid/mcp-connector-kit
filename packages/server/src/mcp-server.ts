@@ -18,6 +18,7 @@ export function createMcpServer(
     version: opts?.version ?? "1.0.0",
   });
 
+  // Public names may be qualified (wikipedia.wiki_search) or legacy bare names (wiki_search).
   for (const publicName of registry.listToolNames()) {
     const tool = registry.listTools().find(
       (t) => t.qualifiedName === publicName || t.legacyName === publicName,

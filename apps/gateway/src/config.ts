@@ -43,6 +43,7 @@ export type GatewayConfig = z.infer<typeof envSchema> & {
 /** Validates process env once at boot so misconfig fails fast. */
 export function loadConfig(env: NodeJS.ProcessEnv = process.env): GatewayConfig {
   const parsed = envSchema.parse(env);
+  // Profile overrides MCK_SOURCES when set; SKU then trims the list (free = fixture + wikipedia).
   const profileIds = resolveSourceIds(parsed.MCK_SOURCE_PROFILE, parsed.MCK_SOURCES);
   const sku = parseSku(parsed.MCK_SKU);
   const sourceIds = filterSourcesForSku(profileIds, sku);

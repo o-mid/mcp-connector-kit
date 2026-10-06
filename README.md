@@ -52,6 +52,7 @@ See [`.env.example`](.env.example). Key variables: `MCK_SOURCES`, `MCK_SOURCE_PR
 - [SLOs and Grafana](docs/slo.md)
 - [Private sources](docs/private-sources.md)
 - [Architecture](docs/architecture.md)
+- [Codebase walkthrough (file by file)](docs/codebase-walkthrough.md)
 - [Production checklist](docs/production.md)
 - [Adding a source](docs/adding-a-source.md)
 

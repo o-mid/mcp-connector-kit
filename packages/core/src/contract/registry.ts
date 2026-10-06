@@ -153,6 +153,7 @@ export function createSourceRegistry(
             tool.cacheTtlMs ?? sources.find((s) => s.id === tool.sourceId)?.cache.defaultTtlMs ?? 0;
 
           const run = async () => {
+            // Tool authors fetch upstream inside run(); output schema is checked here.
             const raw = await tool.run({ input, ctx, signal: signal ?? AbortSignal.timeout(60_000) });
             const out = validateOutput(tool.output, raw, tool.sourceId);
             return out;
@@ -165,6 +166,7 @@ export function createSourceRegistry(
               metrics.increment("mck_cache_hits_total", { source: tool.sourceId, tool: tool.name });
               data = cached;
             } else {
+              // Collapse duplicate in-flight keys for the same input.
               data = await singleFlight(cacheKey, run);
               await ctx.cache.set(cacheKey, data, ttl);
             }

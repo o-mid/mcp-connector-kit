@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+/** CI guard: registry/sources JSON must match sources/<id> packages and trust-tier ids. */
 import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";

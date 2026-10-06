@@ -66,6 +66,7 @@ export function createSourceHttp(config: SourceHttpConfig): SourceHttpClient {
   const breaker = new CircuitBreaker({ failureThreshold: 5, resetTimeoutMs: 30_000 });
 
   async function request<T>(url: URL, opts?: HttpRequestOptions): Promise<T> {
+    // Every fetch is tied to source.baseUrls — blocks arbitrary host SSRF from tool code.
     if (!hostAllowed(url, config.baseUrls)) {
       throw new ConnectorError("blocked_host", `Host not allowed: ${url.hostname}`, {
         source: config.sourceId,

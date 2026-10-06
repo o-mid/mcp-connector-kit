@@ -20,11 +20,13 @@ function scaleSourceLimits(sources: SourceDefinition[], multiplier: number): Sou
 
 /** Builds the tool registry from gateway environment configuration. */
 export function createGatewayRegistry(config: GatewayConfig): SourceRegistry {
+  // Cache is shared across all sources in this process (memory or Redis).
   const cache =
     config.MCK_CACHE === "redis" && config.REDIS_URL
       ? new RedisCache(config.REDIS_URL)
       : createDefaultCache();
   const resolved = resolveSources(config.sourceIds, { webReaderAllowlist: config.webReaderAllowlist });
+  // Paid SKU doubles rps/burst/concurrency before tools see limits.
   const sources = scaleSourceLimits(resolved, limitMultiplierForSku(config.sku));
   const logger = createMckLogger(config.LOG_LEVEL);
   const registryOpts: Parameters<typeof createSourceRegistry>[1] = {
