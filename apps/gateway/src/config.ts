@@ -30,6 +30,8 @@ const envSchema = z.object({
   MCK_WEB_READER_ALLOWLIST: z.string().optional(),
   MCK_OAUTH_JWKS_URL: z.string().url().optional(),
   MCK_OAUTH_AUDIENCE: z.string().optional(),
+  MCK_OAUTH_ISSUER: z.string().url().optional(),
+  MCK_OAUTH_TENANT_CLAIM: z.string().optional(),
 });
 
 export type GatewayConfig = z.infer<typeof envSchema> & {

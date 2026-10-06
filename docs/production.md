@@ -13,9 +13,9 @@ Use this checklist before calling a deployment “production.” Status reflects
 | Hosted SKU | Done | `MCK_SKU=free\|paid` filters sources + 2× limits on paid |
 | Redis shared cache | Code done | Set `MCK_CACHE=redis` + `REDIS_URL` |
 | Structured logging (JSON) | Done | pino via `LOG_LEVEL` |
-| Audit export | Done | `MCK_AUDIT_LOG=true` + `MCK_TENANT_ID` |
-| OpenTelemetry traces | Optional | Set `OTEL_EXPORTER_OTLP_ENDPOINT` |
-| OAuth JWT + discovery | Partial | `MCK_OAUTH_JWKS_URL`; full IdP integration per tenant |
+| Audit export | Done | `MCK_AUDIT_LOG=true`; JWT tenant overrides per request |
+| OpenTelemetry traces | Done | `OTEL_EXPORTER_OTLP_ENDPOINT` in gateway |
+| OAuth JWT + discovery | Done | JWKS + issuer + tenant claim → audit |
 
 ## Reliability
 
@@ -32,11 +32,11 @@ Use this checklist before calling a deployment “production.” Status reflects
 
 | Item | Status | Notes |
 |------|--------|--------|
-| Unit tests | Partial | Core + sources |
-| Contract replay | Done | Trust tier: 9+ fixtures; CI `pnpm mck check .` + `pnpm validate:registry` |
+| Unit tests | Done | Core, server OAuth, sources |
+| Contract replay | Done | Trust tier fixtures; CI `mck check` + registry validate |
 | MCP SDK e2e (server) | Done | stdio + HTTP + auth metadata |
-| Gateway MCP e2e | Done | default + **trust tier** (paid/free SKU) |
-| Live upstream smoke | Optional | `MCK_LIVE=1`, nightly workflow |
+| Gateway MCP e2e | Done | default + trust tier (paid/free SKU) |
+| Live upstream smoke | Done | nightly workflow + production smoke script |
 
 ## Supply chain
 
@@ -46,9 +46,9 @@ Use this checklist before calling a deployment “production.” Status reflects
 | Image healthcheck | Done | `GET /healthz` |
 | MCP Registry metadata | Done | `registry/server.json` + `registry/sources/*` |
 | SLO / Grafana | Done | [slo.md](./slo.md), `ops/grafana/` |
-| SBOM | Done | [sbom.yml](../.github/workflows/sbom.yml) artifact; [supply-chain.md](./supply-chain.md) |
-| Container cosign | Planned | Documented in supply-chain.md |
-| semver npm publish | Ready | `publishConfig` on packages; Changesets + `NPM_TOKEN` |
+| SBOM | Done | [sbom.yml](../.github/workflows/sbom.yml) |
+| Container cosign | Done | [container-release.yml](../.github/workflows/container-release.yml) on `v*` tags |
+| semver npm publish | Ready | Changesets + `NPM_TOKEN` + provenance |
 
 ## Operations
 
@@ -56,28 +56,33 @@ Use this checklist before calling a deployment “production.” Status reflects
 |------|--------|--------|
 | Operations guide | Done | [operations.md](./operations.md) |
 | Hosted SKU guide | Done | [hosted-gateway.md](./hosted-gateway.md) |
-| Drift runbook | Partial | See ADR-0003 |
+| Drift runbook | Done | [drift-runbook.md](./drift-runbook.md), [ADR-0003](./adr/0003-upstream-schema-drift.md) |
 | Secret rotation | Manual | API keys via env |
 | Multi-instance | Needs Redis | Memory cache is single-node |
+| Railway paid env | Done | `.env.paid.example`, `scripts/railway-set-paid-env.mjs` |
 
 ## Environment reference
 
 ```bash
-MCK_SOURCE_PROFILE=trust              # or default
-MCK_SKU=paid                          # free | paid
-MCK_SOURCES=fixture,wikipedia         # ignored when profile set
+MCK_SOURCE_PROFILE=trust
+MCK_SKU=paid
+MCK_SOURCES=fixture,wikipedia
 MCK_TRANSPORT=http
 MCK_LEGACY_TOOL_NAMES=true
 MCK_API_KEYS=...
 MCK_AUDIT_LOG=true
 MCK_TENANT_ID=...
 MCK_OAUTH_JWKS_URL=...
+MCK_OAUTH_ISSUER=...
+MCK_OAUTH_AUDIENCE=...
+MCK_OAUTH_TENANT_CLAIM=sub
 EXA_API_KEY=...
 BRAVE_API_KEY=...
 GITHUB_TOKEN=...
 MCK_WEB_READER_ALLOWLIST=https://example.com
 MCK_CACHE=redis
 REDIS_URL=redis://...
+OTEL_EXPORTER_OTLP_ENDPOINT=http://...
 LOG_LEVEL=info
 PORT=8080
 ```

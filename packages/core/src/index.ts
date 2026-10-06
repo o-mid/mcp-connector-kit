@@ -23,3 +23,9 @@ export type {
 export { createMckLogger, toolLogFromPino } from "./log/pino.js";
 export { withToolSpan } from "./telemetry/spans.js";
 export { htmlToText, plainTextFromHtml } from "./text/html-text.js";
+export {
+  getAuditContext,
+  runWithAuditContext,
+  runWithAuditContextAsync,
+  type AuditContext,
+} from "./audit/context.js";

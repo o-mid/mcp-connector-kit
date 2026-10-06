@@ -29,6 +29,8 @@ pnpm build
 pnpm changeset publish --dry-run
 ```
 
+Release workflow sets `NPM_CONFIG_PROVENANCE=true` when `NPM_TOKEN` is present.
+
 ## MCP Registry
 
 After npm publish, update `registry/server.json` version and submit via `mcp-publisher`. Per-source metadata lives under `registry/sources/`.

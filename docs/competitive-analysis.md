@@ -7,15 +7,15 @@ MCK is a **framework + gateway** for read-only MCP tools backed by HTTP APIs. Co
 | Capability | Smithery | Composio | Official MCP Registry | Docker MCP Catalog | mcp-production-kit | **MCK (target)** |
 |------------|----------|----------|----------------------|--------------------|--------------------|------------------|
 | Hosted remote MCP URL | Yes | Yes | No (metadata only) | Images only | DIY | Yes (Railway/Docker) |
-| OAuth / credential vault | Yes | Yes | No | No | OAuth 2.1 RS | API keys today; OAuth roadmap |
+| OAuth / credential vault | Yes | Yes | No | No | OAuth 2.1 RS | **JWT JWKS + API keys + tenant audit** |
 | Tool discovery / SEO | Strong | Strong | Canonical names | Curated images | None | Registry + docs (in progress) |
 | Pre-built integrations | Many listings | 500+ apps | Pointers to packages | Curated set | Template | **Plugins** (`@mck/source-*`) |
 | Schema drift detection | Rare | Opaque | N/A | N/A | Tests | **`validateUpstream` + metrics** |
 | Offline contract replay | Rare | No | N/A | N/A | Some | **`*.contract.json` + MockAgent** |
 | Multi-source gateway | Meta-server | Session MCP | N/A | Per container | Single app | **`MCK_SOURCES` / profiles** |
 | Prometheus metrics | Varies | Managed | N/A | N/A | Planned | **`/metrics` + mck_* ** |
-| OpenTelemetry | Varies | Managed | N/A | N/A | Planned | **OTLP when env set** |
-| Append-only audit | No | Platform | N/A | N/A | Yes | **Structured logs; audit roadmap** |
+| OpenTelemetry | Varies | Managed | N/A | N/A | Planned | **OTLP via `OTEL_EXPORTER_OTLP_ENDPOINT`** |
+| Append-only audit | No | Platform | N/A | N/A | Yes | **`MCK_AUDIT_LOG` + JWT tenant id** |
 | Per-tool RBAC | Platform | Yes | N/A | N/A | Yes | **Read-only default; scopes roadmap** |
 
 References: [Smithery](https://smithery.ai/), [Composio MCP sessions](https://docs.composio.dev/docs/sessions-via-mcp), [MCP Registry vs Smithery (2026)](https://faun.dev/toolbox/mcp-registry-vs-smithery/), [AWS MCP strategies (PDF)](https://docs.aws.amazon.com/pdfs/prescriptive-guidance/latest/mcp-strategies/mcp-strategies.pdf), [mcp-production-kit](https://github.com/Lumina-AI-studio/mcp-production-kit).

@@ -1,9 +1,9 @@
 import { createServer, type IncomingMessage, type ServerResponse } from "node:http";
-import type { SourceRegistry } from "@mck/core";
+import { runWithAuditContextAsync, type SourceRegistry } from "@mck/core";
 import type { Transport } from "@modelcontextprotocol/sdk/shared/transport.js";
 import { createMcpServer, createStreamableTransport } from "./mcp-server.js";
 import { metricsRegistry } from "./metrics.js";
-import { authorizeMcpRequest, isOAuthEnabled, oauthProtectedResourceMetadata, type OAuthConfig } from "./oauth.js";
+import { authenticateMcpRequest, isOAuthEnabled, oauthProtectedResourceMetadata, type OAuthConfig } from "./oauth.js";
 
 export type HttpAppOptions = {
   registry: SourceRegistry;
@@ -59,14 +59,17 @@ export async function startHttpApp(opts: HttpAppOptions): Promise<{
         return;
       }
       if (path === "/mcp" && req.method === "POST") {
-        // API keys and/or JWT (OAuth JWKS) gate the Streamable MCP endpoint only.
-        const ok = await authorizeMcpRequest(req, { apiKeys: opts.apiKeys, oauth: opts.oauth });
-        if (!ok) {
+        const auth = await authenticateMcpRequest(req, { apiKeys: opts.apiKeys, oauth: opts.oauth });
+        if (!auth.ok) {
           json(res, 401, { error: "unauthorized" });
           return;
         }
         const body = await readBody(req, opts.bodyLimitBytes ?? 1_000_000);
-        await transport.handleRequest(req, res, body);
+        const auditCtx =
+          auth.tenantId !== undefined ? { tenantId: auth.tenantId } : {};
+        await runWithAuditContextAsync(auditCtx, async () => {
+          await transport.handleRequest(req, res, body);
+        });
         return;
       }
       json(res, 404, { error: "not_found" });

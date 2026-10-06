@@ -23,6 +23,10 @@ async function main(): Promise<void> {
             oauth: {
               jwksUrl: config.MCK_OAUTH_JWKS_URL,
               ...(config.MCK_OAUTH_AUDIENCE ? { audience: config.MCK_OAUTH_AUDIENCE } : {}),
+              ...(config.MCK_OAUTH_ISSUER ? { issuer: config.MCK_OAUTH_ISSUER } : {}),
+              ...(config.MCK_OAUTH_TENANT_CLAIM
+                ? { tenantClaim: config.MCK_OAUTH_TENANT_CLAIM }
+                : {}),
             },
           }
         : {}),

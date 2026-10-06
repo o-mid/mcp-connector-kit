@@ -54,6 +54,7 @@ See [`.env.example`](.env.example). Key variables: `MCK_SOURCES`, `MCK_SOURCE_PR
 - [Architecture](docs/architecture.md)
 - [Codebase walkthrough (file by file)](docs/codebase-walkthrough.md)
 - [Production checklist](docs/production.md)
+- [Drift runbook](docs/drift-runbook.md)
 - [Adding a source](docs/adding-a-source.md)
 
 ## License

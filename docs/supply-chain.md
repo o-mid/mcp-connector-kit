@@ -10,13 +10,18 @@ Generate locally:
 docker run --rm -v "$PWD:/work" anchore/syft:latest dir:/work -o spdx-json > sbom.spdx.json
 ```
 
-## Container signing (optional)
+## Container signing
 
-Image signing with [cosign](https://docs.sigstore.dev/) is not wired in CI yet. When you add it:
+On tag push `v*` (or manual **container-release** workflow), GitHub Actions builds the root `Dockerfile`, pushes to `ghcr.io/<owner>/mcp-connector-kit`, and signs the digest with [cosign](https://docs.sigstore.dev/) keyless OIDC.
 
-1. Create `COSIGN_PRIVATE_KEY` / `COSIGN_PASSWORD` (or keyless OIDC) in GitHub secrets.
-2. Sign after `docker build`: `cosign sign --yes ghcr.io/you/mck-gateway@${DIGEST}`
+Verify after pull:
+
+```bash
+cosign verify ghcr.io/o-mid/mcp-connector-kit:latest --certificate-identity-regexp='.*' --certificate-oidc-issuer=https://token.actions.githubusercontent.com
+```
+
+Railway deploys still use the repo `Dockerfile` directly; GHCR images are for mirrored or air-gapped pulls.
 
 ## npm provenance
 
-Packages use `repository.directory` in each `package.json`. Enable [npm provenance](https://docs.npmjs.com/generating-provenance-statements) on the release workflow when publishing from GitHub Actions.
+The [release workflow](../.github/workflows/release.yml) sets `NPM_CONFIG_PROVENANCE=true` when `NPM_TOKEN` is configured. Packages include `publishConfig.access: public` and `repository.directory` for npm provenance statements.

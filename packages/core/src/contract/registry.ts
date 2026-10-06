@@ -1,4 +1,5 @@
 import { MemoryCache, singleFlight } from "../cache/memory.js";
+import { getAuditContext } from "../audit/context.js";
 import { stableHashInput } from "../cache/types.js";
 import { ConnectorError, isConnectorError } from "../errors.js";
 import { createSourceHttp } from "../http/client.js";
@@ -189,11 +190,13 @@ export function createSourceRegistry(
             "tool_call_end",
           );
           if (opts.auditLog) {
+            const tenant =
+              getAuditContext()?.tenantId ?? opts.tenantId ?? "default";
             log.info(
               {
                 audit: true,
                 event: "tool_call",
-                tenant: opts.tenantId ?? "default",
+                tenant,
                 tool: name,
                 source: tool.sourceId,
                 outcome: "ok",
@@ -226,11 +229,13 @@ export function createSourceRegistry(
             "tool_call_end",
           );
           if (opts.auditLog) {
+            const tenant =
+              getAuditContext()?.tenantId ?? opts.tenantId ?? "default";
             log.info(
               {
                 audit: true,
                 event: "tool_call",
-                tenant: opts.tenantId ?? "default",
+                tenant,
                 tool: name,
                 source: tool.sourceId,
                 outcome: "error",
