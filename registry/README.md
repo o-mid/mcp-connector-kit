@@ -5,6 +5,9 @@ Per-source entries describe npm packages for MCP Registry and marketplace listin
 | File | Package |
 |------|---------|
 | [sources/wikipedia.json](./sources/wikipedia.json) | `@mck/source-wikipedia` |
+| [sources/open-meteo.json](./sources/open-meteo.json) | `@mck/source-open-meteo` |
+| [sources/frankfurter.json](./sources/frankfurter.json) | `@mck/source-frankfurter` |
+| [sources/openalex.json](./sources/openalex.json) | `@mck/source-openalex` |
 | [sources/github.json](./sources/github.json) | `@mck/source-github` |
 | [sources/web-reader.json](./sources/web-reader.json) | `@mck/source-web-reader` |
 | [sources/brave.json](./sources/brave.json) | `@mck/source-brave` |

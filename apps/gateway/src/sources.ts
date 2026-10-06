@@ -5,12 +5,18 @@ import { braveSource } from "@mck/source-brave";
 import { exaSource } from "@mck/source-exa";
 import { tavilySource } from "@mck/source-tavily";
 import { wikipediaSource } from "@mck/source-wikipedia";
+import { openMeteoSource } from "@mck/source-open-meteo";
+import { frankfurterSource } from "@mck/source-frankfurter";
+import { openAlexSource } from "@mck/source-openalex";
 import { createWebReaderSource } from "@mck/source-web-reader";
 
 /** Static import map: only ids listed here can be enabled via env. */
 const catalog: Record<string, (opts: { webReaderAllowlist?: string[] }) => SourceDefinition> = {
   fixture: () => fixtureSource,
   wikipedia: () => wikipediaSource,
+  "open-meteo": () => openMeteoSource,
+  frankfurter: () => frankfurterSource,
+  openalex: () => openAlexSource,
   github: () => githubSource,
   brave: () => braveSource,
   exa: () => exaSource,

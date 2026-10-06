@@ -1,0 +1,8 @@
+{
+  "id": "frankfurter",
+  "package": "@mck/source-frankfurter",
+  "verified": true,
+  "tools": ["fx_latest"],
+  "contracts": ["fx_latest"],
+  "documentation": "https://github.com/o-mid/mcp-connector-kit/blob/main/docs/trust-tier.md"
+}

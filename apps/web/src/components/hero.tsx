@@ -39,7 +39,7 @@ export function Hero() {
             className="mt-6 max-w-lg text-lg leading-relaxed text-zinc-400"
           >
             Schema, contract, gateway, metrics. Authors add a source with a fixture. Agents get one Streamable HTTP
-            URL: Wikipedia on the public demo, search and allowlisted fetch on the paid SKU.
+            URL: Wikipedia, weather, exchange rates, and papers on the free SKU; search and allowlisted fetch on the paid SKU.
           </motion.p>
           <motion.div
             custom={3}

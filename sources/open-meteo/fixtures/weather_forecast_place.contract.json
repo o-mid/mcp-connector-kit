@@ -1,0 +1,64 @@
+{
+  "source": "open-meteo",
+  "tool": "weather_forecast",
+  "input": { "place": "Berlin", "days": 1 },
+  "mocks": [
+    {
+      "origin": "https://geocoding-api.open-meteo.com",
+      "pathPrefix": "/v1/search",
+      "body": {
+        "results": [
+          {
+            "name": "Berlin",
+            "latitude": 52.52437,
+            "longitude": 13.41053,
+            "country": "Germany",
+            "timezone": "Europe/Berlin"
+          }
+        ]
+      }
+    },
+    {
+      "origin": "https://api.open-meteo.com",
+      "pathPrefix": "/v1/forecast",
+      "body": {
+        "latitude": 52.52437,
+        "longitude": 13.41053,
+        "timezone": "Europe/Berlin",
+        "current": {
+          "time": "2026-10-06T11:00",
+          "temperature_2m": 16.1,
+          "weather_code": 0,
+          "wind_speed_10m": 5.8
+        },
+        "daily": {
+          "time": ["2026-10-06"],
+          "temperature_2m_max": [20.3],
+          "temperature_2m_min": [10.4],
+          "precipitation_sum": [0]
+        }
+      }
+    }
+  ],
+  "output": {
+    "place": "Berlin, Germany",
+    "latitude": 52.52437,
+    "longitude": 13.41053,
+    "timezone": "Europe/Berlin",
+    "current": {
+      "time": "2026-10-06T11:00",
+      "temperatureC": 16.1,
+      "weatherCode": 0,
+      "condition": "Clear",
+      "windSpeedKmh": 5.8
+    },
+    "daily": [
+      {
+        "date": "2026-10-06",
+        "tempMaxC": 20.3,
+        "tempMinC": 10.4,
+        "precipitationMm": 0
+      }
+    ]
+  }
+}

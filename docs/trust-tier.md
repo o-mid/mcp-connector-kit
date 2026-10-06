@@ -6,6 +6,9 @@ Verified read-only connectors shipped in this repo. Each tool has a `*.contract.
 |--------|-------|------------------|
 | `fixture` | `echo`, `health` | none |
 | `wikipedia` | `wiki_search`, `wiki_summary` | none |
+| `open-meteo` | `weather_forecast` | none (CC BY 4.0) |
+| `frankfurter` | `fx_latest` | none |
+| `openalex` | `paper_search` | none |
 | `github` | `search_repositories`, `search_issues` | optional `GITHUB_TOKEN` |
 | `web-reader` | `fetch_page` | `MCK_WEB_READER_ALLOWLIST` |
 | `brave` | `web_search` | `BRAVE_API_KEY` |
@@ -20,4 +23,4 @@ Enable the full set:
 MCK_SOURCE_PROFILE=trust MCK_SKU=paid MCK_LEGACY_TOOL_NAMES=true node apps/gateway/dist/cli.js
 ```
 
-Free hosted tier (`MCK_SKU=free`) exposes **fixture + Wikipedia only**.
+Free hosted tier (`MCK_SKU=free`) exposes **fixture, Wikipedia, Open-Meteo, Frankfurter, and OpenAlex**.

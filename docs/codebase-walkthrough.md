@@ -101,7 +101,7 @@ Misconfiguration throws here instead of halfway through a tool call.
 Named bundles:
 
 - `default` → `fixture`, `wikipedia`
-- `trust` → full bundle in `SOURCE_PROFILES` (seven ids: fixture, wikipedia, github, web-reader, brave, exa, tavily)
+- `trust` → full bundle in `SOURCE_PROFILES` (free SKU plus GitHub, web reader, Brave, Exa, Tavily)
 
 If `MCK_SOURCE_PROFILE` is set, it wins over `MCK_SOURCES`.
 

@@ -2,10 +2,13 @@ import { describe, expect, it } from "vitest";
 import { filterSourcesForSku } from "./tier.js";
 
 describe("gateway SKU", () => {
-  it("free tier keeps fixture and wikipedia only", () => {
-    expect(filterSourcesForSku(["fixture", "wikipedia", "github"], "free")).toEqual([
+  it("free tier keeps keyless sources and drops paid connectors", () => {
+    expect(filterSourcesForSku(["fixture", "wikipedia", "open-meteo", "frankfurter", "openalex", "github"], "free")).toEqual([
       "fixture",
       "wikipedia",
+      "open-meteo",
+      "frankfurter",
+      "openalex",
     ]);
   });
 

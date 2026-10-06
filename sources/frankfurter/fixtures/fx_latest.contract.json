@@ -1,0 +1,23 @@
+{
+  "source": "frankfurter",
+  "tool": "fx_latest",
+  "input": { "base": "USD", "symbols": ["EUR", "GBP"] },
+  "mock": {
+    "origin": "https://api.frankfurter.dev",
+    "pathPrefix": "/v1/latest",
+    "body": {
+      "amount": 1,
+      "base": "USD",
+      "date": "2026-10-05",
+      "rates": { "EUR": 0.89254, "GBP": 0.75616 }
+    }
+  },
+  "output": {
+    "base": "USD",
+    "date": "2026-10-05",
+    "rates": [
+      { "currency": "EUR", "rate": 0.89254 },
+      { "currency": "GBP", "rate": 0.75616 }
+    ]
+  }
+}

@@ -1,0 +1,8 @@
+{
+  "id": "openalex",
+  "package": "@mck/source-openalex",
+  "verified": true,
+  "tools": ["paper_search"],
+  "contracts": ["paper_search"],
+  "documentation": "https://github.com/o-mid/mcp-connector-kit/blob/main/docs/trust-tier.md"
+}

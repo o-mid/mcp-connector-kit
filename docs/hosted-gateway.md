@@ -5,7 +5,7 @@ Same Docker image as self-host; tier is controlled by environment.
 | | **Free** | **Paid** |
 |---|----------|----------|
 | Env | `MCK_SKU=free` | `MCK_SKU=paid` |
-| Sources | `fixture`, `wikipedia` | full trust tier |
+| Sources | `fixture`, `wikipedia`, `open-meteo`, `frankfurter`, `openalex` | full trust tier |
 | API keys | `MCK_API_KEYS` (recommended) | required for production |
 | Audit | off | `MCK_AUDIT_LOG=true` |
 | Tenant label | — | `MCK_TENANT_ID=...` (appears in audit JSON) |
@@ -13,7 +13,7 @@ Same Docker image as self-host; tier is controlled by environment.
 
 ## Public demo
 
-`MCK_PUBLIC_DEMO=true` adds `POST /demo/mcp` and `GET /demo/healthz`. That process loads only `fixture` and `wikipedia`, skips API keys, and rate-limits posts (30/minute per client IP). `/mcp` stays on the configured SKU and still requires `MCK_API_KEYS` when they are set.
+`MCK_PUBLIC_DEMO=true` adds `POST /demo/mcp` and `GET /demo/healthz`. That process loads the free SKU (fixture, Wikipedia, Open-Meteo, Frankfurter, OpenAlex), skips API keys, and rate-limits posts (30/minute per client IP). `/mcp` stays on the configured SKU and still requires `MCK_API_KEYS` when they are set.
 
 The marketing site calls `/demo/mcp` for the live `wiki_search` box. With the flag off, that box calls the English Wikipedia opensearch API directly and labels the result as such.
 

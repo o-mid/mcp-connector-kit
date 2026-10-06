@@ -1,0 +1,42 @@
+{
+  "source": "openalex",
+  "tool": "paper_search",
+  "input": { "query": "transformer attention", "limit": 1 },
+  "mock": {
+    "origin": "https://api.openalex.org",
+    "pathPrefix": "/works",
+    "body": {
+      "results": [
+        {
+          "id": "https://openalex.org/W2963403868",
+          "display_name": "Attention Is All You Need",
+          "publication_year": 2017,
+          "cited_by_count": 120000,
+          "doi": "https://doi.org/10.48550/arxiv.1706.03762",
+          "open_access": {
+            "is_oa": true,
+            "oa_url": "https://arxiv.org/abs/1706.03762"
+          },
+          "authorships": [
+            { "author": { "display_name": "Ashish Vaswani" } },
+            { "author": { "display_name": "Noam Shazeer" } }
+          ]
+        }
+      ]
+    }
+  },
+  "output": {
+    "query": "transformer attention",
+    "results": [
+      {
+        "title": "Attention Is All You Need",
+        "year": 2017,
+        "citedBy": 120000,
+        "url": "https://openalex.org/W2963403868",
+        "doi": "https://doi.org/10.48550/arxiv.1706.03762",
+        "openAccessUrl": "https://arxiv.org/abs/1706.03762",
+        "authors": ["Ashish Vaswani", "Noam Shazeer"]
+      }
+    ]
+  }
+}

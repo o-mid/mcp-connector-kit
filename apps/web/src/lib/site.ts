@@ -12,7 +12,7 @@ export const INSTALL_COMMANDS = `git clone https://github.com/o-mid/mcp-connecto
 cd mcp-connector-kit
 pnpm install
 pnpm build
-MCK_SOURCES=fixture,wikipedia MCK_TRANSPORT=http PORT=8080 node apps/gateway/dist/cli.js`;
+MCK_SOURCES=fixture,wikipedia,open-meteo,frankfurter,openalex MCK_TRANSPORT=http PORT=8080 node apps/gateway/dist/cli.js`;
 
 export type SourceCard = {
   name: string;
@@ -23,6 +23,9 @@ export type SourceCard = {
 
 export const SOURCES: SourceCard[] = [
   { name: "Wikipedia", tools: "wiki_search · wiki_summary", tier: "free", note: "No upstream key" },
+  { name: "Open-Meteo", tools: "weather_forecast", tier: "free", note: "No key · CC BY 4.0" },
+  { name: "Frankfurter", tools: "fx_latest", tier: "free", note: "No key · daily rates" },
+  { name: "OpenAlex", tools: "paper_search", tier: "free", note: "No key · works search" },
   { name: "Fixture", tools: "echo · health", tier: "free", note: "CI smoke" },
   { name: "GitHub", tools: "search_repositories · search_issues", tier: "paid", note: "GITHUB_TOKEN" },
   { name: "Brave", tools: "web_search", tier: "paid", note: "BRAVE_API_KEY" },

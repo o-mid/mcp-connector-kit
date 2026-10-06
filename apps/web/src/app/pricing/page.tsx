@@ -9,8 +9,8 @@ export const metadata: Metadata = {
 };
 
 const FREE = [
-  "fixture and Wikipedia",
-  "wiki_search and wiki_summary",
+  "fixture, Wikipedia, Open-Meteo, Frankfurter, OpenAlex",
+  "wiki_search, weather_forecast, fx_latest, paper_search",
   "Public demo at /demo/mcp when MCK_PUBLIC_DEMO=true",
   "Best-effort hosted uptime",
   "Contract fixtures in CI",

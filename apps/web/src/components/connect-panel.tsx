@@ -49,9 +49,10 @@ export function ConnectPanel() {
 
       {target === "demo" ? (
         <p className="max-w-2xl text-sm leading-relaxed text-zinc-400">
-          <span className="font-mono text-zinc-200">{DEMO_MCP_URL}</span> serves fixture and Wikipedia only, with no
-          bearer token, when the gateway is started with <span className="font-mono text-zinc-200">MCK_PUBLIC_DEMO=true</span>.
-          Paid tools stay on <span className="font-mono text-zinc-200">/mcp</span>.
+          <span className="font-mono text-zinc-200">{DEMO_MCP_URL}</span> serves the free SKU (Wikipedia, Open-Meteo,
+          Frankfurter, OpenAlex, fixture) with no bearer token, when the gateway is started with{" "}
+          <span className="font-mono text-zinc-200">MCK_PUBLIC_DEMO=true</span>. Paid search and fetch stay on{" "}
+          <span className="font-mono text-zinc-200">/mcp</span>.
         </p>
       ) : (
         <div className="max-w-2xl space-y-3">

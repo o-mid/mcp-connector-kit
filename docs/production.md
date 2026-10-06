@@ -66,7 +66,7 @@ Use this checklist before calling a deployment “production.” Status reflects
 ```bash
 MCK_SOURCE_PROFILE=trust
 MCK_SKU=paid
-MCK_SOURCES=fixture,wikipedia
+MCK_SOURCES=fixture,wikipedia,open-meteo,frankfurter,openalex
 MCK_TRANSPORT=http
 MCK_LEGACY_TOOL_NAMES=true
 MCK_API_KEYS=...
@@ -91,7 +91,7 @@ PORT=8080
 
 | Profile | Sources | Use case |
 |---------|---------|----------|
-| `default` | fixture, wikipedia | Docs, free tier demo |
+| `default` | fixture, wikipedia, open-meteo, frankfurter, openalex | Free tier |
 | `trust` | full trust tier (7 sources) | Paid SKU / self-host bundle |
 
 Set `MCK_SOURCE_PROFILE=trust` with `MCK_SKU=paid` for the full connector set.

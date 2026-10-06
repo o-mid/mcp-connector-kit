@@ -30,7 +30,7 @@ export function SourcesGrid() {
           className="mb-12 max-w-2xl"
         >
           <p className="text-sm font-medium uppercase tracking-[0.2em] text-zinc-500">Trust tier</p>
-          <h2 className="mt-3 text-3xl font-semibold tracking-[-0.02em] text-white sm:text-4xl">Seven sources, each contracted</h2>
+          <h2 className="mt-3 text-3xl font-semibold tracking-[-0.02em] text-white sm:text-4xl">Contracted sources</h2>
           <p className="mt-4 text-lg text-zinc-400">
             Every tool has an input schema, an upstream schema, and a fixture CI replays. The catalog stays small so
             the contracts stay true.

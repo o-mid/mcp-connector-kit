@@ -6,6 +6,7 @@
 import { connectStdio, createMcpServer, startHttpApp } from "@mck/server";
 import { createGatewayRegistry } from "./index.js";
 import { loadConfig } from "./config.js";
+import { FREE_TIER_SOURCES } from "./tier.js";
 import { initOtelIfConfigured } from "./otel.js";
 
 async function main(): Promise<void> {
@@ -18,7 +19,7 @@ async function main(): Promise<void> {
       ? createGatewayRegistry({
           ...config,
           sku: "free",
-          sourceIds: ["fixture", "wikipedia"],
+          sourceIds: [...FREE_TIER_SOURCES],
         })
       : undefined;
     const app = await startHttpApp({

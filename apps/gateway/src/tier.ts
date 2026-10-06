@@ -1,14 +1,22 @@
 /** Hosted gateway SKU: which sources and limits apply. */
 export type GatewaySku = "free" | "paid";
 
+/** Keyless sources. Free SKU and the public demo load this list. */
+export const FREE_TIER_SOURCES = [
+  "fixture",
+  "wikipedia",
+  "open-meteo",
+  "frankfurter",
+  "openalex",
+] as const;
+
 export const SKU_SOURCE_ALLOWLIST: Record<GatewaySku, readonly string[]> = {
-  free: ["fixture", "wikipedia"],
-  paid: ["fixture", "wikipedia", "github", "web-reader", "brave", "exa", "tavily"],
+  free: FREE_TIER_SOURCES,
+  paid: [...FREE_TIER_SOURCES, "github", "web-reader", "brave", "exa", "tavily"],
 };
 
 export const TRUST_TIER_SOURCES = [
-  "fixture",
-  "wikipedia",
+  ...FREE_TIER_SOURCES,
   "github",
   "web-reader",
   "brave",
@@ -20,7 +28,7 @@ export function parseSku(value: string | undefined): GatewaySku {
   return value === "paid" ? "paid" : "free";
 }
 
-/** Drops sources not included in the active SKU (free tier is Wikipedia + fixture only). */
+/** Drops sources not included in the active SKU. */
 export function filterSourcesForSku(sourceIds: string[], sku: GatewaySku): string[] {
   const allowed = new Set<string>(SKU_SOURCE_ALLOWLIST[sku]);
   return sourceIds.filter((id) => allowed.has(id));

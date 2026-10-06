@@ -59,6 +59,9 @@ The same path runs in **production** and in **CI contract replay** (undici mocks
 |--------|----------------|-----|
 | Fixture | `echo` (CI smoke) | free |
 | Wikipedia | `wiki_search`, `wiki_summary` | free |
+| Open-Meteo | `weather_forecast` | free |
+| Frankfurter | `fx_latest` | free |
+| OpenAlex | `paper_search` | free |
 | GitHub | repo / issue search | paid |
 | Brave / Exa / Tavily | web search variants | paid |
 | Web reader | `fetch_page` (host allowlist) | paid |
@@ -81,7 +84,7 @@ pnpm build
 **Local gateway (stdio, free sources):**
 
 ```bash
-MCK_SOURCES=fixture,wikipedia node apps/gateway/dist/cli.js
+MCK_SOURCE_PROFILE=default node apps/gateway/dist/cli.js
 ```
 
 **Trust profile (paid SKU — needs upstream API keys in env):**

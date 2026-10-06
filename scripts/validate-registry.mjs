@@ -9,6 +9,9 @@ const registryDir = path.join(root, "registry", "sources");
 const trustPaid = [
   "fixture",
   "wikipedia",
+  "open-meteo",
+  "frankfurter",
+  "openalex",
   "github",
   "web-reader",
   "brave",

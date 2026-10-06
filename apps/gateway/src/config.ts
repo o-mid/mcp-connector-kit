@@ -4,7 +4,7 @@ import { resolveSourceIds } from "./profiles.js";
 import { filterSourcesForSku, parseSku, type GatewaySku } from "./tier.js";
 
 const envSchema = z.object({
-  MCK_SOURCES: z.string().default("fixture,wikipedia"),
+  MCK_SOURCES: z.string().default("fixture,wikipedia,open-meteo,frankfurter,openalex"),
   MCK_TRANSPORT: z.enum(["stdio", "http"]).default("stdio"),
   MCK_LEGACY_TOOL_NAMES: z
     .string()
@@ -49,7 +49,7 @@ export type GatewayConfig = z.infer<typeof envSchema> & {
 /** Validates process env once at boot so misconfig fails fast. */
 export function loadConfig(env: NodeJS.ProcessEnv = process.env): GatewayConfig {
   const parsed = envSchema.parse(env);
-  // Profile overrides MCK_SOURCES when set; SKU then trims the list (free = fixture + wikipedia).
+  // Profile overrides MCK_SOURCES when set; SKU then trims the list.
   const profileIds = resolveSourceIds(parsed.MCK_SOURCE_PROFILE, parsed.MCK_SOURCES);
   const sku = parseSku(parsed.MCK_SKU);
   const sourceIds = filterSourcesForSku(profileIds, sku);

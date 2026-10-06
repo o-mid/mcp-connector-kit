@@ -1,7 +1,9 @@
+import { FREE_TIER_SOURCES, TRUST_TIER_SOURCES } from "./tier.js";
+
 /** Named source bundles for demos and deployments. */
 export const SOURCE_PROFILES: Record<string, string[]> = {
-  default: ["fixture", "wikipedia"],
-  trust: ["fixture", "wikipedia", "github", "web-reader", "brave", "exa", "tavily"],
+  default: [...FREE_TIER_SOURCES],
+  trust: [...TRUST_TIER_SOURCES],
 };
 
 export function resolveSourceIds(profile: string | undefined, explicit: string): string[] {

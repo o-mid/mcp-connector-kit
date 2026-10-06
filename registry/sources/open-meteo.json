@@ -1,0 +1,8 @@
+{
+  "id": "open-meteo",
+  "package": "@mck/source-open-meteo",
+  "verified": true,
+  "tools": ["weather_forecast"],
+  "contracts": ["weather_forecast", "weather_forecast_place"],
+  "documentation": "https://github.com/o-mid/mcp-connector-kit/blob/main/docs/trust-tier.md"
+}

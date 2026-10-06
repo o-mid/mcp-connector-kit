@@ -56,9 +56,18 @@ importers:
       '@mck/source-fixture':
         specifier: workspace:*
         version: link:../../sources/fixture
+      '@mck/source-frankfurter':
+        specifier: workspace:*
+        version: link:../../sources/frankfurter
       '@mck/source-github':
         specifier: workspace:*
         version: link:../../sources/github
+      '@mck/source-open-meteo':
+        specifier: workspace:*
+        version: link:../../sources/open-meteo
+      '@mck/source-openalex':
+        specifier: workspace:*
+        version: link:../../sources/openalex
       '@mck/source-tavily':
         specifier: workspace:*
         version: link:../../sources/tavily
@@ -279,7 +288,64 @@ importers:
         specifier: ^8.4.0
         version: 8.5.1(jiti@1.21.7)(postcss@8.5.29)(typescript@5.9.3)
 
+  sources/frankfurter:
+    dependencies:
+      '@mck/core':
+        specifier: workspace:*
+        version: link:../../packages/core
+      zod:
+        specifier: ^3.24.3
+        version: 3.25.76
+    devDependencies:
+      '@mck/testing':
+        specifier: workspace:*
+        version: link:../../packages/testing
+      tsup:
+        specifier: ^8.4.0
+        version: 8.5.1(jiti@1.21.7)(postcss@8.5.29)(typescript@5.9.3)
+      vitest:
+        specifier: ^3.2.4
+        version: 3.2.7(@types/node@22.20.5)(jiti@1.21.7)
+
   sources/github:
+    dependencies:
+      '@mck/core':
+        specifier: workspace:*
+        version: link:../../packages/core
+      zod:
+        specifier: ^3.24.3
+        version: 3.25.76
+    devDependencies:
+      '@mck/testing':
+        specifier: workspace:*
+        version: link:../../packages/testing
+      tsup:
+        specifier: ^8.4.0
+        version: 8.5.1(jiti@1.21.7)(postcss@8.5.29)(typescript@5.9.3)
+      vitest:
+        specifier: ^3.2.4
+        version: 3.2.7(@types/node@22.20.5)(jiti@1.21.7)
+
+  sources/open-meteo:
+    dependencies:
+      '@mck/core':
+        specifier: workspace:*
+        version: link:../../packages/core
+      zod:
+        specifier: ^3.24.3
+        version: 3.25.76
+    devDependencies:
+      '@mck/testing':
+        specifier: workspace:*
+        version: link:../../packages/testing
+      tsup:
+        specifier: ^8.4.0
+        version: 8.5.1(jiti@1.21.7)(postcss@8.5.29)(typescript@5.9.3)
+      vitest:
+        specifier: ^3.2.4
+        version: 3.2.7(@types/node@22.20.5)(jiti@1.21.7)
+
+  sources/openalex:
     dependencies:
       '@mck/core':
         specifier: workspace:*
