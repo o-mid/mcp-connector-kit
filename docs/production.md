@@ -33,7 +33,7 @@ Use this checklist before calling a deployment “production.” Status reflects
 | Item | Status | Notes |
 |------|--------|--------|
 | Unit tests | Partial | Core + sources |
-| Contract replay | Done | Trust tier: 9+ fixtures; CI `mck check` + registry validate |
+| Contract replay | Done | Trust tier: 9+ fixtures; CI `pnpm mck check .` + `pnpm validate:registry` |
 | MCP SDK e2e (server) | Done | stdio + HTTP + auth metadata |
 | Gateway MCP e2e | Done | default + **trust tier** (paid/free SKU) |
 | Live upstream smoke | Optional | `MCK_LIVE=1`, nightly workflow |

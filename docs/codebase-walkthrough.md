@@ -48,7 +48,7 @@ At runtime nothing “discovers” sources dynamically. The gateway **imports** 
 | `.env.example` | Documented env vars for gateway and API keys. |
 | `Dockerfile` | Multi-stage build of `@mck/gateway`; default HTTP, `default` profile, `free` SKU. |
 | `scripts/validate-registry.mjs` | Ensures `registry/sources/*.json` matches `sources/<id>` and trust-tier ids. |
-| `.github/workflows/ci.yml` | `pnpm check`, registry validate, `mck check .`. |
+| `.github/workflows/ci.yml` | `pnpm check`, `pnpm validate:registry`, `pnpm mck check .`. |
 | `.github/workflows/sbom.yml` | SBOM artifact on `main`. |
 | `.github/workflows/live-contracts.yml` | Scheduled health smoke; optional manual upstream curl. |
 | `.github/workflows/release.yml` | npm publish when `NPM_TOKEN` is set. |
@@ -58,7 +58,7 @@ At runtime nothing “discovers” sources dynamically. The gateway **imports** 
 | `registry/sources/*.json` | Per-source registry entries (`id`, `package`, trust metadata). |
 | `registry/README.md` | How registry JSON relates to npm packages. |
 
-Legacy connector folders under `sources/` are not in the gateway catalog; delete them if they reappear in a fork.
+Every shipped connector under `sources/` must appear in `apps/gateway/src/sources.ts` and `registry/sources/<id>.json`. Scaffolding via `pnpm mck new source` does not enable a source until you wire those two places (and SKU/profile lists when it joins the trust tier).
 
 ---
 
@@ -101,7 +101,7 @@ Misconfiguration throws here instead of halfway through a tool call.
 Named bundles:
 
 - `default` → `fixture`, `wikipedia`
-- `trust` → all seven trust-tier sources
+- `trust` → full bundle in `SOURCE_PROFILES` (seven ids: fixture, wikipedia, github, web-reader, brave, exa, tavily)
 
 If `MCK_SOURCE_PROFILE` is set, it wins over `MCK_SOURCES`.
 
@@ -311,7 +311,7 @@ sources/<id>/
 |----|-----------------------------------|----------|
 | `fixture` | `echo` | No network; sanity check |
 | `wikipedia` | `wiki_search`, `wiki_summary` | MediaWiki API |
-| `github` | repo/issue search tools | GitHub REST (token via env) |
+| `github` | `search_repositories`, `search_issues` | GitHub REST (token via env) |
 | `web-reader` | `fetch_page` | Allowlisted HTTPS fetch + HTML text |
 | `brave` | `web_search` | Brave Search API |
 | `exa` | `exa_search` | Exa POST API |
