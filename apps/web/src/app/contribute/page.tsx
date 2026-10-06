@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { PageIntro } from "@/components/page-intro";
-import { ADDING_A_SOURCE, GITHUB_REPO } from "@/lib/site";
+import { ADDING_A_SOURCE, OPEN_METEO_ISSUE } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: "Add a source",
@@ -53,10 +53,10 @@ export default function ContributePage() {
               Read the guide
             </a>
             <a
-              href={`${GITHUB_REPO}/issues/new?title=Add%20Open-Meteo%20source&labels=good%20first%20issue&body=Scaffold%20sources/open-meteo%20with%20a%20contract%20fixture%20for%20the%20forecast%20API.%20No%20API%20key.%20Follow%20docs/adding-a-source.md.`}
+              href={OPEN_METEO_ISSUE}
               className="inline-flex rounded-full border border-white/15 px-5 py-2.5 text-sm text-zinc-100 transition hover:border-white/30"
             >
-              Open a good-first issue
+              Good first issue
             </a>
           </div>
         </div>

@@ -5,6 +5,7 @@ export const DEMO_MCP_URL = `${GATEWAY_ORIGIN}/demo/mcp`;
 export const GITHUB_REPO = "https://github.com/o-mid/mcp-connector-kit";
 export const REGISTRY_METADATA = `${GITHUB_REPO}/blob/main/registry/server.json`;
 export const ADDING_A_SOURCE = `${GITHUB_REPO}/blob/main/docs/adding-a-source.md`;
+export const OPEN_METEO_ISSUE = `${GITHUB_REPO}/issues/1`;
 export const OG_IMAGE = `${SITE_ORIGIN}/opengraph-image`;
 
 export const INSTALL_COMMANDS = `git clone https://github.com/o-mid/mcp-connector-kit.git
