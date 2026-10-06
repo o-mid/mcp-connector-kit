@@ -40,6 +40,20 @@ Streamable HTTP endpoint: `https://<your-service>.up.railway.app/mcp`
 
 Update [`registry/server.json`](../registry/server.json) `remotes[0].url` when the hostname changes.
 
+## Marketing site (`mck-web`)
+
+Next.js UI at **`apps/web`**. Deploy as a **separate** Railway service (do not replace the gateway Dockerfile on `mck-web`):
+
+```bash
+cp railway.web.toml railway.toml   # temporarily, or set Dockerfile path in dashboard: apps/web/Dockerfile
+railway up -y --service mck-web
+git checkout railway.toml          # restore gateway config
+```
+
+Set `PORT=3000`. Health: `GET /`.
+
+Images under `apps/web/public/images/` were generated with Kling (`kling-image-v3_0`); see `ATTRIBUTION.md`.
+
 ## GitHub auto-deploy
 
 In the Railway service **Settings → Source**:

@@ -6,4 +6,5 @@ coverage
 .env
 .env.secrets
 .env.paid
+.next
 .DS_Store

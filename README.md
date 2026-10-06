@@ -4,6 +4,8 @@
 
 Production-grade framework for exposing third-party data sources as [Model Context Protocol](https://modelcontextprotocol.io) servers. Shared HTTP, rate limits, retries, caching, validation, and observability; thin adapters per upstream.
 
+**Site:** [mck-web-production.up.railway.app](https://mck-web-production.up.railway.app) · **Gateway:** [mcp-connector-kit-production.up.railway.app/mcp](https://mcp-connector-kit-production.up.railway.app/mcp)
+
 ## Quick start
 
 ```bash
@@ -48,6 +50,7 @@ See [`.env.example`](.env.example). Key variables: `MCK_SOURCES`, `MCK_SOURCE_PR
 - [MCP Registry / npm](docs/registry.md)
 - [npm publish](docs/npm-publish.md)
 - [One-time secrets & release](docs/secrets-one-time-ops.md)
+- [Marketing site](apps/web/README.md) (`pnpm web:dev`)
 - [Railway deploy](docs/railway.md)
 - [Supply chain / SBOM](docs/supply-chain.md)
 - [SLOs and Grafana](docs/slo.md)
