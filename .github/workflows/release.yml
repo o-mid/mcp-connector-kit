@@ -21,7 +21,8 @@ jobs:
       - name: Create release pull request or publish
         uses: changesets/action@v1
         with:
-          publish: pnpm release
+          version: pnpm version-packages
+          publish: ${{ secrets.NPM_TOKEN != '' && 'pnpm release' || '' }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
