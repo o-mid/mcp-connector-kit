@@ -12,7 +12,7 @@ The repo is a **pnpm + Turborepo** monorepo. Workspaces are declared in `pnpm-wo
 sequenceDiagram
   participant Agent as MCP client
   participant Transport as stdio or POST /mcp
-  participant Mcp as @mck/server
+  participant Mcp as mck/server
   participant Reg as createSourceRegistry
   participant Tool as defineTool.run
   participant Http as createSourceHttp

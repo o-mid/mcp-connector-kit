@@ -6,30 +6,30 @@ Shared libraries: **`@mck/core`** (registry, HTTP, cache, validation), **`@mck/s
 
 ```mermaid
 flowchart TB
-  subgraph clients [MCP clients]
-    IDE[Cursor / Claude Desktop]
-    HTTP[Remote agent over HTTPS]
+  subgraph clients ["MCP clients"]
+    IDE["Cursor / Claude Desktop"]
+    HTTP["Remote agent over HTTPS"]
   end
 
-  subgraph gateway [apps/gateway]
+  subgraph gateway ["apps/gateway"]
     CLI[cli.ts]
     CFG[loadConfig]
     IDX[createGatewayRegistry]
-    CAT[sources.ts resolveSources]
+    CAT["sources.ts resolveSources"]
   end
 
-  subgraph server [@mck/server]
+  subgraph mck_server ["@mck/server"]
     MCP[mcp-server.ts]
-    APP[http-app.ts metrics oauth]
+    APP["http-app.ts metrics oauth"]
   end
 
-  subgraph core [@mck/core]
+  subgraph mck_core ["@mck/core"]
     SR[createSourceRegistry]
-    HTTPc[createSourceHttp per source]
+    HTTPc["createSourceHttp per source"]
   end
 
-  subgraph src [sources/*]
-    RUN[defineTool.run and api.ts]
+  subgraph sources ["sources/*"]
+    RUN["defineTool.run and api.ts"]
   end
 
   IDE -->|stdio| MCP
