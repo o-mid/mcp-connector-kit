@@ -22,6 +22,7 @@ async function main(): Promise<void> {
           }
         : {}),
       corsOrigins: config.corsOrigins,
+      gatewaySku: config.sku,
       legacyErrors: config.MCK_LEGACY_ERRORS === true,
     });
     const shutdown = async () => {

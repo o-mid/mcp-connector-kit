@@ -11,6 +11,7 @@ export type HttpAppOptions = {
   apiKeys?: string[];
   oauth?: OAuthConfig;
   publicBaseUrl?: string;
+  gatewaySku?: string;
   bodyLimitBytes?: number;
   corsOrigins?: string[];
   legacyErrors?: boolean;
@@ -40,7 +41,7 @@ export async function startHttpApp(opts: HttpAppOptions): Promise<{
       }
       const path = req.url?.split("?")[0] ?? "/";
       if (path === "/healthz") {
-        json(res, 200, { status: "ok" });
+        json(res, 200, { status: "ok", sku: opts.gatewaySku ?? "self-host" });
         return;
       }
       if (path === "/readyz") {

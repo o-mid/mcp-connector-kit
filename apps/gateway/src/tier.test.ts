@@ -11,10 +11,11 @@ describe("gateway SKU", () => {
 
   it("paid tier includes trust sources", () => {
     const ids = filterSourcesForSku(
-      ["fixture", "wikipedia", "github", "web-reader", "brave"],
+      ["fixture", "wikipedia", "github", "web-reader", "brave", "exa"],
       "paid",
     );
     expect(ids).toContain("github");
     expect(ids).toContain("brave");
+    expect(ids).toContain("exa");
   });
 });

@@ -2,6 +2,7 @@ import type { SourceDefinition } from "@mck/core";
 import { fixtureSource } from "@mck/source-fixture";
 import { githubSource } from "@mck/source-github";
 import { braveSource } from "@mck/source-brave";
+import { exaSource } from "@mck/source-exa";
 import { wikipediaSource } from "@mck/source-wikipedia";
 import { createWebReaderSource } from "@mck/source-web-reader";
 
@@ -10,6 +11,7 @@ const catalog: Record<string, (opts: { webReaderAllowlist?: string[] }) => Sourc
   wikipedia: () => wikipediaSource,
   github: () => githubSource,
   brave: () => braveSource,
+  exa: () => exaSource,
   "web-reader": (opts) =>
     createWebReaderSource(
       opts.webReaderAllowlist ??

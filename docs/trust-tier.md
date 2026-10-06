@@ -9,6 +9,7 @@ Verified read-only connectors shipped in this repo. Each tool has a `*.contract.
 | `github` | `search_repositories`, `search_issues` | optional `GITHUB_TOKEN` |
 | `web-reader` | `fetch_page` | `MCK_WEB_READER_ALLOWLIST` (comma-separated HTTPS origins) |
 | `brave` | `web_search` | `BRAVE_API_KEY` |
+| `exa` | `search` | `EXA_API_KEY` |
 
 Enable the full set:
 
@@ -18,4 +19,4 @@ MCK_SOURCE_PROFILE=trust MCK_SKU=paid MCK_LEGACY_TOOL_NAMES=true node apps/gatew
 
 Free hosted tier (`MCK_SKU=free`) exposes **fixture + Wikipedia only**, even if the profile lists more.
 
-Exa and Tavily can follow the same pattern as `brave` (API key + contract mock); see [adding-a-source.md](./adding-a-source.md).
+Tavily can follow the same pattern as `exa` (POST + API key + contract mock).

@@ -29,10 +29,13 @@ export type HttpRequestOptions = {
   headers?: Record<string, string | undefined>;
   signal?: AbortSignal;
   json?: boolean;
+  method?: "GET" | "POST";
+  body?: unknown;
 };
 
 export type SourceHttpClient = {
   get<T>(path: string, opts?: HttpRequestOptions): Promise<T>;
+  post<T>(path: string, body: unknown, opts?: HttpRequestOptions): Promise<T>;
   getUrl<T>(url: string, opts?: HttpRequestOptions): Promise<T>;
 };
 
@@ -88,16 +91,21 @@ export function createSourceHttp(config: SourceHttpConfig): SourceHttpClient {
       try {
         const result = await withRetries(
           async () => {
+            const method = opts?.method ?? "GET";
             const init: RequestInit = {
-              method: "GET",
+              method,
               headers: {
                 accept: "application/json",
                 "user-agent": config.userAgent,
+                ...(method === "POST" ? { "content-type": "application/json" } : {}),
                 ...filterHeaders(opts?.headers),
               },
               signal: combined,
               redirect: "manual",
             };
+            if (method === "POST" && opts?.body !== undefined) {
+              init.body = JSON.stringify(opts.body);
+            }
             const res = await fetch(url, init);
             if (res.status >= 300 && res.status < 400) {
               const location = res.headers.get("location");
@@ -189,7 +197,15 @@ export function createSourceHttp(config: SourceHttpConfig): SourceHttpClient {
         throw new ConnectorError("internal", "No baseUrls configured", { source: config.sourceId });
       }
       const url = new URL(path, base);
-      return request<T>(url, opts);
+      return request<T>(url, { ...opts, method: opts?.method ?? "GET" });
+    },
+    post<T>(path: string, body: unknown, opts?: HttpRequestOptions): Promise<T> {
+      const base = config.baseUrls[0];
+      if (!base) {
+        throw new ConnectorError("internal", "No baseUrls configured", { source: config.sourceId });
+      }
+      const url = new URL(path, base);
+      return request<T>(url, { ...opts, method: "POST", body });
     },
     getUrl<T>(url: string, opts?: HttpRequestOptions): Promise<T> {
       return request<T>(new URL(url), opts);

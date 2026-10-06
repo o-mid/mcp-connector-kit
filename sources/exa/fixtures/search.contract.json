@@ -1,0 +1,39 @@
+{
+  "source": "exa",
+  "tool": "search",
+  "input": { "query": "Model Context Protocol", "limit": 2 },
+  "mock": {
+    "origin": "https://api.exa.ai",
+    "pathPrefix": "/search",
+    "method": "POST",
+    "body": {
+      "results": [
+        {
+          "title": "Model Context Protocol",
+          "url": "https://modelcontextprotocol.io/",
+          "text": "Open protocol connecting AI assistants to data."
+        },
+        {
+          "title": "MCP GitHub",
+          "url": "https://github.com/modelcontextprotocol",
+          "text": "Reference servers and SDKs."
+        }
+      ]
+    }
+  },
+  "output": {
+    "query": "Model Context Protocol",
+    "results": [
+      {
+        "title": "Model Context Protocol",
+        "url": "https://modelcontextprotocol.io/",
+        "snippet": "Open protocol connecting AI assistants to data."
+      },
+      {
+        "title": "MCP GitHub",
+        "url": "https://github.com/modelcontextprotocol",
+        "snippet": "Reference servers and SDKs."
+      }
+    ]
+  }
+}

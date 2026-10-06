@@ -9,6 +9,7 @@ import { startHttpApp } from "@mck/server";
 beforeAll(() => {
   prepareMcpHttpE2eNetwork();
   process.env.BRAVE_API_KEY = process.env.BRAVE_API_KEY ?? "e2e-test-key";
+  process.env.EXA_API_KEY = process.env.EXA_API_KEY ?? "e2e-test-key";
 });
 
 describe("trust tier HTTP MCP e2e", () => {
@@ -47,6 +48,14 @@ describe("trust tier HTTP MCP e2e", () => {
       pathPrefix: "/",
       body: "<html><body><p>Trust tier e2e</p></body></html>",
     });
+    mockHttpJson({
+      origin: "https://api.exa.ai",
+      pathPrefix: "/search",
+      method: "POST",
+      body: {
+        results: [{ title: "MCP", url: "https://modelcontextprotocol.io/", text: "Protocol" }],
+      },
+    });
 
     const registry = createGatewayRegistry(
       loadConfig({
@@ -67,6 +76,7 @@ describe("trust tier HTTP MCP e2e", () => {
     expect(names).toContain("search_repositories");
     expect(names).toContain("web_search");
     expect(names).toContain("fetch_page");
+    expect(names).toContain("search");
 
     const repos = await client.callTool({
       name: "search_repositories",
@@ -77,6 +87,36 @@ describe("trust tier HTTP MCP e2e", () => {
     if (block?.type === "text") {
       const data = JSON.parse(block.text) as { repositories: unknown[] };
       expect(data.repositories.length).toBe(1);
+    }
+
+    const search = await client.callTool({
+      name: "web_search",
+      arguments: { query: "MCP", limit: 1 },
+    });
+    const searchBlock = search.content?.[0];
+    if (searchBlock?.type === "text") {
+      const data = JSON.parse(searchBlock.text) as { results: unknown[] };
+      expect(data.results.length).toBeGreaterThan(0);
+    }
+
+    const page = await client.callTool({
+      name: "fetch_page",
+      arguments: { url: "https://example.com/page", max_chars: 1000 },
+    });
+    const pageBlock = page.content?.[0];
+    if (pageBlock?.type === "text") {
+      const data = JSON.parse(pageBlock.text) as { content: string };
+      expect(data.content).toContain("Trust tier e2e");
+    }
+
+    const exa = await client.callTool({
+      name: "search",
+      arguments: { query: "MCP", limit: 1 },
+    });
+    const exaBlock = exa.content?.[0];
+    if (exaBlock?.type === "text") {
+      const data = JSON.parse(exaBlock.text) as { results: unknown[] };
+      expect(data.results.length).toBe(1);
     }
 
     await client.close();

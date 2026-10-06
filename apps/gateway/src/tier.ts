@@ -3,10 +3,17 @@ export type GatewaySku = "free" | "paid";
 
 export const SKU_SOURCE_ALLOWLIST: Record<GatewaySku, readonly string[]> = {
   free: ["fixture", "wikipedia"],
-  paid: ["fixture", "wikipedia", "github", "web-reader", "brave"],
+  paid: ["fixture", "wikipedia", "github", "web-reader", "brave", "exa"],
 };
 
-export const TRUST_TIER_SOURCES = ["fixture", "wikipedia", "github", "web-reader", "brave"] as const;
+export const TRUST_TIER_SOURCES = [
+  "fixture",
+  "wikipedia",
+  "github",
+  "web-reader",
+  "brave",
+  "exa",
+] as const;
 
 export function parseSku(value: string | undefined): GatewaySku {
   return value === "paid" ? "paid" : "free";

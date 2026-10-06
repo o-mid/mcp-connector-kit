@@ -22,6 +22,7 @@
     "@mck/core": "workspace:*",
     "@mck/server": "workspace:*",
     "@mck/source-brave": "workspace:*",
+    "@mck/source-exa": "workspace:*",
     "@mck/source-fixture": "workspace:*",
     "@mck/source-github": "workspace:*",
     "@mck/source-web-reader": "workspace:*",
