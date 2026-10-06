@@ -15,6 +15,7 @@
     "smoke:production": "node scripts/smoke-production-gateway.mjs",
     "wait:railway": "node scripts/wait-railway-deploy.mjs",
     "railway:paid-env": "node scripts/railway-set-paid-env.mjs",
+    "ops:apply": "node scripts/apply-one-time-ops.mjs",
     "mck": "node packages/cli/dist/cli.js",
     "hooks:install": "git config core.hooksPath .githooks && chmod +x .githooks/* scripts/strip-ai-git-footers.py",
     "changeset": "changeset",

@@ -1,0 +1,17 @@
+# @mck/gateway
+
+## 1.0.1
+
+### Patch Changes
+
+- 1a01c23: OAuth tenant mapping from JWT claims, drift runbook, container cosign workflow, and npm provenance on release.
+- Updated dependencies [1a01c23]
+  - @mck/core@1.0.1
+  - @mck/server@1.0.1
+  - @mck/source-fixture@1.0.1
+  - @mck/source-wikipedia@1.0.1
+  - @mck/source-github@1.0.1
+  - @mck/source-web-reader@1.0.1
+  - @mck/source-brave@1.0.1
+  - @mck/source-exa@1.0.1
+  - @mck/source-tavily@1.0.1

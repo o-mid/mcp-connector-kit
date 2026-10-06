@@ -19,7 +19,7 @@ Each includes `"publishConfig": { "access": "public" }` and a `repository.direct
 
 1. `pnpm changeset` — describe bump(s) per package.
 2. Merge the Version Packages PR (or `pnpm version-packages` locally).
-3. Set `NPM_TOKEN` in GitHub Actions secrets for the org/user.
+3. Set `NPM_TOKEN` in GitHub Actions secrets ([one-time ops](./secrets-one-time-ops.md) or `pnpm ops:apply` from `.env.secrets`).
 4. Push to `main` — the `release` workflow runs `pnpm release` when Changesets detects a version bump.
 
 Dry run locally:

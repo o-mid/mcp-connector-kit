@@ -48,7 +48,7 @@ Use this checklist before calling a deployment “production.” Status reflects
 | SLO / Grafana | Done | [slo.md](./slo.md), `ops/grafana/` |
 | SBOM | Done | [sbom.yml](../.github/workflows/sbom.yml) |
 | Container cosign | Done | [container-release.yml](../.github/workflows/container-release.yml) on `v*` tags |
-| semver npm publish | Ready | Changesets + `NPM_TOKEN` + provenance |
+| semver npm publish | Ready | v1.0.1 on main; `NPM_TOKEN` via [secrets-one-time-ops.md](./secrets-one-time-ops.md) |
 
 ## Operations
 

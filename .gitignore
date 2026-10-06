@@ -4,4 +4,6 @@ dist
 coverage
 *.log
 .env
+.env.secrets
+.env.paid
 .DS_Store
