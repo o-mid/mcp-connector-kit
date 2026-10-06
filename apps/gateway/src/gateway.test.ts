@@ -10,6 +10,11 @@ describe("gateway", () => {
     expect(registry.listToolNames()).toContain("fixture.echo");
   });
 
+  it("parses the public demo flag", () => {
+    expect(loadConfig({ MCK_PUBLIC_DEMO: "true", LOG_LEVEL: "silent" }).MCK_PUBLIC_DEMO).toBe(true);
+    expect(loadConfig({ LOG_LEVEL: "silent" }).MCK_PUBLIC_DEMO).toBe(false);
+  });
+
   it("expands default profile", () => {
     const registry = createGatewayRegistry(
       loadConfig({ MCK_SOURCE_PROFILE: "default", LOG_LEVEL: "silent" }),

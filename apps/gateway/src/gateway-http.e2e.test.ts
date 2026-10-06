@@ -75,4 +75,60 @@ describe("gateway HTTP MCP e2e", () => {
     await client.close();
     await app.close();
   });
+
+  it("serves wikipedia on /demo/mcp without a key while /mcp stays locked", async () => {
+    const paid = createGatewayRegistry(
+      loadConfig({
+        MCK_SOURCE_PROFILE: "trust",
+        MCK_SKU: "paid",
+        MCK_LEGACY_TOOL_NAMES: "true",
+        MCK_API_KEYS: "secret",
+        MCK_WEB_READER_ALLOWLIST: "https://example.com",
+        LOG_LEVEL: "silent",
+      }),
+    );
+    const demo = createGatewayRegistry({
+      ...loadConfig({
+        MCK_LEGACY_TOOL_NAMES: "true",
+        LOG_LEVEL: "silent",
+      }),
+      sku: "free",
+      sourceIds: ["fixture", "wikipedia"],
+    });
+    const app = await startHttpApp({
+      registry: paid,
+      port: 0,
+      apiKeys: ["secret"],
+      demoRegistry: demo,
+      legacyErrors: false,
+    });
+
+    const locked = await fetch(`http://127.0.0.1:${app.port}/mcp`, {
+      method: "POST",
+      headers: {
+        "content-type": "application/json",
+        accept: "application/json, text/event-stream",
+      },
+      body: "{}",
+    });
+    expect(locked.status).toBe(401);
+
+    const demoHealth = await fetch(`http://127.0.0.1:${app.port}/demo/healthz`);
+    expect(demoHealth.status).toBe(200);
+
+    const url = new URL(`http://127.0.0.1:${app.port}/demo/mcp`);
+    const client = new Client({ name: "mck-demo-e2e", version: "1.0.0" });
+    await client.connect(new StreamableHTTPClientTransport(url) as Transport);
+    const names = (await client.listTools()).tools.map((t) => t.name);
+    expect(names).toContain("wiki_search");
+    expect(names).toContain("echo");
+    expect(names).not.toContain("web_search");
+    expect(names).not.toContain("search_repositories");
+
+    const echo = await client.callTool({ name: "echo", arguments: { message: "public-demo" } });
+    expect(parseToolJson(echo)).toEqual({ echoed: "public-demo" });
+
+    await client.close();
+    await app.close();
+  });
 });

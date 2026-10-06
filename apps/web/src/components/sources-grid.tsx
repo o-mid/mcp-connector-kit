@@ -2,13 +2,9 @@
 
 import { motion } from "framer-motion";
 
-const sources = [
-  { name: "Wikipedia", tools: "wiki_search · wiki_summary", tier: "free" as const },
-  { name: "Fixture", tools: "echo (CI smoke)", tier: "free" as const },
-  { name: "GitHub", tools: "repos · issues search", tier: "paid" as const },
-  { name: "Brave · Exa · Tavily", tools: "web_search · exa_search · tavily_search", tier: "paid" as const },
-  { name: "Web reader", tools: "fetch_page + allowlist", tier: "paid" as const },
-];
+import { SOURCES } from "@/lib/site";
+
+const sources = SOURCES;
 
 const container = {
   hidden: { opacity: 0 },
@@ -33,10 +29,11 @@ export function SourcesGrid() {
           viewport={{ once: true, margin: "-60px" }}
           className="mb-12 max-w-2xl"
         >
-          <p className="text-sm font-medium uppercase tracking-[0.2em] text-zinc-500">Sources</p>
-          <h2 className="mt-3 text-3xl font-semibold tracking-[-0.02em] text-white sm:text-4xl">Trust-tier connectors</h2>
+          <p className="text-sm font-medium uppercase tracking-[0.2em] text-zinc-500">Trust tier</p>
+          <h2 className="mt-3 text-3xl font-semibold tracking-[-0.02em] text-white sm:text-4xl">Seven sources, each contracted</h2>
           <p className="mt-4 text-lg text-zinc-400">
-            Each package ships contract fixtures replayed in CI—pattern from strict OSS HTTP clients, not demo scripts.
+            Every tool has an input schema, an upstream schema, and a fixture CI replays. The catalog stays small so
+            the contracts stay true.
           </p>
         </motion.div>
         <motion.div
@@ -65,6 +62,7 @@ export function SourcesGrid() {
                 </span>
               </div>
               <p className="mt-3 font-mono text-xs leading-relaxed text-zinc-500 group-hover:text-zinc-400">{s.tools}</p>
+              <p className="mt-2 text-xs text-zinc-600">{s.note}</p>
             </motion.article>
           ))}
         </motion.div>

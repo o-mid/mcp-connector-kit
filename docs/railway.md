@@ -10,10 +10,11 @@ MCK_TRANSPORT=http
 MCK_SOURCE_PROFILE=default
 MCK_SKU=free
 MCK_LEGACY_TOOL_NAMES=true
+MCK_PUBLIC_DEMO=true
 LOG_LEVEL=info
 ```
 
-Exposes Wikipedia + fixture at `POST /mcp`. Verify: `GET /healthz` → `{"status":"ok","sku":"free"}`.
+Exposes Wikipedia + fixture at `POST /mcp`. With `MCK_PUBLIC_DEMO=true`, the same two sources are also at `POST /demo/mcp` with no API key. Verify: `GET /healthz` → `{"status":"ok","sku":"free"}`.
 
 ## Paid trust tier
 
@@ -23,6 +24,7 @@ MCK_SOURCE_PROFILE=trust
 MCK_SKU=paid
 MCK_LEGACY_TOOL_NAMES=true
 MCK_API_KEYS=<strong-secret>
+MCK_PUBLIC_DEMO=true
 MCK_AUDIT_LOG=true
 MCK_TENANT_ID=<customer-id>
 GITHUB_TOKEN=

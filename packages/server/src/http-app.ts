@@ -15,6 +15,8 @@ export type HttpAppOptions = {
   bodyLimitBytes?: number;
   corsOrigins?: string[];
   legacyErrors?: boolean;
+  /** Unauthenticated MCP for the public Wikipedia demo. Omit to disable `/demo/mcp`. */
+  demoRegistry?: SourceRegistry;
 };
 
 /**
@@ -28,6 +30,16 @@ export async function startHttpApp(opts: HttpAppOptions): Promise<{
   const mcp = createMcpServer(opts.registry, mcpOpts);
   const transport = createStreamableTransport();
   await mcp.connect(transport as Transport);
+
+  let demoClose: (() => Promise<void>) | undefined;
+  let demoTransport: ReturnType<typeof createStreamableTransport> | undefined;
+  if (opts.demoRegistry) {
+    const demoMcp = createMcpServer(opts.demoRegistry, { ...mcpOpts, name: "mck-demo" });
+    demoTransport = createStreamableTransport();
+    await demoMcp.connect(demoTransport as Transport);
+    demoClose = () => demoMcp.close();
+  }
+  const demoHits = new Map<string, number[]>();
 
   const baseUrl = opts.publicBaseUrl ?? `http://127.0.0.1:${opts.port}`;
 
@@ -56,6 +68,27 @@ export async function startHttpApp(opts: HttpAppOptions): Promise<{
         const body = await metricsRegistry.metrics();
         res.writeHead(200, { "content-type": metricsRegistry.contentType });
         res.end(body);
+        return;
+      }
+      if (path === "/demo/healthz") {
+        if (!opts.demoRegistry) {
+          json(res, 404, { demo: false });
+          return;
+        }
+        json(res, 200, { demo: true, sources: opts.demoRegistry.sourceHealth() });
+        return;
+      }
+      if (path === "/demo/mcp" && req.method && ["POST", "GET", "DELETE"].includes(req.method)) {
+        if (!demoTransport) {
+          json(res, 404, { error: "demo_disabled" });
+          return;
+        }
+        if (req.method === "POST" && !allowDemoPost(demoHits, clientIp(req))) {
+          json(res, 429, { error: "rate_limited" });
+          return;
+        }
+        const body = req.method === "POST" ? await readBody(req, opts.bodyLimitBytes ?? 1_000_000) : undefined;
+        await demoTransport.handleRequest(req, res, body);
         return;
       }
       if (path === "/.well-known/oauth-protected-resource" && opts.oauth?.jwksUrl) {
@@ -92,6 +125,7 @@ export async function startHttpApp(opts: HttpAppOptions): Promise<{
   return {
     port,
     close: async () => {
+      if (demoClose) await demoClose();
       await mcp.close();
       await new Promise<void>((resolve, reject) => {
         server.close((err) => {
@@ -101,6 +135,28 @@ export async function startHttpApp(opts: HttpAppOptions): Promise<{
       });
     },
   };
+}
+
+const DEMO_WINDOW_MS = 60_000;
+const DEMO_POSTS_PER_WINDOW = 30;
+
+function clientIp(req: IncomingMessage): string {
+  const forwarded = req.headers["x-forwarded-for"];
+  const raw = Array.isArray(forwarded) ? forwarded[0] : forwarded;
+  const first = raw?.split(",")[0]?.trim();
+  return first || req.socket.remoteAddress || "unknown";
+}
+
+function allowDemoPost(hits: Map<string, number[]>, ip: string): boolean {
+  const now = Date.now();
+  const prev = (hits.get(ip) ?? []).filter((t) => now - t < DEMO_WINDOW_MS);
+  if (prev.length >= DEMO_POSTS_PER_WINDOW) {
+    hits.set(ip, prev);
+    return false;
+  }
+  prev.push(now);
+  hits.set(ip, prev);
+  return true;
 }
 
 function json(res: ServerResponse, status: number, payload: unknown): void {

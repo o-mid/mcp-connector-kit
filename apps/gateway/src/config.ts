@@ -32,6 +32,10 @@ const envSchema = z.object({
   MCK_OAUTH_AUDIENCE: z.string().optional(),
   MCK_OAUTH_ISSUER: z.string().url().optional(),
   MCK_OAUTH_TENANT_CLAIM: z.string().optional(),
+  MCK_PUBLIC_DEMO: z
+    .string()
+    .optional()
+    .transform((v) => v === "true" || v === "1"),
 });
 
 export type GatewayConfig = z.infer<typeof envSchema> & {

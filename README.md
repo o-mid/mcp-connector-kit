@@ -12,9 +12,15 @@ If you landed here without context: this repo is a **TypeScript monorepo** for b
 
 <p align="center">
   <a href="https://mck-web-production.up.railway.app/">Marketing site</a> ·
+  <a href="https://mck-web-production.up.railway.app/connect">Connect in Cursor</a> ·
+  <a href="https://mck-web-production.up.railway.app/compare">Compare</a> ·
+  <a href="https://mck-web-production.up.railway.app/pricing">Pricing</a> ·
+  <a href="https://mck-web-production.up.railway.app/status">Status</a> ·
   <a href="https://mcp-connector-kit-production.up.railway.app/mcp">Live MCP endpoint</a> ·
   <a href="https://mcp-connector-kit-production.up.railway.app/healthz">Gateway health</a>
 </p>
+
+Social preview image: https://mck-web-production.up.railway.app/opengraph-image
 
 ---
 
@@ -91,6 +97,47 @@ MCK_SOURCE_PROFILE=default MCK_TRANSPORT=http MCK_LEGACY_TOOL_NAMES=true PORT=80
 ```
 
 **Health checks:** `GET /healthz` · **Readiness:** `GET /readyz` · **Prometheus:** `GET /metrics`
+
+**Public Wikipedia demo** (no API key; fixture + Wikipedia only):
+
+```bash
+MCK_PUBLIC_DEMO=true MCK_TRANSPORT=http PORT=8080 node apps/gateway/dist/cli.js
+```
+
+`POST /demo/mcp` · `GET /demo/healthz`. `/mcp` is unchanged and still requires `MCK_API_KEYS` when that variable is set.
+
+`@mck/core`, `@mck/server`, `@mck/gateway`, and `@mck/cli` are the package names the release workflow publishes. They are not on the public npm registry yet. The clone above is the install that runs. Registry metadata for the hosted URL is [`registry/server.json`](registry/server.json); submit it with [`mcp-publisher`](https://github.com/modelcontextprotocol/registry).
+
+### Cursor (Streamable HTTP)
+
+Hosted gateway (bearer token required):
+
+```json
+{
+  "mcpServers": {
+    "mck": {
+      "url": "https://mcp-connector-kit-production.up.railway.app/mcp",
+      "headers": {
+        "Authorization": "Bearer YOUR_GATEWAY_KEY"
+      }
+    }
+  }
+}
+```
+
+Wikipedia demo, once `MCK_PUBLIC_DEMO=true` is set on the gateway:
+
+```json
+{
+  "mcpServers": {
+    "mck-wikipedia": {
+      "url": "https://mcp-connector-kit-production.up.railway.app/demo/mcp"
+    }
+  }
+}
+```
+
+One-click install and the Claude Desktop / LangChain snippets: [Connect](https://mck-web-production.up.railway.app/connect).
 
 **Marketing site (Next.js):**
 

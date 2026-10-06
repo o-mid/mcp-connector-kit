@@ -14,10 +14,18 @@ async function main(): Promise<void> {
   const registry = createGatewayRegistry(config);
   if (config.MCK_TRANSPORT === "http") {
     // Hosted path: /mcp, /healthz, /readyz, /metrics (+ optional OAuth metadata).
+    const demoRegistry = config.MCK_PUBLIC_DEMO
+      ? createGatewayRegistry({
+          ...config,
+          sku: "free",
+          sourceIds: ["fixture", "wikipedia"],
+        })
+      : undefined;
     const app = await startHttpApp({
       registry,
       port: config.PORT,
       apiKeys: config.apiKeys,
+      ...(demoRegistry ? { demoRegistry } : {}),
       ...(config.MCK_OAUTH_JWKS_URL
         ? {
             oauth: {
