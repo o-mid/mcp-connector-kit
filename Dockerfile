@@ -7,7 +7,7 @@ COPY sources ./sources
 COPY apps ./apps
 RUN pnpm install --frozen-lockfile
 RUN pnpm build --filter @mck/gateway...
-RUN pnpm deploy --filter=@mck/gateway --prod /out
+RUN pnpm deploy --filter=@mck/gateway --prod /out --legacy
 
 FROM node:22-slim
 WORKDIR /app
