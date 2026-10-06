@@ -1,0 +1,52 @@
+{
+  "source": "torob",
+  "tool": "similar_products",
+  "input": {
+    "id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+    "limit": 2
+  },
+  "mock": {
+    "origin": "https://api.torob.com",
+    "pathPrefix": "/v4/base-product/similar-base-product/",
+    "body": {
+      "results": [
+        {
+          "random_key": "b2c3d4e5-f6a7-8901-bcde-f12345678901",
+          "name1": "گوشی مشابه",
+          "name2": "Similar Phone",
+          "price": 4800000,
+          "price_text": "۴.۸ میلیون",
+          "price_text_mode": "active",
+          "shop_text": "در ۲ فروشگاه",
+          "web_client_absolute_url": "/p/similar-phone/",
+          "image_url": "https://img.torob.com/y.jpg",
+          "is_adv": false
+        },
+        {
+          "random_key": "00000000-0000-0000-0000-000000000099",
+          "name1": "ناموجود",
+          "price_text_mode": "disabled",
+          "price": 0
+        }
+      ]
+    }
+  },
+  "output": {
+    "id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+    "items": [
+      {
+        "id": "b2c3d4e5-f6a7-8901-bcde-f12345678901",
+        "title": "گوشی مشابه",
+        "title_en": "Similar Phone",
+        "price_toman": 4800000,
+        "price_label": "۴.۸ میلیون",
+        "in_stock": true,
+        "shop_count": 2,
+        "shop_text": "در ۲ فروشگاه",
+        "url": "https://torob.com/p/similar-phone/",
+        "image_url": "https://img.torob.com/y.jpg",
+        "is_ad": false
+      }
+    ]
+  }
+}

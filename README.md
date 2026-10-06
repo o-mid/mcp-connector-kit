@@ -15,8 +15,10 @@ MCK_SOURCES=fixture node apps/gateway/dist/cli.js
 Hosted HTTP (Streamable MCP at `POST /mcp`):
 
 ```bash
-MCK_SOURCES=cosmetic MCK_TRANSPORT=http MCK_LEGACY_TOOL_NAMES=true PORT=8080 node apps/gateway/dist/cli.js
+MCK_SOURCE_PROFILE=global-demo MCK_TRANSPORT=http MCK_LEGACY_TOOL_NAMES=true PORT=8080 node apps/gateway/dist/cli.js
 ```
+
+Iran commerce pack: `MCK_SOURCE_PROFILE=commerce-ir`. Legacy cosmetic composite: `MCK_SOURCE_PROFILE=cosmetic`.
 
 Health: `GET /healthz`, readiness: `GET /readyz`, metrics: `GET /metrics`.
 

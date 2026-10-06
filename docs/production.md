@@ -31,7 +31,7 @@ Use this checklist before calling a deployment “production.” Status reflects
 | Item | Status | Notes |
 |------|--------|--------|
 | Unit tests | Partial | Core + sources |
-| Contract replay | Partial | 12+ fixtures; expand per tool |
+| Contract replay | Partial | 15+ fixtures; expand remaining Torob tools |
 | MCP SDK e2e (server) | Done | stdio + HTTP (`prepareMcpHttpE2eNetwork`) |
 | Gateway MCP e2e | Done | stdio (`mck-gateway` CLI) + HTTP (profiles, mocked Wikipedia) |
 | Live upstream smoke | Optional | `MCK_LIVE=1`, nightly workflow |
