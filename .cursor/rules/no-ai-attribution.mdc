@@ -1,0 +1,29 @@
+---
+description: No Cursor/AI footers in git commits, pushes, or GitHub artifacts for this repo
+alwaysApply: true
+---
+
+# No AI / Cursor attribution in git
+
+GitHub adds `@cursoragent` as a contributor when commits include `Co-authored-by: Cursor <cursoragent@cursor.com>`. Never leave that (or similar) in history.
+
+## Forbidden in commit subject, body, tags, and PR text
+
+- `Co-authored-by: Cursor <cursoragent@cursor.com>` (any casing)
+- Any `Co-authored-by:` line naming Cursor, cursoragent, or other AI/bot co-authors unless a human co-author is explicitly requested
+- `Made with Cursor`, `Made with [Cursor](https://cursor.com)`, or variants
+- `[cursor]`, `[cowork]`, `made by cursor`, or other inline tool branding
+
+## Workflow
+
+1. After every `git commit`, run `git log -1 --format=%B` and confirm no forbidden lines.
+2. If a hook or tool appended a trailer, rewrite with `git commit-tree` (same tree and parent, intended message only). Do not use `--no-verify` to bypass hooks unless the user explicitly allows it.
+3. After `git push`, commits being pushed must pass `.githooks/pre-push` (install with `pnpm hooks:install`).
+4. After `gh pr create`, run `gh pr view` and remove any tool footer from the body.
+
+## Helpers
+
+- `scripts/strip-ai-git-footers.py` — strips footers from a message file or stdin (used by git hooks)
+- `.githooks/prepare-commit-msg`, `commit-msg`, `pre-push` — enforce on commit and push
+
+Authors for this repo should remain human (`Omid Mirzaei` / `@o-mid` only on the contributor graph).

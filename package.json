@@ -11,6 +11,7 @@
     "lint": "turbo run lint",
     "typecheck": "turbo run typecheck",
     "check": "pnpm build && pnpm test",
+    "hooks:install": "git config core.hooksPath .githooks && chmod +x .githooks/* scripts/strip-ai-git-footers.py",
     "changeset": "changeset",
     "version-packages": "changeset version",
     "release": "pnpm build && changeset publish"

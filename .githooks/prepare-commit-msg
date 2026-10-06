@@ -1,0 +1,5 @@
+#!/bin/sh
+# Strips Cursor-injected Co-authored-by trailers before the commit is recorded.
+ROOT="$(git rev-parse --show-toplevel)"
+MSG_FILE="${1:?}"
+python3 "$ROOT/scripts/strip-ai-git-footers.py" --file "$MSG_FILE"

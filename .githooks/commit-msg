@@ -1,0 +1,8 @@
+#!/bin/sh
+# Final gate: refuse commits that still contain AI/Cursor attribution.
+ROOT="$(git rev-parse --show-toplevel)"
+MSG_FILE="${1:?}"
+if ! python3 "$ROOT/scripts/strip-ai-git-footers.py" --check < "$MSG_FILE"; then
+  echo "commit-msg: remove Cursor/AI attribution (Co-authored-by, Made with Cursor, etc.)" >&2
+  exit 1
+fi
