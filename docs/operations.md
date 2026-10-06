@@ -32,6 +32,8 @@ With `MCK_AUDIT_LOG=true`, ship JSON logs (pino) to your SIEM. Filter `audit=tru
 
 See [railway.md](./railway.md) and [hosted-gateway.md](./hosted-gateway.md). Docker image defaults: `MCK_SKU=free`, `MCK_SOURCE_PROFILE=default`.
 
+After deploy: `node scripts/smoke-production-gateway.mjs` (uses `registry/server.json` URL) or `node scripts/wait-railway-deploy.mjs` when a Railway CLI build is in flight.
+
 ## Secret rotation
 
 Rotate `MCK_API_KEYS` and upstream API keys via Railway/env reload. OAuth: rotate IdP signing keys; JWKS URL picks up new keys automatically.

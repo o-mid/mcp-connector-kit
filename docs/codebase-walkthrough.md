@@ -58,7 +58,7 @@ At runtime nothing “discovers” sources dynamically. The gateway **imports** 
 | `registry/sources/*.json` | Per-source registry entries (`id`, `package`, trust metadata). |
 | `registry/README.md` | How registry JSON relates to npm packages. |
 
-Legacy connector folders may still exist under `sources/` (e.g. old commerce adapters) but they are **not** wired in `apps/gateway/src/sources.ts` or trust-tier lists. Treat them as dead weight until deleted.
+Legacy connector folders under `sources/` are not in the gateway catalog; delete them if they reappear in a fork.
 
 ---
 
