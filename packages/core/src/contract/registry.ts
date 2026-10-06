@@ -220,8 +220,7 @@ export function createSourceRegistry(
               }).toPayload();
           const failure: ToolCallResult = { ok: false, error: payload };
           if (opts.legacyErrors) {
-            if (tool.sourceId === "torob") failure.legacyTorobPlain = true;
-            else failure.legacyErrorShape = true;
+            failure.legacyErrorShape = true;
           }
           return failure;
         }

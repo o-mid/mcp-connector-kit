@@ -18,7 +18,7 @@ function parseToolJson(content: unknown): unknown {
 }
 
 describe("gateway HTTP MCP e2e", () => {
-  it("serves global-demo profile over Streamable HTTP", async () => {
+  it("serves default profile over Streamable HTTP", async () => {
     mockHttpJson({
       origin: "https://en.wikipedia.org",
       pathPrefix: "/w/api.php",
@@ -35,7 +35,7 @@ describe("gateway HTTP MCP e2e", () => {
 
     const registry = createGatewayRegistry(
       loadConfig({
-        MCK_SOURCE_PROFILE: "global-demo",
+        MCK_SOURCE_PROFILE: "default",
         MCK_LEGACY_TOOL_NAMES: "true",
         LOG_LEVEL: "silent",
       }),
@@ -73,30 +73,6 @@ describe("gateway HTTP MCP e2e", () => {
         },
       ],
     });
-
-    await client.close();
-    await app.close();
-  });
-
-  it("lists commerce-ir tools without calling upstream", async () => {
-    const registry = createGatewayRegistry(
-      loadConfig({
-        MCK_SOURCE_PROFILE: "commerce-ir",
-        MCK_LEGACY_TOOL_NAMES: "true",
-        LOG_LEVEL: "silent",
-      }),
-    );
-
-    const app = await startHttpApp({ registry, port: 0, legacyErrors: false });
-    const url = new URL(`http://127.0.0.1:${app.port}/mcp`);
-    const transport = new StreamableHTTPClientTransport(url);
-    const client = new Client({ name: "mck-gateway-e2e", version: "1.0.0" });
-    await client.connect(transport);
-
-    const tools = await client.listTools();
-    const names = tools.tools.map((t) => t.name);
-    expect(names).toContain("search_torob");
-    expect(names).toContain("search_products");
 
     await client.close();
     await app.close();

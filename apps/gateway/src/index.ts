@@ -9,8 +9,7 @@ export function createGatewayRegistry(config: GatewayConfig): SourceRegistry {
     config.MCK_CACHE === "redis" && config.REDIS_URL
       ? new RedisCache(config.REDIS_URL)
       : createDefaultCache();
-  const sourceOpts = config.wooShops ? { wooShops: config.wooShops } : {};
-  const sources = resolveSources(config.sourceIds, sourceOpts);
+  const sources = resolveSources(config.sourceIds);
   const logger = createMckLogger(config.LOG_LEVEL);
   return createSourceRegistry(sources, {
     cache,

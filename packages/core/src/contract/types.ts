@@ -64,10 +64,8 @@ export type ToolCallResult =
   | {
       ok: false;
       error: ConnectorErrorPayload;
-      /** Khanoumi / cosmetic style `{ error: string }` JSON. */
+      /** Legacy `{ error: string }` JSON for older MCP clients. */
       legacyErrorShape?: boolean;
-      /** Torob style plain-text error message. */
-      legacyTorobPlain?: boolean;
     };
 
 export type RegisteredTool = DefinedTool<unknown, unknown, unknown> & {

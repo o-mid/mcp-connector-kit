@@ -9,16 +9,14 @@ Production-grade framework for exposing third-party data sources as [Model Conte
 ```bash
 pnpm install
 pnpm build
-MCK_SOURCES=fixture node apps/gateway/dist/cli.js
+MCK_SOURCES=fixture,wikipedia node apps/gateway/dist/cli.js
 ```
 
 Hosted HTTP (Streamable MCP at `POST /mcp`):
 
 ```bash
-MCK_SOURCE_PROFILE=global-demo MCK_TRANSPORT=http MCK_LEGACY_TOOL_NAMES=true PORT=8080 node apps/gateway/dist/cli.js
+MCK_SOURCE_PROFILE=default MCK_TRANSPORT=http MCK_LEGACY_TOOL_NAMES=true PORT=8080 node apps/gateway/dist/cli.js
 ```
-
-Iran commerce pack: `MCK_SOURCE_PROFILE=commerce-ir`. Legacy cosmetic composite: `MCK_SOURCE_PROFILE=cosmetic`.
 
 Health: `GET /healthz`, readiness: `GET /readyz`, metrics: `GET /metrics`.
 
@@ -29,11 +27,11 @@ Health: `GET /healthz`, readiness: `GET /readyz`, metrics: `GET /metrics`.
 | `@mck/core` | HTTP client, cache, errors, `defineSource` / `defineTool` |
 | `@mck/server` | MCP SDK server, stdio + Streamable HTTP |
 | `@mck/gateway` | Deployable multi-source server |
-| `@mck/source-*` | Torob, Khanoumi, WooCommerce, Wikipedia, fixture |
+| `@mck/source-*` | Wikipedia, fixture, and your adapters |
 
 ## Environment
 
-See [`.env.example`](.env.example). Key variables: `MCK_SOURCES`, `MCK_SOURCE_PROFILE`, `MCK_TRANSPORT`, `MCK_LEGACY_TOOL_NAMES`, `MCK_WOO_SHOPS`.
+See [`.env.example`](.env.example). Key variables: `MCK_SOURCES`, `MCK_SOURCE_PROFILE`, `MCK_TRANSPORT`, `MCK_LEGACY_TOOL_NAMES`.
 
 ## Docs
 

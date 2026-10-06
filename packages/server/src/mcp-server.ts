@@ -33,14 +33,9 @@ export function createMcpServer(
       async (args, extra) => {
         const result = await registry.callTool(publicName, args, extra.signal);
         if (!result.ok) {
-          let text: string;
-          if (result.legacyTorobPlain) {
-            text = result.error.message;
-          } else if (result.legacyErrorShape) {
-            text = JSON.stringify({ error: result.error.message }, null, 2);
-          } else {
-            text = JSON.stringify(result.error);
-          }
+          const text = result.legacyErrorShape
+            ? JSON.stringify({ error: result.error.message }, null, 2)
+            : JSON.stringify(result.error);
           return { content: [{ type: "text", text }], isError: true };
         }
         const space = result.legacyPretty ? 2 : 0;

@@ -31,9 +31,9 @@ Use this checklist before calling a deployment “production.” Status reflects
 | Item | Status | Notes |
 |------|--------|--------|
 | Unit tests | Partial | Core + sources |
-| Contract replay | Partial | 15+ fixtures; expand remaining Torob tools |
+| Contract replay | Partial | fixture + Wikipedia; add per new source |
 | MCP SDK e2e (server) | Done | stdio + HTTP (`prepareMcpHttpE2eNetwork`) |
-| Gateway MCP e2e | Done | stdio (`mck-gateway` CLI) + HTTP (profiles, mocked Wikipedia) |
+| Gateway MCP e2e | Done | stdio (`mck-gateway` CLI) + HTTP (mocked Wikipedia) |
 | Live upstream smoke | Optional | `MCK_LIVE=1`, nightly workflow |
 
 ## Supply chain
@@ -57,7 +57,7 @@ Use this checklist before calling a deployment “production.” Status reflects
 ## Environment reference
 
 ```bash
-MCK_SOURCES=fixture,wikipedia          # or MCK_SOURCE_PROFILE=global-demo
+MCK_SOURCES=fixture,wikipedia          # or MCK_SOURCE_PROFILE=default
 MCK_TRANSPORT=http
 MCK_LEGACY_TOOL_NAMES=true
 MCK_API_KEYS=...
@@ -73,8 +73,6 @@ PORT=8080
 
 | Profile | Sources | Use case |
 |---------|---------|----------|
-| `global-demo` | fixture, wikipedia | Docs, CI, worldwide demo |
-| `commerce-ir` | torob, khanoumi, woocommerce | Iran commerce pack |
-| `cosmetic` | composite (legacy) | cosmetic-mcp parity |
+| `default` | fixture, wikipedia | Docs, CI, hosted demo |
 
-Set `MCK_SOURCE_PROFILE=global-demo` or list sources explicitly in `MCK_SOURCES`.
+Set `MCK_SOURCE_PROFILE=default` or list sources explicitly in `MCK_SOURCES`.

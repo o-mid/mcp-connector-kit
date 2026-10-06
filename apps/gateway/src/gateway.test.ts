@@ -10,9 +10,9 @@ describe("gateway", () => {
     expect(registry.listToolNames()).toContain("fixture.echo");
   });
 
-  it("expands global-demo profile", () => {
+  it("expands default profile", () => {
     const registry = createGatewayRegistry(
-      loadConfig({ MCK_SOURCE_PROFILE: "global-demo", LOG_LEVEL: "silent" }),
+      loadConfig({ MCK_SOURCE_PROFILE: "default", LOG_LEVEL: "silent" }),
     );
     expect(registry.listToolNames()).toContain("fixture.echo");
     expect(registry.listToolNames()).toContain("wikipedia.wiki_search");

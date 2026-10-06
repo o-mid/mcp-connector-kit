@@ -1,8 +1,6 @@
-/** Named source bundles for demos and regional packs. */
+/** Named source bundles for demos and deployments. */
 export const SOURCE_PROFILES: Record<string, string[]> = {
-  "global-demo": ["fixture", "wikipedia"],
-  "commerce-ir": ["torob", "khanoumi", "woocommerce"],
-  cosmetic: ["cosmetic"],
+  default: ["fixture", "wikipedia"],
 };
 
 export function resolveSourceIds(profile: string | undefined, explicit: string): string[] {

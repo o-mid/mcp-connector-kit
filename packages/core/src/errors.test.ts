@@ -3,7 +3,7 @@ import { ConnectorError } from "./errors.js";
 
 describe("ConnectorError", () => {
   it("exposes stable payload", () => {
-    const err = new ConnectorError("not_found", "missing", { source: "torob" });
+    const err = new ConnectorError("not_found", "missing", { source: "wikipedia" });
     expect(err.toPayload().code).toBe("not_found");
     expect(err.retryable).toBe(false);
   });

@@ -50,18 +50,9 @@ importers:
       '@mck/source-fixture':
         specifier: workspace:*
         version: link:../../sources/fixture
-      '@mck/source-khanoumi':
-        specifier: workspace:*
-        version: link:../../sources/khanoumi
-      '@mck/source-torob':
-        specifier: workspace:*
-        version: link:../../sources/torob
       '@mck/source-wikipedia':
         specifier: workspace:*
         version: link:../../sources/wikipedia
-      '@mck/source-woocommerce':
-        specifier: workspace:*
-        version: link:../../sources/woocommerce
       '@opentelemetry/exporter-trace-otlp-http':
         specifier: ^0.57.0
         version: 0.57.2(@opentelemetry/api@1.9.1)
@@ -195,64 +186,7 @@ importers:
         specifier: ^8.4.0
         version: 8.5.1(postcss@8.5.29)(typescript@5.9.3)
 
-  sources/khanoumi:
-    dependencies:
-      '@mck/core':
-        specifier: workspace:*
-        version: link:../../packages/core
-      zod:
-        specifier: ^3.24.3
-        version: 3.25.76
-    devDependencies:
-      '@mck/testing':
-        specifier: workspace:*
-        version: link:../../packages/testing
-      tsup:
-        specifier: ^8.4.0
-        version: 8.5.1(postcss@8.5.29)(typescript@5.9.3)
-      vitest:
-        specifier: ^3.2.4
-        version: 3.2.7(@types/node@22.20.5)
-
-  sources/torob:
-    dependencies:
-      '@mck/core':
-        specifier: workspace:*
-        version: link:../../packages/core
-      zod:
-        specifier: ^3.24.3
-        version: 3.25.76
-    devDependencies:
-      '@mck/testing':
-        specifier: workspace:*
-        version: link:../../packages/testing
-      tsup:
-        specifier: ^8.4.0
-        version: 8.5.1(postcss@8.5.29)(typescript@5.9.3)
-      vitest:
-        specifier: ^3.2.4
-        version: 3.2.7(@types/node@22.20.5)
-
   sources/wikipedia:
-    dependencies:
-      '@mck/core':
-        specifier: workspace:*
-        version: link:../../packages/core
-      zod:
-        specifier: ^3.24.3
-        version: 3.25.76
-    devDependencies:
-      '@mck/testing':
-        specifier: workspace:*
-        version: link:../../packages/testing
-      tsup:
-        specifier: ^8.4.0
-        version: 8.5.1(postcss@8.5.29)(typescript@5.9.3)
-      vitest:
-        specifier: ^3.2.4
-        version: 3.2.7(@types/node@22.20.5)
-
-  sources/woocommerce:
     dependencies:
       '@mck/core':
         specifier: workspace:*

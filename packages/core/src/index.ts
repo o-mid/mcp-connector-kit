@@ -22,10 +22,4 @@ export type {
 } from "./contract/types.js";
 export { createMckLogger, toolLogFromPino } from "./log/pino.js";
 export { withToolSpan } from "./telemetry/spans.js";
-export {
-  faToEn,
-  foldText,
-  htmlToText,
-  plainTextFromHtml,
-  shopCountFromText,
-} from "./text/persian.js";
+export { htmlToText, plainTextFromHtml } from "./text/html-text.js";
