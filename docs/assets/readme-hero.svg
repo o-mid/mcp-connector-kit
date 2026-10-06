@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 480" role="img" aria-labelledby="title desc">
+  <title id="title">MCP Connector Kit gateway</title>
+  <desc id="desc">One MCP gateway routing tool calls to Wikipedia, GitHub, search, web reader, fixture, and metrics sources.</desc>
+  <defs>
+    <linearGradient id="hubGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#a78bfa"/>
+      <stop offset="100%" stop-color="#38bdf8"/>
+    </linearGradient>
+    <linearGradient id="cardGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#18181b"/>
+      <stop offset="100%" stop-color="#09090b"/>
+    </linearGradient>
+    <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="2" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+  <rect width="800" height="480" rx="24" fill="url(#cardGrad)" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
+  <rect width="800" height="480" rx="24" fill="url(#hubGrad)" opacity="0.04"/>
+  <!-- grid -->
+  <g stroke="rgba(255,255,255,0.04)" stroke-width="1">
+    <path d="M0 80h800M0 160h800M0 240h800M0 320h800M0 400h800"/>
+    <path d="M80 0v480M160 0v480M240 0v480M320 0v480M400 0v480M480 0v480M560 0v480M640 0v480M720 0v480"/>
+  </g>
+  <!-- hub -->
+  <g transform="translate(400,228)">
+    <polygon points="0,-42 28,-24 28,24 0,42 -28,24 -28,-24" fill="url(#hubGrad)" filter="url(#glow)"/>
+    <text y="6" text-anchor="middle" fill="#09090b" font-family="ui-monospace, monospace" font-size="14" font-weight="600">gateway</text>
+  </g>
+  <!-- satellites: angle deg, label -->
+  <g font-family="ui-monospace, monospace" font-size="12" fill="#a1a1aa">
+    <g><line x1="400" y1="228" x2="400" y2="88" stroke="rgba(255,255,255,0.14)"/><rect x="364" y="68" width="72" height="28" rx="8" fill="#18181b" stroke="rgba(255,255,255,0.1)"/><text x="400" y="86" text-anchor="middle">Wikipedia</text></g>
+    <g><line x1="400" y1="228" x2="552" y2="142" stroke="rgba(255,255,255,0.14)"/><rect x="516" y="122" width="72" height="28" rx="8" fill="#18181b" stroke="rgba(255,255,255,0.1)"/><text x="552" y="140" text-anchor="middle">GitHub</text></g>
+    <g><line x1="400" y1="228" x2="552" y2="314" stroke="rgba(255,255,255,0.14)"/><rect x="516" y="294" width="72" height="28" rx="8" fill="#18181b" stroke="rgba(255,255,255,0.1)"/><text x="552" y="312" text-anchor="middle">Search</text></g>
+    <g><line x1="400" y1="228" x2="400" y2="368" stroke="rgba(255,255,255,0.14)"/><rect x="364" y="348" width="72" height="28" rx="8" fill="#18181b" stroke="rgba(255,255,255,0.1)"/><text x="400" y="366" text-anchor="middle">Reader</text></g>
+    <g><line x1="400" y1="228" x2="248" y2="314" stroke="rgba(255,255,255,0.14)"/><rect x="212" y="294" width="72" height="28" rx="8" fill="#18181b" stroke="rgba(255,255,255,0.1)"/><text x="248" y="312" text-anchor="middle">Fixture</text></g>
+    <g><line x1="400" y1="228" x2="248" y2="142" stroke="rgba(255,255,255,0.14)"/><rect x="212" y="122" width="72" height="28" rx="8" fill="#18181b" stroke="rgba(255,255,255,0.1)"/><text x="248" y="140" text-anchor="middle">Metrics</text></g>
+  </g>
+  <rect x="32" y="408" width="736" height="40" rx="12" fill="rgba(0,0,0,0.45)" stroke="rgba(255,255,255,0.06)"/>
+  <circle cx="52" cy="428" r="4" fill="#34d399"/>
+  <text x="68" y="433" fill="#a1a1aa" font-family="ui-monospace, monospace" font-size="13">POST /mcp · sku=paid · 7 sources ready</text>
+</svg>
