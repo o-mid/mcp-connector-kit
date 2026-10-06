@@ -28,8 +28,8 @@ jobs:
           curl -sf http://127.0.0.1:8090/readyz
 
       - name: Production gateway smoke
+        if: github.event_name == 'workflow_dispatch'
         run: node scripts/smoke-production-gateway.mjs
-        continue-on-error: true
 
   live-upstream:
     runs-on: ubuntu-latest

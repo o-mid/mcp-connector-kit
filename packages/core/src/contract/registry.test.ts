@@ -16,8 +16,8 @@ const demoSource = defineSource({
       input: z.object({}),
       upstream: z.object({ ok: z.boolean() }),
       output: z.object({ ok: z.boolean() }),
-      async run() {
-        return { ok: true };
+      run() {
+        return Promise.resolve({ ok: true });
       },
     }),
   ],

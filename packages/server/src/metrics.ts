@@ -52,7 +52,7 @@ export function createPrometheusRecorder(registry: Registry): MetricsRecorder {
 
   cachedRecorder = {
     increment(name, labels = {}, value = 1) {
-      const L = labels as Record<string, string>;
+      const L = labels;
       switch (name) {
         case "mck_tool_calls_total":
           toolCalls.inc({ source: L.source ?? "", tool: L.tool ?? "", outcome: L.outcome ?? "" }, value);
@@ -71,7 +71,7 @@ export function createPrometheusRecorder(registry: Registry): MetricsRecorder {
       }
     },
     observe(name, value, labels = {}) {
-      const L = labels as Record<string, string>;
+      const L = labels;
       if (name === "mck_tool_duration_seconds") {
         toolDuration.observe({ source: L.source ?? "", tool: L.tool ?? "" }, value);
       }

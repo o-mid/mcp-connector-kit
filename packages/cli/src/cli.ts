@@ -121,7 +121,7 @@ async function scaffoldSource(name: string): Promise<void> {
   console.log(`scaffolded sources/${name} — register in apps/gateway/src/sources.ts`);
 }
 
-main().catch((err) => {
+main().catch((err: unknown) => {
   console.error(err);
   process.exit(1);
 });

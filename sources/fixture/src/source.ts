@@ -15,7 +15,7 @@ const echo = defineTool({
   }),
   upstream: UpstreamEcho,
   output: EchoOut,
-  async run({ input, ctx }) {
+  run({ input, ctx }) {
     if (input.simulate === "rate_limit") {
       throw new ConnectorError("upstream_rate_limited", "Simulated 429", { source: "fixture" });
     }
@@ -37,7 +37,7 @@ const echo = defineTool({
       tool: "echo",
       metrics: ctx.metrics,
     });
-    return { echoed: upstream.data.value };
+    return Promise.resolve({ echoed: upstream.data.value });
   },
 });
 
@@ -47,8 +47,8 @@ const health = defineTool({
   input: z.object({}),
   upstream: z.object({ ok: z.boolean() }),
   output: z.object({ status: z.string() }),
-  async run() {
-    return { status: "healthy" };
+  run() {
+    return Promise.resolve({ status: "healthy" });
   },
 });
 

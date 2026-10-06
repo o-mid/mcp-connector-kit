@@ -4,7 +4,7 @@ import { beforeAll, describe, expect, it } from "vitest";
 import { authenticateMcpRequest, oauthProtectedResourceMetadata } from "./oauth.js";
 
 declare global {
-  // eslint-disable-next-line no-var
+   
   var __MCK_MOCK_AGENT__: import("undici").MockAgent | undefined;
 }
 

@@ -8,8 +8,11 @@ export type CacheGetOptions = {
 };
 
 export interface CacheStore {
+  // Generic value type is intentional for typed cache callers.
+  /* eslint-disable @typescript-eslint/no-unnecessary-type-parameters -- cache API */
   get<T>(key: string): Promise<T | null>;
   set<T>(key: string, value: T, ttlMs: number): Promise<void>;
+  /* eslint-enable @typescript-eslint/no-unnecessary-type-parameters */
   delete(key: string): Promise<void>;
   close(): Promise<void>;
 }

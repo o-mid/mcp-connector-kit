@@ -28,9 +28,13 @@ export function mockHttpJson(spec: HttpMockSpec): void {
   const agent = getTestMockAgent();
   const pool = agent.get(spec.origin);
   const prefix = spec.pathPrefix;
-  const replyBody = (
-    typeof spec.body === "string" ? spec.body : (spec.body as object)
-  ) as string | object;
+  const replyBody =
+    typeof spec.body === "string"
+      ? spec.body
+      : (() => {
+          if (spec.body !== null && typeof spec.body === "object") return spec.body;
+          throw new Error("mockHttpJson body must be a string or object");
+        })();
   pool
     .intercept({
       path: (p) => p.startsWith(prefix),

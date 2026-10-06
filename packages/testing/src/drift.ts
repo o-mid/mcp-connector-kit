@@ -29,9 +29,8 @@ export function withFieldRemoved<T extends Record<string, unknown>>(
   fixture: T,
   key: string,
 ): T {
-  const copy = { ...fixture };
-  delete copy[key];
-  return copy;
+  const { [key]: _removed, ...rest } = fixture;
+  return rest as T;
 }
 
 export function expectSchemaDrift(

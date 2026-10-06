@@ -19,9 +19,9 @@ describe("MemoryCache", () => {
         await new Promise((r) => setTimeout(r, 30));
         return 1;
       }),
-      singleFlight("x", async () => {
+      singleFlight("x", () => {
         calls += 1;
-        return 2;
+        return Promise.resolve(2);
       }),
     ]);
     expect(calls).toBe(1);

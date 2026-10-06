@@ -12,7 +12,7 @@ describe("CircuitBreaker", () => {
     breaker.beforeCall();
     breaker.onFailure();
     expect(breaker.state).toBe("open");
-    expect(() => breaker.beforeCall()).toThrow("breaker_open");
+    expect(() => { breaker.beforeCall(); }).toThrow("breaker_open");
     now = 2000;
     breaker.beforeCall();
     expect(breaker.state).toBe("half_open");

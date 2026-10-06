@@ -20,25 +20,25 @@ export class MemoryCache implements CacheStore {
     private readonly now: () => number = () => Date.now(),
   ) {}
 
-  async get<T>(key: string): Promise<T | null> {
+  get<T>(key: string): Promise<T | null> {
     const node = this.map.get(key);
-    if (!node) return null;
+    if (!node) return Promise.resolve(null);
     if (this.now() > node.entry.expiresAt) {
       this.removeNode(node);
       this.map.delete(key);
-      return null;
+      return Promise.resolve(null);
     }
     this.touch(node);
-    return node.entry.value as T;
+    return Promise.resolve(node.entry.value as T);
   }
 
-  async set<T>(key: string, value: T, ttlMs: number): Promise<void> {
+  set(key: string, value: unknown, ttlMs: number): Promise<void> {
     const expiresAt = this.now() + ttlMs;
     const existing = this.map.get(key);
     if (existing) {
       existing.entry = { value, expiresAt };
       this.touch(existing);
-      return;
+      return Promise.resolve();
     }
     const node: LruNode<unknown> = { key, entry: { value, expiresAt }, prev: null, next: null };
     this.map.set(key, node);
@@ -49,19 +49,22 @@ export class MemoryCache implements CacheStore {
       this.removeNode(victim);
       this.map.delete(victim.key);
     }
+    return Promise.resolve();
   }
 
-  async delete(key: string): Promise<void> {
+  delete(key: string): Promise<void> {
     const node = this.map.get(key);
-    if (!node) return;
+    if (!node) return Promise.resolve();
     this.removeNode(node);
     this.map.delete(key);
+    return Promise.resolve();
   }
 
-  async close(): Promise<void> {
+  close(): Promise<void> {
     this.map.clear();
     this.head = null;
     this.tail = null;
+    return Promise.resolve();
   }
 
   private touch(node: LruNode<unknown>): void {

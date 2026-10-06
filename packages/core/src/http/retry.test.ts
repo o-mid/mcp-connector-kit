@@ -10,10 +10,10 @@ describe("retry", () => {
 
   it("retries until success", async () => {
     let calls = 0;
-    const result = await withRetries(async () => {
+    const result = await withRetries(() => {
       calls += 1;
       if (calls < 3) throw new Error("fail");
-      return "ok";
+      return Promise.resolve("ok");
     });
     expect(result).toBe("ok");
     expect(calls).toBe(3);

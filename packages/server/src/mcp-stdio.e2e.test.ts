@@ -1,6 +1,7 @@
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { Client } from "@modelcontextprotocol/sdk/client/index.js";
+import type { CallToolResult } from "@modelcontextprotocol/sdk/types.js";
 import {
   StdioClientTransport,
   getDefaultEnvironment,
@@ -25,8 +26,11 @@ describe("MCP stdio e2e", () => {
     const listed = await client.listTools();
     expect(listed.tools.map((t) => t.name)).toContain("echo");
 
-    const result = await client.callTool({ name: "echo", arguments: { message: "mcp-stdio" } });
-    const block = result.content?.[0];
+    const result = (await client.callTool({
+      name: "echo",
+      arguments: { message: "mcp-stdio" },
+    })) as CallToolResult;
+    const block = result.content[0];
     expect(block?.type).toBe("text");
     if (block?.type === "text") {
       expect(JSON.parse(block.text)).toEqual({ echoed: "mcp-stdio" });

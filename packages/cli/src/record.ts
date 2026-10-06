@@ -28,7 +28,7 @@ export async function recordContract(opts: RecordOpts): Promise<string> {
   const toolName = `${opts.source}.${opts.tool}`;
   const result = await registry.callTool(toolName, input);
   if (!result.ok) {
-    throw new Error(result.error.message ?? "tool call failed");
+    throw new Error(result.error.message);
   }
 
   const doc = {

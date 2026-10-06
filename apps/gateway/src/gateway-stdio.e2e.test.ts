@@ -5,6 +5,7 @@ import {
   StdioClientTransport,
   getDefaultEnvironment,
 } from "@modelcontextprotocol/sdk/client/stdio.js";
+import { parseFirstTextJson, asCallToolResult } from "@mck/testing";
 import { describe, expect, it } from "vitest";
 
 const gatewayRoot = path.join(path.dirname(fileURLToPath(import.meta.url)), "..");
@@ -30,12 +31,13 @@ describe("gateway stdio MCP e2e", () => {
     const listed = await client.listTools();
     expect(listed.tools.map((t) => t.name)).toContain("echo");
 
-    const result = await client.callTool({ name: "echo", arguments: { message: "gateway-stdio" } });
-    const block = result.content?.[0];
-    expect(block?.type).toBe("text");
-    if (block?.type === "text") {
-      expect(JSON.parse(block.text)).toEqual({ echoed: "gateway-stdio" });
-    }
+    expect(
+      parseFirstTextJson(
+        asCallToolResult(
+          await client.callTool({ name: "echo", arguments: { message: "gateway-stdio" } }),
+        ),
+      ),
+    ).toEqual({ echoed: "gateway-stdio" });
 
     await client.close();
   }, 25_000);

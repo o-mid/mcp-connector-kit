@@ -2,12 +2,7 @@ import { fetch, type RequestInit } from "undici";
 import { ConnectorError } from "../errors.js";
 import { CircuitBreaker } from "./breaker.js";
 import { ConcurrencySemaphore, TokenBucket } from "./limiter.js";
-import {
-  backoffDelayMs,
-  isRetryableStatus,
-  parseRetryAfterMs,
-  withRetries,
-} from "./retry.js";
+import { isRetryableStatus, parseRetryAfterMs, withRetries } from "./retry.js";
 
 export type SourceHttpLimits = {
   rps: number;
@@ -84,7 +79,7 @@ export function createSourceHttp(config: SourceHttpConfig): SourceHttpClient {
       await bucket.acquire();
 
       const controller = new AbortController();
-      const timeout = setTimeout(() => controller.abort(), config.limits.timeoutMs);
+      const timeout = setTimeout(() => { controller.abort(); }, config.limits.timeoutMs);
       const signals: AbortSignal[] = [controller.signal];
       if (opts?.signal) signals.push(opts.signal);
       const combined = AbortSignal.any(signals);
@@ -159,9 +154,8 @@ export function createSourceHttp(config: SourceHttpConfig): SourceHttpClient {
               if (err instanceof ConnectorError) return err.retryable;
               return true;
             },
-            onRetry: (_attempt, _err, delay) => {
-              void delay;
-              void backoffDelayMs(0);
+            onRetry: (_attempt, _err, _delay) => {
+              // Reserved for retry metrics / logging.
             },
           },
         );
@@ -214,8 +208,7 @@ export function createSourceHttp(config: SourceHttpConfig): SourceHttpClient {
   };
 }
 
-export function getBreakerState(client: SourceHttpClient): BreakerStateExport {
-  void client;
+export function getBreakerState(_client: SourceHttpClient): BreakerStateExport {
   return { state: "closed", consecutiveFailures: 0 };
 }
 

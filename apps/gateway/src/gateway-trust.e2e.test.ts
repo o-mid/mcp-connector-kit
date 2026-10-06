@@ -2,7 +2,13 @@ import { createGatewayRegistry } from "./index.js";
 import { loadConfig } from "./config.js";
 import { Client } from "@modelcontextprotocol/sdk/client/index.js";
 import { StreamableHTTPClientTransport } from "@modelcontextprotocol/sdk/client/streamableHttp.js";
-import { mockHttpJson, prepareMcpHttpE2eNetwork } from "@mck/testing";
+import {
+  asCallToolResult,
+  mockHttpJson,
+  parseFirstTextJson,
+  prepareMcpHttpE2eNetwork,
+} from "@mck/testing";
+import type { Transport } from "@modelcontextprotocol/sdk/shared/transport.js";
 import { beforeAll, describe, expect, it } from "vitest";
 import { startHttpApp } from "@mck/server";
 
@@ -79,7 +85,7 @@ describe("trust tier HTTP MCP e2e", () => {
     const app = await startHttpApp({ registry, port: 0, legacyErrors: false });
     const url = new URL(`http://127.0.0.1:${app.port}/mcp`);
     const client = new Client({ name: "mck-trust-e2e", version: "1.0.0" });
-    await client.connect(new StreamableHTTPClientTransport(url));
+    await client.connect(new StreamableHTTPClientTransport(url) as Transport);
 
     const names = (await client.listTools()).tools.map((t) => t.name);
     expect(names).toContain("search_repositories");
@@ -88,62 +94,61 @@ describe("trust tier HTTP MCP e2e", () => {
     expect(names).toContain("exa_search");
     expect(names).toContain("tavily_search");
 
-    const repos = await client.callTool({
-      name: "search_repositories",
-      arguments: { query: "mcp", limit: 1 },
-    });
-    const block = repos.content?.[0];
-    expect(block?.type).toBe("text");
-    if (block?.type === "text") {
-      const data = JSON.parse(block.text) as { repositories: unknown[] };
-      expect(data.repositories.length).toBe(1);
-    }
+    const repos = parseFirstTextJson(
+      asCallToolResult(
+        await client.callTool({
+          name: "search_repositories",
+          arguments: { query: "mcp", limit: 1 },
+        }),
+      ),
+    ) as { repositories: unknown[] };
+    expect(repos.repositories.length).toBe(1);
 
-    const search = await client.callTool({
-      name: "web_search",
-      arguments: { query: "MCP", limit: 1 },
-    });
-    const searchBlock = search.content?.[0];
-    if (searchBlock?.type === "text") {
-      const data = JSON.parse(searchBlock.text) as { results: unknown[] };
-      expect(data.results.length).toBeGreaterThan(0);
-    }
+    const search = parseFirstTextJson(
+      asCallToolResult(
+        await client.callTool({
+          name: "web_search",
+          arguments: { query: "MCP", limit: 1 },
+        }),
+      ),
+    ) as { results: unknown[] };
+    expect(search.results.length).toBeGreaterThan(0);
 
-    const page = await client.callTool({
-      name: "fetch_page",
-      arguments: { url: "https://example.com/page", max_chars: 1000 },
-    });
-    const pageBlock = page.content?.[0];
-    if (pageBlock?.type === "text") {
-      const data = JSON.parse(pageBlock.text) as { content: string };
-      expect(data.content).toContain("Trust tier e2e");
-    }
+    const page = parseFirstTextJson(
+      asCallToolResult(
+        await client.callTool({
+          name: "fetch_page",
+          arguments: { url: "https://example.com/page", max_chars: 1000 },
+        }),
+      ),
+    ) as { content: string };
+    expect(page.content).toContain("Trust tier e2e");
 
-    const exa = await client.callTool({
-      name: "exa_search",
-      arguments: { query: "MCP", limit: 1 },
-    });
-    const exaBlock = exa.content?.[0];
-    if (exaBlock?.type === "text") {
-      const data = JSON.parse(exaBlock.text) as { results: unknown[] };
-      expect(data.results.length).toBe(1);
-    }
+    const exa = parseFirstTextJson(
+      asCallToolResult(
+        await client.callTool({
+          name: "exa_search",
+          arguments: { query: "MCP", limit: 1 },
+        }),
+      ),
+    ) as { results: unknown[] };
+    expect(exa.results.length).toBe(1);
 
-    const tavily = await client.callTool({
-      name: "tavily_search",
-      arguments: { query: "MCP", limit: 1 },
-    });
-    const tavilyBlock = tavily.content?.[0];
-    if (tavilyBlock?.type === "text") {
-      const data = JSON.parse(tavilyBlock.text) as { results: unknown[] };
-      expect(data.results.length).toBe(1);
-    }
+    const tavily = parseFirstTextJson(
+      asCallToolResult(
+        await client.callTool({
+          name: "tavily_search",
+          arguments: { query: "MCP", limit: 1 },
+        }),
+      ),
+    ) as { results: unknown[] };
+    expect(tavily.results.length).toBe(1);
 
     await client.close();
     await app.close();
   });
 
-  it("free SKU hides paid-only sources on trust profile", async () => {
+  it("free SKU hides paid-only sources on trust profile", () => {
     const registry = createGatewayRegistry(
       loadConfig({
         MCK_SOURCE_PROFILE: "trust",

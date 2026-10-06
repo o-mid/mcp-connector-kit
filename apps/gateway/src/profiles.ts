@@ -5,8 +5,9 @@ export const SOURCE_PROFILES: Record<string, string[]> = {
 };
 
 export function resolveSourceIds(profile: string | undefined, explicit: string): string[] {
-  if (profile && profile in SOURCE_PROFILES) {
-    return SOURCE_PROFILES[profile]!;
+  if (profile) {
+    const ids = SOURCE_PROFILES[profile];
+    if (ids) return ids;
   }
   return explicit
     .split(",")

@@ -40,8 +40,10 @@ export function validateUpstream<T>(
 
 function countUnknownFields(payload: unknown): number {
   if (payload === null || typeof payload !== "object") return 0;
-  if (Array.isArray(payload)) return payload.reduce((n, v) => n + countUnknownFields(v), 0);
-  return Object.keys(payload as object).length > 0 ? 0 : 0;
+  if (Array.isArray(payload)) {
+    return payload.reduce<number>((n, v) => n + countUnknownFields(v), 0);
+  }
+  return Object.keys(payload).length > 0 ? 0 : 0;
 }
 
 export function validateInput<T>(schema: z.ZodType<T>, input: unknown, sourceId: string): T {

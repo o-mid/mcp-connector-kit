@@ -38,11 +38,11 @@ export async function wikiSearch(ctx: ToolContext, query: string, limit: number,
     tool: "wiki_search",
     metrics: ctx.metrics,
   }).data;
-  const titles = data[1] ?? [];
-  const descriptions = data[2] ?? [];
-  const urls = data[3] ?? [];
+  const titles = data[1];
+  const descriptions = data[2];
+  const urls = data[3];
   return {
-    query: data[0] ?? query,
+    query: data[0],
     results: titles.map((title, i) => ({
       title,
       description: descriptions[i] ?? null,
@@ -69,7 +69,7 @@ export async function wikiSummary(ctx: ToolContext, title: string, signal: Abort
     tool: "wiki_summary",
     metrics: ctx.metrics,
   }).data;
-  const pages = parsed.query?.pages ?? {};
+  const pages = parsed.query.pages;
   const page = Object.values(pages)[0];
   if (!page?.title) throw new Error("Page not found");
   return {

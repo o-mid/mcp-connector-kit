@@ -2,7 +2,8 @@ import { createGatewayRegistry } from "./index.js";
 import { loadConfig } from "./config.js";
 import { Client } from "@modelcontextprotocol/sdk/client/index.js";
 import { StreamableHTTPClientTransport } from "@modelcontextprotocol/sdk/client/streamableHttp.js";
-import { mockHttpJson, prepareMcpHttpE2eNetwork } from "@mck/testing";
+import { asCallToolResult, mockHttpJson, parseFirstTextJson, prepareMcpHttpE2eNetwork } from "@mck/testing";
+import type { Transport } from "@modelcontextprotocol/sdk/shared/transport.js";
 import { beforeAll, describe, expect, it } from "vitest";
 import { startHttpApp } from "@mck/server";
 
@@ -10,11 +11,8 @@ beforeAll(() => {
   prepareMcpHttpE2eNetwork();
 });
 
-function parseToolJson(content: unknown): unknown {
-  const block = (content as { content?: { type: string; text?: string }[] })?.content?.[0];
-  expect(block?.type).toBe("text");
-  if (block?.type !== "text" || !block.text) throw new Error("expected text tool result");
-  return JSON.parse(block.text);
+function parseToolJson(result: unknown): unknown {
+  return parseFirstTextJson(asCallToolResult(result));
 }
 
 describe("gateway HTTP MCP e2e", () => {
@@ -45,7 +43,7 @@ describe("gateway HTTP MCP e2e", () => {
     const url = new URL(`http://127.0.0.1:${app.port}/mcp`);
     const transport = new StreamableHTTPClientTransport(url);
     const client = new Client({ name: "mck-gateway-e2e", version: "1.0.0" });
-    await client.connect(transport);
+    await client.connect(transport as Transport);
 
     const tools = await client.listTools();
     expect(tools.tools.map((t) => t.name)).toContain("wiki_search");

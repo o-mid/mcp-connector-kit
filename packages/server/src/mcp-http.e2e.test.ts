@@ -2,6 +2,8 @@ import { createDefaultCache, createSourceRegistry } from "@mck/core";
 import { fixtureSource } from "@mck/source-fixture";
 import { Client } from "@modelcontextprotocol/sdk/client/index.js";
 import { StreamableHTTPClientTransport } from "@modelcontextprotocol/sdk/client/streamableHttp.js";
+import type { Transport } from "@modelcontextprotocol/sdk/shared/transport.js";
+import type { CallToolResult } from "@modelcontextprotocol/sdk/types.js";
 import { prepareMcpHttpE2eNetwork } from "@mck/testing";
 import { beforeAll, describe, expect, it } from "vitest";
 import { startHttpApp } from "./http-app.js";
@@ -21,15 +23,18 @@ describe("MCP streamable HTTP e2e", () => {
 
     const transport = new StreamableHTTPClientTransport(url);
     const client = new Client({ name: "mck-test", version: "1.0.0" });
-    await client.connect(transport);
+    await client.connect(transport as Transport);
 
     const listed = await client.listTools();
     const names = listed.tools.map((t) => t.name);
     expect(names).toContain("echo");
     expect(names).toContain("health");
 
-    const result = await client.callTool({ name: "echo", arguments: { message: "mcp-http" } });
-    const text = result.content?.[0];
+    const result = (await client.callTool({
+      name: "echo",
+      arguments: { message: "mcp-http" },
+    })) as CallToolResult;
+    const text = result.content[0];
     expect(text?.type).toBe("text");
     if (text?.type === "text") {
       expect(JSON.parse(text.text)).toEqual({ echoed: "mcp-http" });

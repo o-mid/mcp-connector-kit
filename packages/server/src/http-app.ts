@@ -3,7 +3,7 @@ import { runWithAuditContextAsync, type SourceRegistry } from "@mck/core";
 import type { Transport } from "@modelcontextprotocol/sdk/shared/transport.js";
 import { createMcpServer, createStreamableTransport } from "./mcp-server.js";
 import { metricsRegistry } from "./metrics.js";
-import { authenticateMcpRequest, isOAuthEnabled, oauthProtectedResourceMetadata, type OAuthConfig } from "./oauth.js";
+import { authenticateMcpRequest, oauthProtectedResourceMetadata, type OAuthConfig } from "./oauth.js";
 
 export type HttpAppOptions = {
   registry: SourceRegistry;
@@ -31,7 +31,11 @@ export async function startHttpApp(opts: HttpAppOptions): Promise<{
 
   const baseUrl = opts.publicBaseUrl ?? `http://127.0.0.1:${opts.port}`;
 
-  const server = createServer(async (req, res) => {
+  const server = createServer((req, res) => {
+    void handleHttpRequest(req, res);
+  });
+
+  async function handleHttpRequest(req: IncomingMessage, res: ServerResponse): Promise<void> {
     try {
       applyCors(req, res, opts.corsOrigins ?? []);
       if (req.method === "OPTIONS") {
@@ -76,10 +80,10 @@ export async function startHttpApp(opts: HttpAppOptions): Promise<{
     } catch (err) {
       json(res, 500, { error: err instanceof Error ? err.message : "internal" });
     }
-  });
+  }
 
   await new Promise<void>((resolve) => {
-    server.listen(opts.port, () => resolve());
+    server.listen(opts.port, () => { resolve(); });
   });
   const addr = server.address();
   const port =
@@ -90,7 +94,10 @@ export async function startHttpApp(opts: HttpAppOptions): Promise<{
     close: async () => {
       await mcp.close();
       await new Promise<void>((resolve, reject) => {
-        server.close((err) => (err ? reject(err) : resolve()));
+        server.close((err) => {
+          if (err) reject(err);
+          else resolve();
+        });
       });
     },
   };
@@ -111,10 +118,10 @@ function applyCors(req: IncomingMessage, res: ServerResponse, origins: string[])
 }
 
 async function readBody(req: IncomingMessage, limit: number): Promise<unknown> {
-  const chunks: Buffer[] = [];
+  const chunks: Uint8Array[] = [];
   let size = 0;
   for await (const chunk of req) {
-    const buf = Buffer.from(chunk);
+    const buf = Buffer.isBuffer(chunk) ? chunk : Buffer.from(chunk);
     size += buf.length;
     if (size > limit) throw new Error("body_too_large");
     chunks.push(buf);

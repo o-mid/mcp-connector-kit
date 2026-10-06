@@ -31,12 +31,12 @@ export function createGatewayRegistry(config: GatewayConfig): SourceRegistry {
   const logger = createMckLogger(config.LOG_LEVEL);
   const registryOpts: Parameters<typeof createSourceRegistry>[1] = {
     cache,
-    legacyToolNames: config.MCK_LEGACY_TOOL_NAMES === true,
-    legacyErrors: config.MCK_LEGACY_ERRORS === true,
+    legacyToolNames: config.MCK_LEGACY_TOOL_NAMES,
+    legacyErrors: config.MCK_LEGACY_ERRORS,
     metrics: createPrometheusRecorder(metricsRegistry),
     log: toolLogFromPino(logger),
   };
-  if (config.MCK_AUDIT_LOG === true) registryOpts.auditLog = true;
+  if (config.MCK_AUDIT_LOG) registryOpts.auditLog = true;
   if (config.MCK_TENANT_ID) registryOpts.tenantId = config.MCK_TENANT_ID;
   return createSourceRegistry(sources, registryOpts);
 }

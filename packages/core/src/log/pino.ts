@@ -13,7 +13,7 @@ export function createMckLogger(level: string): Logger {
 /** Adapts pino to the minimal ToolContext log interface. */
 export function toolLogFromPino(logger: Logger): ToolContext["log"] {
   return {
-    info: (obj, msg) => logger.info(obj, msg),
-    warn: (obj, msg) => logger.warn(obj, msg),
+    info: (obj, msg) => { logger.info(obj, msg); },
+    warn: (obj, msg) => { logger.warn(obj, msg); },
   };
 }

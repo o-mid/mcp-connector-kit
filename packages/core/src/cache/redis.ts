@@ -24,7 +24,7 @@ export class RedisCache implements CacheStore {
     }
   }
 
-  async set<T>(key: string, value: T, ttlMs: number): Promise<void> {
+  async set(key: string, value: unknown, ttlMs: number): Promise<void> {
     const payload = JSON.stringify({ value, expiresAt: Date.now() + ttlMs });
     await this.client.set(key, payload, "PX", ttlMs);
   }
