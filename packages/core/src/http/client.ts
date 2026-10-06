@@ -26,6 +26,7 @@ export type SourceHttpConfig = {
 
 export type HttpRequestOptions = {
   query?: Record<string, string | number | boolean | null | undefined>;
+  headers?: Record<string, string | undefined>;
   signal?: AbortSignal;
   json?: boolean;
 };
@@ -34,6 +35,13 @@ export type SourceHttpClient = {
   get<T>(path: string, opts?: HttpRequestOptions): Promise<T>;
   getUrl<T>(url: string, opts?: HttpRequestOptions): Promise<T>;
 };
+
+function filterHeaders(headers?: Record<string, string | undefined>): Record<string, string> {
+  if (!headers) return {};
+  return Object.fromEntries(
+    Object.entries(headers).filter((entry): entry is [string, string] => entry[1] != null && entry[1] !== ""),
+  );
+}
 
 function hostAllowed(url: URL, allowlist: string[]): boolean {
   return allowlist.some((base) => {
@@ -85,6 +93,7 @@ export function createSourceHttp(config: SourceHttpConfig): SourceHttpClient {
               headers: {
                 accept: "application/json",
                 "user-agent": config.userAgent,
+                ...filterHeaders(opts?.headers),
               },
               signal: combined,
               redirect: "manual",

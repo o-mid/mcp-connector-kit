@@ -1,0 +1,42 @@
+{
+  "source": "github",
+  "tool": "search_repositories",
+  "input": { "query": "model context protocol", "limit": 2 },
+  "mock": {
+    "origin": "https://api.github.com",
+    "pathPrefix": "/search/repositories",
+    "body": {
+      "items": [
+        {
+          "full_name": "modelcontextprotocol/specification",
+          "html_url": "https://github.com/modelcontextprotocol/specification",
+          "description": "MCP specification",
+          "stargazers_count": 1200
+        },
+        {
+          "full_name": "example/mcp-demo",
+          "html_url": "https://github.com/example/mcp-demo",
+          "description": null,
+          "stargazers_count": 3
+        }
+      ]
+    }
+  },
+  "output": {
+    "query": "model context protocol",
+    "repositories": [
+      {
+        "full_name": "modelcontextprotocol/specification",
+        "url": "https://github.com/modelcontextprotocol/specification",
+        "description": "MCP specification",
+        "stars": 1200
+      },
+      {
+        "full_name": "example/mcp-demo",
+        "url": "https://github.com/example/mcp-demo",
+        "description": null,
+        "stars": 3
+      }
+    ]
+  }
+}

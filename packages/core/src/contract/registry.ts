@@ -32,6 +32,9 @@ export type SourceRegistryOptions = {
   legacyErrors?: boolean;
   metrics?: MetricsRecorder;
   log?: ToolContext["log"];
+  /** Emit structured audit events on every tool call (for paid / enterprise export). */
+  auditLog?: boolean;
+  tenantId?: string;
 };
 
 export type SourceRegistry = {
@@ -183,6 +186,20 @@ export function createSourceRegistry(
             { tool: name, source: tool.sourceId, duration_ms: durationMs, outcome: "ok" },
             "tool_call_end",
           );
+          if (opts.auditLog) {
+            log.info(
+              {
+                audit: true,
+                event: "tool_call",
+                tenant: opts.tenantId ?? "default",
+                tool: name,
+                source: tool.sourceId,
+                outcome: "ok",
+                duration_ms: durationMs,
+              },
+              "audit",
+            );
+          }
           health[tool.sourceId] = "healthy";
           return {
             ok: true,
@@ -206,6 +223,21 @@ export function createSourceRegistry(
             },
             "tool_call_end",
           );
+          if (opts.auditLog) {
+            log.info(
+              {
+                audit: true,
+                event: "tool_call",
+                tenant: opts.tenantId ?? "default",
+                tool: name,
+                source: tool.sourceId,
+                outcome: "error",
+                duration_ms: durationMs,
+                error: err instanceof Error ? err.message : String(err),
+              },
+              "audit",
+            );
+          }
           if (err instanceof ConnectorError && err.code === "upstream_schema_changed") {
             health[tool.sourceId] = "degraded";
           } else if (isConnectorError(err)) {

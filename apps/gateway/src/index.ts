@@ -9,17 +9,23 @@ export function createGatewayRegistry(config: GatewayConfig): SourceRegistry {
     config.MCK_CACHE === "redis" && config.REDIS_URL
       ? new RedisCache(config.REDIS_URL)
       : createDefaultCache();
-  const sources = resolveSources(config.sourceIds);
+  const sources = resolveSources(config.sourceIds, { webReaderAllowlist: config.webReaderAllowlist });
   const logger = createMckLogger(config.LOG_LEVEL);
-  return createSourceRegistry(sources, {
+  const registryOpts: Parameters<typeof createSourceRegistry>[1] = {
     cache,
     legacyToolNames: config.MCK_LEGACY_TOOL_NAMES === true,
     legacyErrors: config.MCK_LEGACY_ERRORS === true,
     metrics: createPrometheusRecorder(metricsRegistry),
     log: toolLogFromPino(logger),
-  });
+  };
+  if (config.MCK_AUDIT_LOG === true) registryOpts.auditLog = true;
+  if (config.MCK_TENANT_ID) registryOpts.tenantId = config.MCK_TENANT_ID;
+  return createSourceRegistry(sources, registryOpts);
 }
 
 export function createGatewayFromEnv(env: NodeJS.ProcessEnv = process.env): SourceRegistry {
   return createGatewayRegistry(loadConfig(env));
 }
+
+export { loadConfig, type GatewayConfig } from "./config.js";
+export { TRUST_TIER_SOURCES, type GatewaySku } from "./tier.js";

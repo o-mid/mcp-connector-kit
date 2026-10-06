@@ -3,11 +3,14 @@ import type { SourceRegistry } from "@mck/core";
 import type { Transport } from "@modelcontextprotocol/sdk/shared/transport.js";
 import { createMcpServer, createStreamableTransport } from "./mcp-server.js";
 import { metricsRegistry } from "./metrics.js";
+import { authorizeMcpRequest, isOAuthEnabled, oauthProtectedResourceMetadata, type OAuthConfig } from "./oauth.js";
 
 export type HttpAppOptions = {
   registry: SourceRegistry;
   port: number;
   apiKeys?: string[];
+  oauth?: OAuthConfig;
+  publicBaseUrl?: string;
   bodyLimitBytes?: number;
   corsOrigins?: string[];
   legacyErrors?: boolean;
@@ -24,6 +27,8 @@ export async function startHttpApp(opts: HttpAppOptions): Promise<{
   const mcp = createMcpServer(opts.registry, mcpOpts);
   const transport = createStreamableTransport();
   await mcp.connect(transport as Transport);
+
+  const baseUrl = opts.publicBaseUrl ?? `http://127.0.0.1:${opts.port}`;
 
   const server = createServer(async (req, res) => {
     try {
@@ -48,8 +53,13 @@ export async function startHttpApp(opts: HttpAppOptions): Promise<{
         res.end(body);
         return;
       }
+      if (path === "/.well-known/oauth-protected-resource" && opts.oauth?.jwksUrl) {
+        json(res, 200, oauthProtectedResourceMetadata(baseUrl, opts.oauth));
+        return;
+      }
       if (path === "/mcp" && req.method === "POST") {
-        if (!authorize(req, opts.apiKeys)) {
+        const ok = await authorizeMcpRequest(req, { apiKeys: opts.apiKeys, oauth: opts.oauth });
+        if (!ok) {
           json(res, 401, { error: "unauthorized" });
           return;
         }
@@ -95,13 +105,6 @@ function applyCors(req: IncomingMessage, res: ServerResponse, origins: string[])
   }
 }
 
-function authorize(req: IncomingMessage, keys?: string[]): boolean {
-  if (!keys?.length) return true;
-  const header = req.headers.authorization ?? "";
-  const token = header.startsWith("Bearer ") ? header.slice(7) : "";
-  return keys.includes(token);
-}
-
 async function readBody(req: IncomingMessage, limit: number): Promise<unknown> {
   const chunks: Buffer[] = [];
   let size = 0;
@@ -117,3 +120,4 @@ async function readBody(req: IncomingMessage, limit: number): Promise<unknown> {
 }
 
 export { metricsRegistry } from "./metrics.js";
+export { isOAuthEnabled, oauthProtectedResourceMetadata } from "./oauth.js";

@@ -1,0 +1,16 @@
+{
+  "source": "web-reader",
+  "tool": "fetch_page",
+  "input": { "url": "https://example.com/docs", "max_chars": 500 },
+  "mock": {
+    "origin": "https://example.com",
+    "pathPrefix": "/docs",
+    "body": "<html><body><h1>Example</h1><p>Hello world.</p></body></html>"
+  },
+  "output": {
+    "url": "https://example.com/docs",
+    "title": "example.com",
+    "content": "Example Hello world.",
+    "truncated": false
+  }
+}

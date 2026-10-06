@@ -1,0 +1,30 @@
+{
+  "source": "github",
+  "tool": "search_issues",
+  "input": { "query": "repo:modelcontextprotocol/specification is:issue", "limit": 1 },
+  "mock": {
+    "origin": "https://api.github.com",
+    "pathPrefix": "/search/issues",
+    "body": {
+      "items": [
+        {
+          "title": "Clarify transport wording",
+          "html_url": "https://github.com/modelcontextprotocol/specification/issues/1",
+          "state": "open",
+          "repository_url": "https://api.github.com/repos/modelcontextprotocol/specification"
+        }
+      ]
+    }
+  },
+  "output": {
+    "query": "repo:modelcontextprotocol/specification is:issue",
+    "issues": [
+      {
+        "title": "Clarify transport wording",
+        "url": "https://github.com/modelcontextprotocol/specification/issues/1",
+        "state": "open",
+        "repository_url": "https://api.github.com/repos/modelcontextprotocol/specification"
+      }
+    ]
+  }
+}

@@ -1,0 +1,40 @@
+{
+  "source": "brave",
+  "tool": "web_search",
+  "input": { "query": "Model Context Protocol", "limit": 2 },
+  "mock": {
+    "origin": "https://api.search.brave.com",
+    "pathPrefix": "/res/v1/web/search",
+    "body": {
+      "web": {
+        "results": [
+          {
+            "title": "Model Context Protocol",
+            "url": "https://modelcontextprotocol.io/",
+            "description": "Open protocol for AI tools"
+          },
+          {
+            "title": "MCP on GitHub",
+            "url": "https://github.com/modelcontextprotocol",
+            "description": "Reference implementations"
+          }
+        ]
+      }
+    }
+  },
+  "output": {
+    "query": "Model Context Protocol",
+    "results": [
+      {
+        "title": "Model Context Protocol",
+        "url": "https://modelcontextprotocol.io/",
+        "snippet": "Open protocol for AI tools"
+      },
+      {
+        "title": "MCP on GitHub",
+        "url": "https://github.com/modelcontextprotocol",
+        "snippet": "Reference implementations"
+      }
+    ]
+  }
+}

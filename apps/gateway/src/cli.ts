@@ -13,6 +13,14 @@ async function main(): Promise<void> {
       registry,
       port: config.PORT,
       apiKeys: config.apiKeys,
+      ...(config.MCK_OAUTH_JWKS_URL
+        ? {
+            oauth: {
+              jwksUrl: config.MCK_OAUTH_JWKS_URL,
+              ...(config.MCK_OAUTH_AUDIENCE ? { audience: config.MCK_OAUTH_AUDIENCE } : {}),
+            },
+          }
+        : {}),
       corsOrigins: config.corsOrigins,
       legacyErrors: config.MCK_LEGACY_ERRORS === true,
     });
@@ -22,7 +30,7 @@ async function main(): Promise<void> {
     };
     process.on("SIGTERM", () => void shutdown());
     process.on("SIGINT", () => void shutdown());
-    console.error(`mck gateway listening on :${config.PORT}`);
+    console.error(`mck gateway listening on :${config.PORT} (sku=${config.sku})`);
     return;
   }
   const server = createMcpServer(registry, {

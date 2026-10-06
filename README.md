@@ -12,6 +12,12 @@ pnpm build
 MCK_SOURCES=fixture,wikipedia node apps/gateway/dist/cli.js
 ```
 
+Trust tier (paid SKU — GitHub, web reader, Brave search):
+
+```bash
+MCK_SOURCE_PROFILE=trust MCK_SKU=paid MCK_LEGACY_TOOL_NAMES=true node apps/gateway/dist/cli.js
+```
+
 Hosted HTTP (Streamable MCP at `POST /mcp`):
 
 ```bash
@@ -25,23 +31,25 @@ Health: `GET /healthz`, readiness: `GET /readyz`, metrics: `GET /metrics`.
 | Package | Role |
 |---------|------|
 | `@mck/core` | HTTP client, cache, errors, `defineSource` / `defineTool` |
-| `@mck/server` | MCP SDK server, stdio + Streamable HTTP |
-| `@mck/gateway` | Deployable multi-source server |
-| `@mck/source-*` | Wikipedia, fixture, and your adapters |
+| `@mck/server` | MCP SDK server, stdio + Streamable HTTP, OAuth metadata |
+| `@mck/gateway` | Deployable multi-source server (free/paid SKU) |
+| `@mck/source-*` | Trust tier connectors (Wikipedia, GitHub, …) |
+| `@mck/cli` | `mck new source`, `mck check`, `mck record` |
 
 ## Environment
 
-See [`.env.example`](.env.example). Key variables: `MCK_SOURCES`, `MCK_SOURCE_PROFILE`, `MCK_TRANSPORT`, `MCK_LEGACY_TOOL_NAMES`.
+See [`.env.example`](.env.example). Key variables: `MCK_SOURCES`, `MCK_SOURCE_PROFILE`, `MCK_SKU`, `MCK_TRANSPORT`, `MCK_LEGACY_TOOL_NAMES`.
 
 ## Docs
 
+- [Trust tier sources](docs/trust-tier.md)
+- [Hosted gateway SKU](docs/hosted-gateway.md)
+- [OAuth](docs/oauth.md)
+- [MCP Registry / npm](docs/registry.md)
+- [Private sources](docs/private-sources.md)
 - [Architecture](docs/architecture.md)
 - [Production checklist](docs/production.md)
-- [Competitive analysis](docs/competitive-analysis.md)
 - [Adding a source](docs/adding-a-source.md)
-- [Errors](docs/errors.md)
-- [Operations](docs/operations.md)
-- [Security](docs/security.md)
 
 ## License
 

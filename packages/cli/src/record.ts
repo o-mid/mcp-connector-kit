@@ -1,6 +1,6 @@
 import { mkdir, writeFile } from "node:fs/promises";
 import path from "node:path";
-import { createGatewayRegistry } from "@mck/gateway";
+import { createGatewayRegistry, loadConfig } from "@mck/gateway";
 
 type RecordOpts = {
   root: string;
@@ -17,18 +17,13 @@ export async function recordContract(opts: RecordOpts): Promise<string> {
   }
 
   const input = JSON.parse(opts.inputJson) as Record<string, unknown>;
-  const registry = createGatewayRegistry({
-    MCK_SOURCES: opts.source,
-    MCK_TRANSPORT: "stdio",
-    MCK_LEGACY_TOOL_NAMES: false,
-    MCK_LEGACY_ERRORS: false,
-    MCK_CACHE: "memory",
-    PORT: 8080,
-    LOG_LEVEL: "warn",
-    sourceIds: [opts.source],
-    apiKeys: [],
-    corsOrigins: [],
-  });
+  const registry = createGatewayRegistry(
+    loadConfig({
+      MCK_SOURCES: opts.source,
+      MCK_SKU: "paid",
+      LOG_LEVEL: "warn",
+    }),
+  );
 
   const toolName = `${opts.source}.${opts.tool}`;
   const result = await registry.callTool(toolName, input);

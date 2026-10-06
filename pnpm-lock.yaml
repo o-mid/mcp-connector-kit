@@ -47,9 +47,18 @@ importers:
       '@mck/server':
         specifier: workspace:*
         version: link:../../packages/server
+      '@mck/source-brave':
+        specifier: workspace:*
+        version: link:../../sources/brave
       '@mck/source-fixture':
         specifier: workspace:*
         version: link:../../sources/fixture
+      '@mck/source-github':
+        specifier: workspace:*
+        version: link:../../sources/github
+      '@mck/source-web-reader':
+        specifier: workspace:*
+        version: link:../../sources/web-reader
       '@mck/source-wikipedia':
         specifier: workspace:*
         version: link:../../sources/wikipedia
@@ -131,6 +140,9 @@ importers:
       '@modelcontextprotocol/sdk':
         specifier: ^1.32.1
         version: 1.32.1(zod@3.25.76)
+      jose:
+        specifier: ^6.0.11
+        version: 6.2.12
       prom-client:
         specifier: ^15.1.3
         version: 15.1.3
@@ -170,6 +182,25 @@ importers:
         specifier: ^3.2.4
         version: 3.2.7(@types/node@22.20.5)
 
+  sources/brave:
+    dependencies:
+      '@mck/core':
+        specifier: workspace:*
+        version: link:../../packages/core
+      zod:
+        specifier: ^3.24.3
+        version: 3.25.76
+    devDependencies:
+      '@mck/testing':
+        specifier: workspace:*
+        version: link:../../packages/testing
+      tsup:
+        specifier: ^8.4.0
+        version: 8.5.1(postcss@8.5.29)(typescript@5.9.3)
+      vitest:
+        specifier: ^3.2.4
+        version: 3.2.7(@types/node@22.20.5)
+
   sources/fixture:
     dependencies:
       '@mck/core':
@@ -185,6 +216,44 @@ importers:
       tsup:
         specifier: ^8.4.0
         version: 8.5.1(postcss@8.5.29)(typescript@5.9.3)
+
+  sources/github:
+    dependencies:
+      '@mck/core':
+        specifier: workspace:*
+        version: link:../../packages/core
+      zod:
+        specifier: ^3.24.3
+        version: 3.25.76
+    devDependencies:
+      '@mck/testing':
+        specifier: workspace:*
+        version: link:../../packages/testing
+      tsup:
+        specifier: ^8.4.0
+        version: 8.5.1(postcss@8.5.29)(typescript@5.9.3)
+      vitest:
+        specifier: ^3.2.4
+        version: 3.2.7(@types/node@22.20.5)
+
+  sources/web-reader:
+    dependencies:
+      '@mck/core':
+        specifier: workspace:*
+        version: link:../../packages/core
+      zod:
+        specifier: ^3.24.3
+        version: 3.25.76
+    devDependencies:
+      '@mck/testing':
+        specifier: workspace:*
+        version: link:../../packages/testing
+      tsup:
+        specifier: ^8.4.0
+        version: 8.5.1(postcss@8.5.29)(typescript@5.9.3)
+      vitest:
+        specifier: ^3.2.4
+        version: 3.2.7(@types/node@22.20.5)
 
   sources/wikipedia:
     dependencies:

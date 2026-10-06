@@ -28,13 +28,21 @@ export function mockHttpJson(spec: HttpMockSpec): void {
   const agent = getTestMockAgent();
   const pool = agent.get(spec.origin);
   const prefix = spec.pathPrefix;
+  const replyBody = (
+    typeof spec.body === "string" ? spec.body : (spec.body as object)
+  ) as string | object;
   pool
     .intercept({
       path: (p) => p.startsWith(prefix),
       method: spec.method ?? "GET",
     })
-    .reply(spec.statusCode ?? 200, spec.body as object, {
-      headers: { "content-type": "application/json; charset=utf-8" },
+    .reply(spec.statusCode ?? 200, replyBody, {
+      headers: {
+        "content-type":
+          typeof spec.body === "string"
+            ? "text/html; charset=utf-8"
+            : "application/json; charset=utf-8",
+      },
     })
     .persist();
 }

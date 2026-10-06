@@ -31,7 +31,7 @@ Use this checklist before calling a deployment “production.” Status reflects
 | Item | Status | Notes |
 |------|--------|--------|
 | Unit tests | Partial | Core + sources |
-| Contract replay | Partial | fixture + Wikipedia; add per new source |
+| Contract replay | Done | Trust tier: 7 fixture files across 5 sources |
 | MCP SDK e2e (server) | Done | stdio + HTTP (`prepareMcpHttpE2eNetwork`) |
 | Gateway MCP e2e | Done | stdio (`mck-gateway` CLI) + HTTP (mocked Wikipedia) |
 | Live upstream smoke | Optional | `MCK_LIVE=1`, nightly workflow |
