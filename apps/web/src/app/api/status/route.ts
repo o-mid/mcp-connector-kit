@@ -31,7 +31,7 @@ function parseMetrics(text: string): MetricRow[] {
   }
   return METRIC_NAMES.filter((name) => seen.has(name)).map((name) => ({
     name,
-    value: totals.has(name) ? totals.get(name)! : null,
+    value: totals.has(name) ? (totals.get(name) ?? null) : null,
   }));
 }
 

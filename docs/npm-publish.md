@@ -8,12 +8,13 @@ Packages are versioned with [Changesets](https://github.com/changesets/changeset
 |---------|------|
 | `@mck/core` | `packages/core` |
 | `@mck/server` | `packages/server` |
+| `@mck/catalog` | `packages/catalog` |
 | `@mck/gateway` | `apps/gateway` |
 | `@mck/cli` | `packages/cli` |
 | `@mck/testing` | `packages/testing` |
 | `@mck/source-*` | `sources/*` |
 
-Each includes `"publishConfig": { "access": "public" }` and a `repository.directory` field for npm provenance.
+Each includes `"publishConfig": { "access": "public" }` and a `repository.directory` field for npm provenance. `@mck/catalog` is data only (source ids, tiers, demo presets). Gateway and the marketing site both consume it; bump it when the catalog JSON changes.
 
 ## Release steps
 

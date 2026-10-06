@@ -1,6 +1,9 @@
 {
   "id": "web-reader",
   "package": "@mck/source-web-reader",
+  "title": "Web reader",
+  "tier": "paid",
+  "hosts": [],
   "verified": true,
   "tools": ["fetch_page"],
   "contracts": ["fetch_page"],

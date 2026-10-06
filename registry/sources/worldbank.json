@@ -1,6 +1,9 @@
 {
   "id": "worldbank",
   "package": "@mck/source-worldbank",
+  "title": "World Bank",
+  "tier": "free",
+  "hosts": ["https://api.worldbank.org"],
   "verified": true,
   "tools": ["country_profile"],
   "contracts": ["country_profile"],

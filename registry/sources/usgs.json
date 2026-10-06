@@ -1,6 +1,9 @@
 {
   "id": "usgs",
   "package": "@mck/source-usgs",
+  "title": "USGS",
+  "tier": "free",
+  "hosts": ["https://earthquake.usgs.gov"],
   "verified": true,
   "tools": ["recent_quakes"],
   "contracts": ["recent_quakes"],

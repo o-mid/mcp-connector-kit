@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { motion } from "framer-motion";
 
 import { SOURCES } from "@/lib/site";
@@ -45,12 +46,16 @@ export function SourcesGrid() {
         >
           {sources.map((s) => (
             <motion.article
-              key={s.name}
+              key={s.id}
               variants={item}
               className="group rounded-2xl border border-white/[0.08] bg-zinc-950/50 p-5 transition hover:border-white/15 hover:bg-zinc-900/40"
             >
               <div className="flex items-start justify-between gap-3">
-                <h3 className="font-medium text-white">{s.name}</h3>
+                <h3 className="font-medium text-white">
+                  <Link href={`/sources/${s.id}`} className="hover:underline">
+                    {s.name}
+                  </Link>
+                </h3>
                 <span
                   className={`shrink-0 rounded-full px-2 py-0.5 text-[10px] font-medium uppercase tracking-wider ${
                     s.tier === "free"

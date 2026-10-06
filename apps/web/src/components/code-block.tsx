@@ -9,7 +9,9 @@ export function CodeBlock({ code, label }: { code: string; label?: string }) {
     try {
       await navigator.clipboard.writeText(code);
       setCopied(true);
-      window.setTimeout(() => setCopied(false), 1600);
+      window.setTimeout(() => {
+        setCopied(false);
+      }, 1600);
     } catch {
       setCopied(false);
     }

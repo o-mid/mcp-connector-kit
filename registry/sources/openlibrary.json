@@ -1,6 +1,9 @@
 {
   "id": "openlibrary",
   "package": "@mck/source-openlibrary",
+  "title": "Open Library",
+  "tier": "free",
+  "hosts": ["https://openlibrary.org"],
   "verified": true,
   "tools": ["book_search"],
   "contracts": ["book_search"],

@@ -99,11 +99,14 @@ export default function HomePage() {
 
       <section className="px-4 pb-28 sm:px-6">
         <div className="mx-auto max-w-6xl rounded-3xl border border-white/[0.08] bg-white/[0.02] px-8 py-14 sm:px-16">
-          <h2 className="text-2xl font-semibold tracking-tight text-white sm:text-3xl">Open-Meteo is the next source</h2>
+          <h2 className="text-2xl font-semibold tracking-tight text-white sm:text-3xl">
+            Next sources: Wikidata, arXiv, Nominatim
+          </h2>
           <p className="mt-4 max-w-xl text-zinc-400">
-            Public forecast JSON, no API key, one fixture. The guide is{" "}
-            <span className="font-mono text-sm text-zinc-200">pnpm mck new source open-meteo</span>, then{" "}
-            <span className="font-mono text-sm text-zinc-200">pnpm mck check</span>.
+            Public JSON, no API key, one fixture each. Scaffold with{" "}
+            <span className="font-mono text-sm text-zinc-200">pnpm mck new source wikidata</span>, then{" "}
+            <span className="font-mono text-sm text-zinc-200">pnpm mck check</span>. Wire the catalog, gateway, and
+            registry JSON before it shows up on this site.
           </p>
           <div className="mt-8 flex flex-wrap gap-3">
             <Link

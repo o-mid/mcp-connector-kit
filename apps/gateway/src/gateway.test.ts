@@ -26,4 +26,9 @@ describe("gateway", () => {
     expect(registry.listToolNames()).toContain("usgs.recent_quakes");
     expect(registry.listToolNames()).toContain("worldbank.country_profile");
   });
+
+  it("expands research profile", () => {
+    const config = loadConfig({ MCK_SOURCE_PROFILE: "research", LOG_LEVEL: "silent" });
+    expect(config.sourceIds).toEqual(["wikipedia", "openalex", "openlibrary"]);
+  });
 });

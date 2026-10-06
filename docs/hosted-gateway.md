@@ -11,6 +11,22 @@ Same Docker image as self-host; tier is controlled by environment.
 | Tenant label | — | `MCK_TENANT_ID=...` (appears in audit JSON) |
 | Rate limits | base per source | 2× token bucket headroom (see `tier.ts`) |
 
+## Source profiles
+
+`MCK_SOURCE_PROFILE` selects a named bundle. It wins over `MCK_SOURCES`. SKU filtering still applies (`free` drops paid ids).
+
+| Profile | Sources |
+|---------|---------|
+| `default` | free catalog (nine keyless sources) |
+| `trust` | full catalog; set `MCK_SKU=paid` |
+| `research` | `wikipedia`, `openalex`, `openlibrary` |
+| `geo` | `open-meteo`, `usgs`, `worldbank` |
+| `daily` | `frankfurter`, `hn`, `open-meteo` |
+
+```bash
+MCK_SOURCE_PROFILE=research MCK_TRANSPORT=http PORT=8080 node apps/gateway/dist/cli.js
+```
+
 ## Public demo
 
 `MCK_PUBLIC_DEMO=true` adds `POST /demo/mcp` and `GET /demo/healthz`. That process loads the free SKU, skips API keys, and rate-limits `tools/call` (30/minute per client IP). Each client gets its own MCP session. `/mcp` stays on the configured SKU and still requires `MCK_API_KEYS` when they are set.

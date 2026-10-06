@@ -47,7 +47,8 @@ At runtime nothing “discovers” sources dynamically. The gateway **imports** 
 | `tsconfig.base.json` | Shared TS options for packages. |
 | `.env.example` | Documented env vars for gateway and API keys. |
 | `Dockerfile` | Multi-stage build of `@mck/gateway`; default HTTP, `default` profile, `free` SKU. |
-| `scripts/validate-registry.mjs` | Ensures `registry/sources/*.json` matches `sources/<id>` and trust-tier ids. |
+| `packages/catalog` | Shared source catalog JSON: tiers, tools, demo presets, profiles. Gateway SKU filter, `validate-registry.mjs`, and `apps/web` all consume it. |
+| `scripts/validate-registry.mjs` | Ensures `registry/sources/*.json` matches `sources/<id>`, catalog ids, and `pnpm catalog:generate` output. |
 | `.github/workflows/ci.yml` | `pnpm check`, `pnpm validate:registry`, `pnpm mck check .`. |
 | `.github/workflows/sbom.yml` | SBOM artifact on `main`. |
 | `.github/workflows/live-contracts.yml` | Scheduled health smoke; optional manual upstream curl. |
@@ -100,14 +101,17 @@ Misconfiguration throws here instead of halfway through a tool call.
 
 Named bundles:
 
-- `default` → the free list in `FREE_TIER_SOURCES` (fixture, Wikipedia, Open-Meteo, Frankfurter, OpenAlex, Open Library, Hacker News, USGS, World Bank)
-- `trust` → full bundle in `SOURCE_PROFILES` (free SKU plus GitHub, web reader, Brave, Exa, Tavily)
+- `default` → free list from `@mck/catalog` (`FREE_TIER_SOURCE_IDS`)
+- `trust` → full catalog (`TRUST_TIER_SOURCE_IDS`)
+- `research` → wikipedia, openalex, openlibrary
+- `geo` → open-meteo, usgs, worldbank
+- `daily` → frankfurter, hn, open-meteo
 
 If `MCK_SOURCE_PROFILE` is set, it wins over `MCK_SOURCES`.
 
 ### `src/tier.ts`
 
-Hosted product logic:
+Hosted product logic. Source id lists are imported from `@mck/catalog` (see `packages/catalog/src/data.json`):
 
 - `free` SKU keeps `FREE_TIER_SOURCES` and drops keyed connectors.
 - `paid` SKU allows the full trust list.
@@ -351,8 +355,8 @@ Environment variables for keys are read inside each source’s `api.ts` or `sour
 
 1. `mck new source myapi` or copy an existing source folder.
 2. Implement `source.ts` + `api.ts`, add `fixtures/my_tool.contract.json`.
-3. Wire id in `apps/gateway/src/sources.ts`, `tier.ts`, `profiles.ts` if trust-tier.
-4. Add `registry/sources/myapi.json`, gateway `package.json` dependency.
+3. Wire id in `apps/gateway/src/sources.ts` and `packages/catalog/src/data.json` (`tier: "free"` or `"paid"`). `tier.ts` reads the catalog; do not add a third copy of the id list.
+4. Add `registry/sources/myapi.json` (title, tier, hosts), gateway `package.json` dependency, then `pnpm catalog:generate`.
 5. `pnpm check`, `pnpm validate:registry`, `pnpm mck check .`.
 
 **Ship hosted free tier**

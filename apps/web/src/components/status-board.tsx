@@ -1,7 +1,9 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Link from "next/link";
 import { GATEWAY_ORIGIN } from "@/lib/site";
+import { CATALOG_SOURCES } from "@/generated/catalog";
 
 type Payload = {
   ok?: boolean;
@@ -56,8 +58,18 @@ export function StatusBoard() {
               key={id}
               className="flex items-center justify-between rounded-2xl border border-white/[0.08] bg-black/20 px-4 py-3"
             >
-              <span className="font-mono text-sm text-zinc-200">{id}</span>
-              <span className={state === "healthy" ? "text-sm text-emerald-400" : "text-sm text-amber-300"}>{state}</span>
+              <span className="font-mono text-sm text-zinc-200">
+                {CATALOG_SOURCES.some((s) => s.id === id) ? (
+                  <Link href={`/sources/${id}`} className="hover:underline">
+                    {id}
+                  </Link>
+                ) : (
+                  id
+                )}
+              </span>
+              <span className={state === "healthy" ? "text-sm text-emerald-400" : "text-sm text-amber-300"}>
+                {state === "healthy" ? "ok · healthy" : state}
+              </span>
             </li>
           ))}
         </ul>

@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { DEMO_PRESETS, type CatalogDemo } from "@/generated/catalog";
 
 type DemoResponse = {
   via?: "gateway" | "wikipedia";
@@ -9,88 +10,9 @@ type DemoResponse = {
   error?: string;
 };
 
-type Preset = {
-  id: string;
-  label: string;
-  tool: string;
-  field?: "query" | "place" | "code" | "symbols";
-  placeholder?: string;
-  value: string;
-  input: Record<string, unknown>;
-};
+type Preset = CatalogDemo;
 
-const PRESETS: Preset[] = [
-  {
-    id: "wiki",
-    label: "Wikipedia",
-    tool: "wiki_search",
-    field: "query",
-    placeholder: "Search Wikipedia",
-    value: "Model Context Protocol",
-    input: { query: "Model Context Protocol", limit: 3 },
-  },
-  {
-    id: "weather",
-    label: "Weather",
-    tool: "weather_forecast",
-    field: "place",
-    placeholder: "City",
-    value: "Berlin",
-    input: { place: "Berlin", days: 2 },
-  },
-  {
-    id: "fx",
-    label: "Rates",
-    tool: "fx_latest",
-    field: "symbols",
-    placeholder: "EUR, GBP",
-    value: "EUR, GBP",
-    input: { base: "USD", symbols: ["EUR", "GBP"] },
-  },
-  {
-    id: "papers",
-    label: "Papers",
-    tool: "paper_search",
-    field: "query",
-    placeholder: "Paper search",
-    value: "transformer attention",
-    input: { query: "transformer attention", limit: 3 },
-  },
-  {
-    id: "books",
-    label: "Books",
-    tool: "book_search",
-    field: "query",
-    placeholder: "Book title",
-    value: "designing data-intensive applications",
-    input: { query: "designing data-intensive applications", limit: 2 },
-  },
-  {
-    id: "hn",
-    label: "Hacker News",
-    tool: "hn_search",
-    field: "query",
-    placeholder: "Story search",
-    value: "model context protocol",
-    input: { query: "model context protocol", limit: 3 },
-  },
-  {
-    id: "quakes",
-    label: "Earthquakes",
-    tool: "recent_quakes",
-    value: "",
-    input: { limit: 3 },
-  },
-  {
-    id: "country",
-    label: "Country",
-    tool: "country_profile",
-    field: "code",
-    placeholder: "ISO code",
-    value: "JP",
-    input: { code: "JP" },
-  },
-];
+const PRESETS: Preset[] = DEMO_PRESETS;
 
 function inputFor(preset: Preset, value: string): Record<string, unknown> {
   if (preset.field === "query") return { ...preset.input, query: value };

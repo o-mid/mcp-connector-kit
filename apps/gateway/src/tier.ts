@@ -1,32 +1,23 @@
 /** Hosted gateway SKU: which sources and limits apply. */
+import {
+  FREE_TIER_SOURCE_IDS,
+  PAID_ONLY_SOURCE_IDS,
+  TRUST_TIER_SOURCE_IDS,
+} from "@mck/catalog";
+
 export type GatewaySku = "free" | "paid";
 
 /** Keyless sources. Free SKU and the public demo load this list. */
-export const FREE_TIER_SOURCES = [
-  "fixture",
-  "wikipedia",
-  "open-meteo",
-  "frankfurter",
-  "openalex",
-  "openlibrary",
-  "hn",
-  "usgs",
-  "worldbank",
-] as const;
+export const FREE_TIER_SOURCES = FREE_TIER_SOURCE_IDS;
 
 export const SKU_SOURCE_ALLOWLIST: Record<GatewaySku, readonly string[]> = {
-  free: FREE_TIER_SOURCES,
-  paid: [...FREE_TIER_SOURCES, "github", "web-reader", "brave", "exa", "tavily"],
+  free: FREE_TIER_SOURCE_IDS,
+  paid: TRUST_TIER_SOURCE_IDS,
 };
 
-export const TRUST_TIER_SOURCES = [
-  ...FREE_TIER_SOURCES,
-  "github",
-  "web-reader",
-  "brave",
-  "exa",
-  "tavily",
-] as const;
+export const TRUST_TIER_SOURCES = TRUST_TIER_SOURCE_IDS;
+
+export const PAID_ONLY_SOURCES = PAID_ONLY_SOURCE_IDS;
 
 export function parseSku(value: string | undefined): GatewaySku {
   return value === "paid" ? "paid" : "free";

@@ -1,6 +1,9 @@
 {
   "id": "github",
   "package": "@mck/source-github",
+  "title": "GitHub",
+  "tier": "paid",
+  "hosts": ["https://api.github.com"],
   "verified": true,
   "tools": ["search_repositories", "search_issues"],
   "contracts": ["search_repositories", "search_issues"],

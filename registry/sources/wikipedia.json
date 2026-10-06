@@ -1,6 +1,9 @@
 {
   "id": "wikipedia",
   "package": "@mck/source-wikipedia",
+  "title": "Wikipedia",
+  "tier": "free",
+  "hosts": ["https://en.wikipedia.org"],
   "verified": true,
   "tools": ["wiki_search", "wiki_summary"],
   "contracts": ["wiki_search", "wiki_summary"],

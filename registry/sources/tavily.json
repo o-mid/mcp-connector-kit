@@ -1,6 +1,9 @@
 {
   "id": "tavily",
   "package": "@mck/source-tavily",
+  "title": "Tavily",
+  "tier": "paid",
+  "hosts": ["https://api.tavily.com"],
   "verified": true,
   "tools": ["tavily_search"],
   "contracts": ["tavily_search"],

@@ -1,6 +1,9 @@
 {
   "id": "exa",
   "package": "@mck/source-exa",
+  "title": "Exa",
+  "tier": "paid",
+  "hosts": ["https://api.exa.ai"],
   "verified": true,
   "tools": ["exa_search"],
   "contracts": ["exa_search"],

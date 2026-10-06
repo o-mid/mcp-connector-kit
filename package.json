@@ -11,6 +11,7 @@
     "lint": "turbo run lint",
     "typecheck": "turbo run typecheck",
     "check": "pnpm build && pnpm lint && pnpm typecheck && pnpm test",
+    "catalog:generate": "node scripts/generate-web-catalog.mjs",
     "validate:registry": "node scripts/validate-registry.mjs",
     "smoke:production": "node scripts/smoke-production-gateway.mjs",
     "wait:railway": "node scripts/wait-railway-deploy.mjs",

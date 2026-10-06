@@ -2,8 +2,9 @@
 
 ## Unreleased
 
-- Remove regional commerce sources; default profile is `fixture` + Wikipedia.
-- Rename profile `global-demo` → `default`.
+- Shared `@mck/catalog` for SKU ids, demo tools, and marketing source pages.
+- Source profiles `research`, `geo`, and `daily`.
+- Canonical tool names documented; new self-host defaults stay `MCK_LEGACY_TOOL_NAMES=false`. Docker/hosted keep `true` until clients migrate.
 
 ## 1.0.0
 

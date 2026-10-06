@@ -1,6 +1,9 @@
 {
   "id": "brave",
   "package": "@mck/source-brave",
+  "title": "Brave",
+  "tier": "paid",
+  "hosts": ["https://api.search.brave.com"],
   "verified": true,
   "tools": ["web_search"],
   "contracts": ["web_search"],

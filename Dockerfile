@@ -20,5 +20,6 @@ HEALTHCHECK --interval=30s --timeout=3s CMD node -e "fetch('http://127.0.0.1:808
 ENV MCK_TRANSPORT=http
 ENV MCK_SOURCE_PROFILE=default
 ENV MCK_SKU=free
+# Bare tool names for existing Cursor clients. New self-host: omit or set false.
 ENV MCK_LEGACY_TOOL_NAMES=true
 CMD ["node", "dist/cli.js"]

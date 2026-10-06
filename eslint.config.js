@@ -20,6 +20,6 @@ export default tseslint.config(
     },
   },
   {
-    ignores: ["**/dist/**", "**/node_modules/**", "**/.turbo/**"],
+    ignores: ["**/dist/**", "**/node_modules/**", "**/.turbo/**", "**/src/generated/**"],
   },
 );

@@ -19,6 +19,7 @@
     "start": "node dist/cli.js"
   },
   "dependencies": {
+    "@mck/catalog": "workspace:*",
     "@mck/core": "workspace:*",
     "@mck/server": "workspace:*",
     "@mck/source-brave": "workspace:*",

@@ -41,7 +41,7 @@ export function GatewayPill() {
     >
       <span className={`h-1.5 w-1.5 rounded-full ${live ? "bg-emerald-400" : failed ? "bg-red-400" : "bg-zinc-500"}`} />
       {live
-        ? `${status?.health?.sku ?? "gateway"} · ${healthy}/${sources.length} sources healthy`
+        ? `${status.health?.sku ?? "gateway"} · ${healthy}/${sources.length} sources healthy`
         : failed
           ? "Gateway status unavailable"
           : "Checking gateway"}

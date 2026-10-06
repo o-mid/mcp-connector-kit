@@ -1,6 +1,9 @@
 {
   "id": "open-meteo",
   "package": "@mck/source-open-meteo",
+  "title": "Open-Meteo",
+  "tier": "free",
+  "hosts": ["https://api.open-meteo.com", "https://geocoding-api.open-meteo.com"],
   "verified": true,
   "tools": ["weather_forecast"],
   "contracts": ["weather_forecast", "weather_forecast_place"],

@@ -1,6 +1,9 @@
 {
   "id": "fixture",
   "package": "@mck/source-fixture",
+  "title": "Fixture",
+  "tier": "free",
+  "hosts": ["https://fixture.local"],
   "verified": true,
   "tools": ["echo"],
   "contracts": ["echo"],

@@ -1,4 +1,5 @@
 import { GATEWAY_ORIGIN } from "@/lib/site";
+import { DEMO_PRESETS, DEMO_TOOL_NAMES, type CatalogDemo } from "@/generated/catalog";
 
 export const dynamic = "force-dynamic";
 
@@ -6,18 +7,7 @@ const hits = new Map<string, number[]>();
 const WINDOW_MS = 60_000;
 const LIMIT = 12;
 
-const TOOLS = [
-  "wiki_search",
-  "weather_forecast",
-  "fx_latest",
-  "paper_search",
-  "book_search",
-  "hn_search",
-  "recent_quakes",
-  "country_profile",
-] as const;
-
-type DemoTool = (typeof TOOLS)[number];
+type DemoTool = (typeof DEMO_TOOL_NAMES)[number];
 
 function allow(ip: string): boolean {
   const now = Date.now();
@@ -37,7 +27,11 @@ function clientIp(request: Request): string {
 }
 
 function asTool(value: unknown): DemoTool | undefined {
-  return TOOLS.find((tool) => tool === value);
+  return DEMO_TOOL_NAMES.find((tool) => tool === value);
+}
+
+function presetFor(tool: DemoTool): CatalogDemo | undefined {
+  return DEMO_PRESETS.find((p) => p.tool === tool);
 }
 
 function textField(input: Record<string, unknown>, key: string, max: number): string | undefined {
@@ -56,19 +50,22 @@ function limitField(input: Record<string, unknown>, fallback: number): number {
 }
 
 function argumentsFor(tool: DemoTool, input: Record<string, unknown>): Record<string, unknown> | undefined {
-  if (tool === "wiki_search" || tool === "paper_search" || tool === "book_search" || tool === "hn_search") {
+  const preset = presetFor(tool);
+  if (!preset) return undefined;
+  const field = preset.field;
+  if (field === "query") {
     const query = textField(input, "query", 120);
     if (!query) return undefined;
     return { query, limit: limitField(input, 3) };
   }
-  if (tool === "weather_forecast") {
+  if (field === "place") {
     const place = textField(input, "place", 80);
     if (!place) return undefined;
     const days = input.days;
     const n = typeof days === "number" ? days : Number(days);
     return { place, days: Number.isInteger(n) && n >= 1 && n <= 3 ? n : 2 };
   }
-  if (tool === "fx_latest") {
+  if (field === "symbols") {
     const base = (textField(input, "base", 3) ?? "USD").toUpperCase();
     if (!/^[A-Z]{3}$/.test(base)) return undefined;
     const raw = input.symbols;
@@ -80,12 +77,12 @@ function argumentsFor(tool: DemoTool, input: Record<string, unknown>): Record<st
     if (symbols.length < 1 || symbols.length > 8 || symbols.some((code) => !/^[A-Z]{3}$/.test(code))) return undefined;
     return { base, symbols };
   }
-  if (tool === "recent_quakes") {
-    return { limit: limitField(input, 3) };
+  if (field === "code") {
+    const code = (textField(input, "code", 2) ?? "").toUpperCase();
+    if (!/^[A-Z]{2}$/.test(code)) return undefined;
+    return { code };
   }
-  const code = (textField(input, "code", 2) ?? "").toUpperCase();
-  if (!/^[A-Z]{2}$/.test(code)) return undefined;
-  return { code };
+  return { limit: limitField(input, 3) };
 }
 
 async function readMcp(res: Response): Promise<unknown> {

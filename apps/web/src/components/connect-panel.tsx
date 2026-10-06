@@ -39,10 +39,20 @@ export function ConnectPanel() {
   return (
     <div className="space-y-6">
       <div className="flex flex-wrap gap-2">
-        <Toggle pressed={target === "demo"} onClick={() => setTarget("demo")}>
+        <Toggle
+          pressed={target === "demo"}
+          onClick={() => {
+            setTarget("demo");
+          }}
+        >
           Free demo
         </Toggle>
-        <Toggle pressed={target === "full"} onClick={() => setTarget("full")}>
+        <Toggle
+          pressed={target === "full"}
+          onClick={() => {
+            setTarget("full");
+          }}
+        >
           Full gateway
         </Toggle>
       </div>
@@ -69,7 +79,9 @@ export function ConnectPanel() {
               type="password"
               autoComplete="off"
               value={apiKey}
-              onChange={(e) => setApiKey(e.target.value)}
+              onChange={(e) => {
+                setApiKey(e.target.value);
+              }}
               placeholder="Paste a key to fill the header"
               className="mt-2 w-full rounded-xl border border-white/10 bg-black/30 px-3 py-2 font-mono text-sm text-white outline-none ring-violet-400/40 placeholder:text-zinc-600 focus:ring-2"
             />
@@ -83,7 +95,13 @@ export function ConnectPanel() {
 
       <div className="flex flex-wrap gap-2">
         {CLIENTS.map((c) => (
-          <Toggle key={c.id} pressed={client === c.id} onClick={() => setClient(c.id)}>
+          <Toggle
+            key={c.id}
+            pressed={client === c.id}
+            onClick={() => {
+              setClient(c.id);
+            }}
+          >
             {c.label}
           </Toggle>
         ))}

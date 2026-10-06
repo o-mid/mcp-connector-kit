@@ -1,6 +1,9 @@
 {
   "id": "openalex",
   "package": "@mck/source-openalex",
+  "title": "OpenAlex",
+  "tier": "free",
+  "hosts": ["https://api.openalex.org"],
   "verified": true,
   "tools": ["paper_search"],
   "contracts": ["paper_search"],

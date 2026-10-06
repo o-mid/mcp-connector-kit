@@ -1,6 +1,9 @@
 {
   "id": "hn",
   "package": "@mck/source-hn",
+  "title": "Hacker News",
+  "tier": "free",
+  "hosts": ["https://hn.algolia.com"],
   "verified": true,
   "tools": ["hn_search"],
   "contracts": ["hn_search"],

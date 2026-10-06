@@ -1,6 +1,9 @@
 {
   "id": "frankfurter",
   "package": "@mck/source-frankfurter",
+  "title": "Frankfurter",
+  "tier": "free",
+  "hosts": ["https://api.frankfurter.dev"],
   "verified": true,
   "tools": ["fx_latest"],
   "contracts": ["fx_latest"],

@@ -13,7 +13,7 @@ If you landed here without context: this repo is a **TypeScript monorepo** for b
 <p align="center">
   <a href="https://mck-web-production.up.railway.app/">Marketing site</a> ·
   <a href="https://mck-web-production.up.railway.app/connect">Connect in Cursor</a> ·
-  <a href="https://mck-web-production.up.railway.app/compare">Compare</a> ·
+  <a href="https://mck-web-production.up.railway.app/sources">Sources</a> ·
   <a href="https://mck-web-production.up.railway.app/pricing">Pricing</a> ·
   <a href="https://mck-web-production.up.railway.app/status">Status</a> ·
   <a href="https://mcp-connector-kit-production.up.railway.app/mcp">Live MCP endpoint</a> ·
@@ -76,7 +76,7 @@ Details: [Trust tier](docs/trust-tier.md) · [Hosted gateway SKU](docs/hosted-ga
 
 ## Quick start
 
-**Prerequisites:** Node 20+, [pnpm](https://pnpm.io) 9+.
+**Prerequisites:** Node 22+, [pnpm](https://pnpm.io) 9+.
 
 ```bash
 git clone https://github.com/o-mid/mcp-connector-kit.git
@@ -91,16 +91,22 @@ pnpm build
 MCK_SOURCE_PROFILE=default node apps/gateway/dist/cli.js
 ```
 
+**Named toolkits** (`research` = Wikipedia + OpenAlex + Open Library, `geo` = Open-Meteo + USGS + World Bank, `daily` = Frankfurter + HN + Open-Meteo):
+
+```bash
+MCK_SOURCE_PROFILE=research node apps/gateway/dist/cli.js
+```
+
 **Trust profile (paid SKU — needs upstream API keys in env):**
 
 ```bash
-MCK_SOURCE_PROFILE=trust MCK_SKU=paid MCK_LEGACY_TOOL_NAMES=true node apps/gateway/dist/cli.js
+MCK_SOURCE_PROFILE=trust MCK_SKU=paid node apps/gateway/dist/cli.js
 ```
 
-**HTTP transport (Streamable MCP at `POST /mcp`):**
+**HTTP transport (Streamable MCP at `POST /mcp`).** New installs use canonical tool names (`wikipedia.wiki_search`). Set `MCK_LEGACY_TOOL_NAMES=true` only if an existing client still calls bare names (`wiki_search`). The Docker image keeps legacy names on so hosted Cursor configs do not break; see [Trust tier](docs/trust-tier.md#tool-names-canonical-vs-legacy).
 
 ```bash
-MCK_SOURCE_PROFILE=default MCK_TRANSPORT=http MCK_LEGACY_TOOL_NAMES=true PORT=8080 node apps/gateway/dist/cli.js
+MCK_SOURCE_PROFILE=default MCK_TRANSPORT=http PORT=8080 node apps/gateway/dist/cli.js
 ```
 
 **Health checks:** `GET /healthz` · **Readiness:** `GET /readyz` · **Prometheus:** `GET /metrics`
@@ -161,6 +167,7 @@ Environment variables: see [`.env.example`](.env.example) (`MCK_SOURCES`, `MCK_S
 | Package | Role |
 |---------|------|
 | `@mck/core` | HTTP client, cache, errors, `defineSource` / `defineTool` |
+| `@mck/catalog` | Shared source ids, tiers, demo presets (gateway + site) |
 | `@mck/server` | MCP SDK server, stdio + Streamable HTTP, OAuth metadata |
 | `@mck/gateway` | Deployable multi-source server (free/paid SKU) |
 | `@mck/source-*` | Trust-tier connectors (Wikipedia, GitHub, …) |
